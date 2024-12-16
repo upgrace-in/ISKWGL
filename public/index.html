@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MWSM61X0BD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MWSM61X0BD');
+</script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="icon" href="/assets/iskcon_logo.png" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="apple-touch-icon" href="/assets/iskcon_logo.png" />
+  <!-- <link rel="manifest" href="#manifest.json" /> -->
+  <title>ISKCON of WARANGAL — Delight in Devotion</title>
+  <meta name="description"
+    content="Welcome to the abode of Shri Shri Radha NilMadhava, where the most-benevolent Lord has come to receive your love and to fill your lives with His grace. As devotees of the Lord we are here to serve you and look forward to welcoming you at our temple." />
+  <meta property="og:image" content="/meta-image.jpg" />
+  <link href="/index_files/main.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root">
+  </div>
+  <script>
+    const handleSideNav = () => {
+      if ($('.side-nav').hasClass('opened')) {
+        $('.side-nav').removeClass('opened')
+      } else {
+        $('.side-nav').addClass('opened')
+      }
+    }
+    $(document).ready(function () {
+      $(".toggle-side-menu").click(() => {
+        handleSideNav()
+      });
+
+      $(".main-list").click(() => {
+        handleSideNav()
+      });
+
+      $(".side-menu-close").click(() => {
+        handleSideNav()
+      });
+    })
+  </script>
+</body>
+
+
+</html>

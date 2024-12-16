@@ -1,0 +1,43 @@
+{
+  "name": "iskwgl",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@cashfreepayments/cashfree-js": "^1.0.4",
+    "aws-sdk": "^2.1677.0",
+    "axios": "^1.6.8",
+    "body-parser": "^1.20.2",
+    "bootstrap": "^5.3.3",
+    "cashfree-pg": "^4.1.2",
+    "dotenv": "^16.4.5",
+    "jquery": "^3.7.1",
+    "mongoose": "^8.3.4",
+    "next": "14.2.3",
+    "next-connect": "^1.0.0",
+    "pdfkit": "^0.15.0",
+    "pdfmake": "^0.2.11",
+    "querystring": "^0.2.1",
+    "react": "^18",
+    "react-bootstrap": "^2.10.2",
+    "react-csv": "^2.2.2",
+    "react-data-table-component": "^7.6.2",
+    "react-dom": "^18",
+    "react-fast-marquee": "^1.6.4",
+    "react-ga4": "^2.1.0",
+    "react-icons": "^5.4.0",
+    "react-owl-carousel": "^2.3.3",
+    "twilio": "^5.2.2",
+    "web-vitals": "^4.2.4",
+    "webpack": "^5.91.0"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3"
+  }
+}
