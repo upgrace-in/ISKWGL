@@ -10,7 +10,7 @@ export default function TempleRenovation() {
 
   return (
     <div>
-      <p>Redirecting to the payment gateway...</p>
+      <p>Please wait while you are being redirected to the payment gateway...</p>
     </div>
   );
 }
