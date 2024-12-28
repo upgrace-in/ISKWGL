@@ -125,7 +125,8 @@ export default function DonateCategories() {
                                         { title: "Sponsor Gita" },
                                         { title: "Offer A Puja" },
                                         { title: "Deity Worship Seva" },
-                                        { title: "Birthday Seva", src:"/birthday-annadan-seva" }
+                                        { title: "Birthday Seva", src:"/birthday-annadan-seva" },
+                                        { title: "Go Seva", src:"/go-seva" },
                                     ]
                                 }
                             />

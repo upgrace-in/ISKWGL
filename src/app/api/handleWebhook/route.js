@@ -27,7 +27,7 @@ export async function POST(req) {
         donation.amount = dict?.orderAmount;
         donation.status = dict?.txStatus;
         donation.webhookData = dict;
-        console.log('Webhook data', donation.webhookData);
+        //console.log('Webhook data', donation.webhookData);
         await donation.save();
 
         // Send message if the status is "Success" and message has not been sent

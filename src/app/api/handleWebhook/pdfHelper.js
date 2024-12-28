@@ -1,9 +1,17 @@
 import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+//import pdfFonts from 'pdfmake/build/vfs_fonts';
 import fs from 'fs';
 import path from 'path';
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// Register fonts
+pdfMake.fonts = {
+    Roboto: {
+        normal: path.resolve(process.cwd(), 'public', 'fonts', 'Roboto-Regular.ttf'),
+        bold: path.resolve(process.cwd(), 'public', 'fonts', 'Roboto-Bold.ttf'),
+        italics: path.resolve(process.cwd(), 'public', 'fonts', 'Roboto-Italic.ttf'),
+        bolditalics: path.resolve(process.cwd(), 'public', 'fonts', 'Roboto-BoldItalic.ttf')
+    }
+};
 
 export const generatePDF = (dict, donation) => {
     const logoPath = path.resolve(process.cwd(), 'public', 'assets', 'iskcon_logo.png');
