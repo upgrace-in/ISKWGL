@@ -57,7 +57,7 @@ export default function Radhastami({ params, defaultReferral }) {
         let finalData = {}
         const formData = new FormData(e.target)
         formData.forEach((value, property) => finalData[property] = value);
-        finalData['donationType'] = JSON.parse(donateFor)?.title || "Custom"
+        finalData['donationType'] = JSON.parse(finalData['donationType'])?.title || "Custom"
 
         try {
 
