@@ -59,6 +59,7 @@ export default function RathYatra({ params, defaultReferral }) {
         let finalData = {}
         const formData = new FormData(e.target)
         formData.forEach((value, property) => finalData[property] = value);
+        finalData['donationType'] = JSON.parse(donateFor)?.title || "Custom"
 
         try {
 
