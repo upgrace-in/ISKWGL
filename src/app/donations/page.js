@@ -101,7 +101,7 @@ function Donations() {
         const d = arr.map(item => ({
             "orderId": item?.webhookData?.orderId || item?.orderId,
             "name": item?.name,
-            "donatedFor": typeof item?.donatedFor === 'string' ? (item?.donatedFor || '-'): JSON.parse(item?.donatedFor)?.title,
+           "donatedFor": item?.donatedFor?.charAt(0) === '{' ? JSON.parse(item?.donatedFor)?.title : item?.donatedFor || '-',
             "amount": item?.webhookData?.orderAmount || item?.amount,
             "source": item?.redirectedFrom || 'Other',
             "email": item?.email,
