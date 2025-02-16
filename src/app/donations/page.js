@@ -30,7 +30,7 @@ function Donations() {
         },
         {
             name: 'Donation For',
-            selector: row => <div className="text-wrap text-left">{row?.donatedFor || '-'}</div>,
+            selector: row => <div className="text-wrap text-left">{row?.donatedFor?.charAt(0) === '{' ? JSON.parse(row?.donatedFor)?.title : row?.donatedFor || '-'}</div>,
             width: "200px"
         },
         {
@@ -115,6 +115,7 @@ function Donations() {
             "createdAt": item?.createdAt,
             "MessageSendStatus": item?.messageSent?.toString() || '-'
         }))
+        console.log("Donations ", d)
         setflattenData(d)
     };
 
@@ -163,6 +164,7 @@ function Donations() {
                             ?
                             <CSVLink
                                 data={flattenData}
+                                filename='Donations.csv'
                             >
                                 <h4>(Download CSV)</h4>
                             </CSVLink>
