@@ -8,7 +8,7 @@ export default function PinSpacer() {
     // const imageArray = ["/headerImages/RY11.png","/headerImages/RY13.png", "/headerImages/RY14.png", "/headerImages/abode-inspiration-min.png", "/headerImages/Annadanam.png", "/headerImages/Chant-and-Be-happy-min.png", "/headerImages/Destination-for-Peace-min.png", "/headerImages/Sunday-Program-min.png", "/headerImages/Prahlad-School-min.png"]
 
     // IMAGE ARRAY
-    const imageArray = ["headerImages/temple_renovation_1.png", "headerImages/temple_renovation_2.png", "headerImages/temple_renovation_3.png", "headerImages/temple_renovation_4.png", "headerImages/volunteer.png", "/headerImages/Chant-and-Be-happy-min.png", "/headerImages/Sunday-Program-min.png"]
+    const imageArray = ["headerImages/gaura-purnima-poster.jpeg", "headerImages/temple_renovation_1.png", "headerImages/temple_renovation_2.png", "headerImages/temple_renovation_3.png", "headerImages/temple_renovation_4.png", "headerImages/volunteer.png", "/headerImages/Chant-and-Be-happy-min.png", "/headerImages/Sunday-Program-min.png"]
 
     return (
 

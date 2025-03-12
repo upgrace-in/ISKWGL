@@ -146,7 +146,7 @@ export default function DonateCategories() {
                                         { title: "Sharad Purnima" },
                                         { title: "Kartik - The Holiest Month", src: "/kartikMonth" },
                                         { title: "Nityananda Trayodasi" },
-                                        { title: "Gaura Purnima" },
+                                        { title: "Gaura Purnima", src: "/gaurapurnima" },
                                         { title: "Narsimha Chaturdasi" },
                                         { title: "Ram Navami" },
                                         { title: "Akshay Tritiya (Chandan Yatra)", src: `/donate/Akshay_Tritiya/0` },
