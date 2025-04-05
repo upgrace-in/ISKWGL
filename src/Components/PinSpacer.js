@@ -16,7 +16,7 @@ export default function PinSpacer() {
         {imageArray.map((src, index) => (
              <Carousel.Item key={index}>
              <div className="CarouselContainer">
-                 {src === "/headerImages/sri-ram-navami-poster.jpeg" ? (
+                 {src === "headerImages/sri-ram-navami-poster.jpeg" ? (
                      <a href="/ramnavami">
                          <img src={src} alt={`Slide ${index + 1}`} className="d-block w-80 pin-spacer__image" />
                      </a>
