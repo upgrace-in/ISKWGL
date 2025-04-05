@@ -27,7 +27,7 @@ export default function Page({ params }) {
         { title: "Nityananda Trayodasi" },
         { title: "Gaura Purnima" },
         { title: "Narsimha Chaturdasi" },
-        { title: "Ram Navami" },
+        { title: "Sri Ram Navami" },
         { title: "Akshay Tritiya" },
         { title: "Balarama Jayanti" },
         { title: "Snana Yatra" },

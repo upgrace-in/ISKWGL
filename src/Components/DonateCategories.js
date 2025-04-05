@@ -148,7 +148,7 @@ export default function DonateCategories() {
                                         { title: "Nityananda Trayodasi" },
                                         { title: "Gaura Purnima", src: "/gaurapurnima" },
                                         { title: "Narsimha Chaturdasi" },
-                                        { title: "Ram Navami" },
+                                        { title: "Sri Ram Navami", src: "/ramnavami" },
                                         { title: "Akshay Tritiya (Chandan Yatra)", src: `/donate/Akshay_Tritiya/0` },
                                         { title: "Balarama Jayanti" },
                                         { title: "Snana Yatra" },
