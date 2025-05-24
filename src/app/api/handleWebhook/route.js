@@ -30,26 +30,36 @@ export async function POST(req) {
         //console.log('Webhook data', donation.webhookData);
         await donation.save();
 
-        // Send message if the status is "Success" and message has not been sent
-        const updatedDonation = await Donation.findOneAndUpdate(
-            { orderId: dict?.orderId, messageSent: false },
-            { $set: { messageSent: true } },
-            { new: true }
-        );
-
-        if (dict?.txStatus === 'SUCCESS' && updatedDonation) {
+        if (dict?.txStatus === 'SUCCESS') {
+            const alreadySent = await Donation.findOne({ orderId: dict?.orderId, messageSent: true });
+            if (alreadySent) {
+                console.log('Message already sent, skipping...');
+                return Response.json({ msg: 'Already sent' }, { status: 200 });
+            }
+        
             const pdfBuffer = await generatePDF(dict, donation);
             console.log('PDF generated successfully');
         
-            // Extract the numeric part of the orderId
             const orderId = dict.orderId.replace('order_', '');
             const pdfFileName = `donation_receipt_${orderId}.pdf`;
         
             const pdfUrl = await uploadToS3(pdfBuffer, `TempleReceipts/${pdfFileName}`);
             console.log('PDF uploaded to S3:', pdfUrl);
         
-            await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
-        }
+            // Send message
+            const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
+            
+            if (messageResult?.success) {
+                // Update only after message is sent successfully
+                await Donation.findOneAndUpdate(
+                    { orderId: dict?.orderId },
+                    { $set: { messageSent: true } },
+                    { new: true }
+                );
+            } else {
+                console.warn('Message not sent. Keeping messageSent as false.');
+            }
+        }        
 
         return Response.json({ msg: true }, { status: 200 });
     } catch (error) {
