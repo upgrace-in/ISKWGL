@@ -24,8 +24,8 @@ export default function RathYatra({ params, defaultReferral }) {
         { title: "Subhadra Seva (Annadana for 100 People)", amount: 10116 },
         { title: "Sudarshana Seva (Annadana for 50 People)", amount: 5116 },
         { title: "Srila Prabhupada Seva (Annadana for 20 People)", amount: 2116 },
-        {title: "Rath Yatra Seva", amount: 1116 },
-        {title: "Hanuman Seva", amount: 516 },
+        {title: "Rath Yatra Seva (Annadana for 10 people)", amount: 1116 },
+        {title: "Hanuman Seva (Annadana for 5 people)", amount: 516 },
         { title: "Custom" },
     ]
 
