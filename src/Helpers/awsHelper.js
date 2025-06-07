@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk';
-import { config } from './config';
+import { config } from '../app/api/handleWebhook/config';
 
 AWS.config.update({
     accessKeyId: config.aws.accessKeyId,

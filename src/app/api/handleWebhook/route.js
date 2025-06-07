@@ -2,7 +2,7 @@ import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation';
 import { sendMessage } from './twilioHelper';
 import { generatePDF } from './pdfHelper';
-import { uploadToS3 } from './awsHelper';
+import { uploadToS3 } from '../../../Helpers/awsHelper';
 import { sendWhatsAppMessage } from './whatsappHelper';
 
 export async function POST(req) {
