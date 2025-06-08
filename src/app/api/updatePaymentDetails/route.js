@@ -26,9 +26,9 @@ async function getSheetsClient() {
 
 export async function POST(req) {
     try {
-        const formData = await req.formData();
-        const phone = formData.get('phone');
-        const amount = parseFloat(formData.get('amount'));
+        const body = await req.json();
+        const phone = body.phone;
+        const amount = parseFloat(body.amount);
         if (!phone || isNaN(amount)) {
             return NextResponse.json({ success: false, message: 'Invalid input' }, { status: 400 });
         }
@@ -135,9 +135,15 @@ export async function POST(req) {
             }
         }
 
-        return NextResponse.json({ success: true });
+        return NextResponse.json(
+            { success: true },
+            { status: 200, headers: { 'Access-Control-Allow-Origin': '*' } }
+        );
     } catch (error) {
         console.error('API error:', error);
-        return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+        return NextResponse.json(
+            { success: false, message: error.message },
+            { status: 500, headers: { 'Access-Control-Allow-Origin': '*' } }
+        );
     }
 }

@@ -16,22 +16,26 @@ export default function DonationTracker() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const form = new FormData();
-        form.append('phone', formData.phone);
-        form.append('amount', formData.amount);
-
+    
+        const payload = {
+            phone: formData.phone,
+            amount: formData.amount,
+        };
+    
         try {
             const response = await fetch('/api/updatePaymentDetails', {
                 method: 'POST',
-                body: form,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
             });
-
+    
             const result = await response.json();
             if (result.success) {
                 alert('Payment details updated successfully!');
             } else {
-                alert('Failed to update payment details.');
+                alert(`Failed to update payment details: ${result.message}`);
             }
         } catch (error) {
             console.error('Error submitting form:', error);
