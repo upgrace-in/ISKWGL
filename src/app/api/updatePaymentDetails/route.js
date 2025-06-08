@@ -7,15 +7,21 @@ const SHEET_ID = '1Ex0YOzFzJcgy6t4JzKdwkENHI-RoDDQuxsxAqpkT5lM';
 const SHEET_NAME = 'Donations';
 
 // If you want to use a key file, set the path here
-const serviceAccountKeyFile = path.join(process.cwd(), 'donationtracker-462214-1ff64693b85c.json'); // Place your key file at project root
+const fs = require('fs');
+
+// Decode the base64-encoded JSON from the environment variable
+const serviceAccountKey = JSON.parse(Buffer.from(process.env.GOOGLE_KEYS_BASE64, 'base64').toString('utf-8'));
+const TEMP_KEY_FILE = path.join('/tmp', 'keys.json');
+
+fs.writeFileSync(TEMP_KEY_FILE, JSON.stringify(serviceAccountKey));
 
 async function getSheetsClient() {
     const auth = new google.auth.GoogleAuth({
-        keyFile: serviceAccountKeyFile,
+        keyFile: TEMP_KEY_FILE,
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
-    const authClient = await auth.getClient();
-    return google.sheets({ version: 'v4', auth: authClient });
+
+    return google.sheets({ version: 'v4', auth });
 }
 
 export async function POST(req) {

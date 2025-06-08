@@ -13,7 +13,7 @@ export const sendWhatsAppMessage = async (to, pdfUrl, name, transactionId, amoun
                     policy: 'deterministic',
                     code: 'en'
                 },
-                name: 'donatereceipt3',
+                name: 'webdonationrec',
                 components: [
                     {
                         type: 'header',
@@ -49,12 +49,21 @@ export const sendWhatsAppMessage = async (to, pdfUrl, name, transactionId, amoun
         }, {
             headers: {
                 'wabaNumber': '918374047115',
-                'Key': '5b178ced68XX',
+                'Key': process.env.WHATSAPP_API_KEY,
                 'Content-Type': 'application/json'
             }
         });
-        console.log('WhatsApp message sent:', whatsappResponse.data);
+
+        // Check if the response indicates success
+        if (whatsappResponse.status === 200 && whatsappResponse.data?.messages?.[0]?.message_status === 'accepted') {
+            console.log('WhatsApp message sent successfully:', whatsappResponse.data);
+            return { success: true, data: whatsappResponse.data };
+        } else {
+            console.error('WhatsApp message failed:', whatsappResponse.data);
+            return { success: false, error: whatsappResponse.data };
+        }
     } catch (error) {
-        console.error('Error sending WhatsApp message:', error);
+        console.error('Error sending WhatsApp message:', error.response?.data || error.message);
+        return { success: false, error: error.response?.data || error.message };
     }
 };

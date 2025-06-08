@@ -36,30 +36,39 @@ export async function POST(req) {
                 console.log('Message already sent, skipping...');
                 return Response.json({ msg: 'Already sent' }, { status: 200 });
             }
-        
+
             const pdfBuffer = await generatePDF(dict, donation);
             console.log('PDF generated successfully');
-        
+
             const orderId = dict.orderId.replace('order_', '');
             const pdfFileName = `donation_receipt_${orderId}.pdf`;
-        
+
             const pdfUrl = await uploadToS3(pdfBuffer, `TempleReceipts/${pdfFileName}`);
             console.log('PDF uploaded to S3:', pdfUrl);
-        
-            // Send message
-            const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
-            
-            if (messageResult?.success) {
-                // Update only after message is sent successfully
-                await Donation.findOneAndUpdate(
-                    { orderId: dict?.orderId },
-                    { $set: { messageSent: true } },
-                    { new: true }
-                );
-            } else {
-                console.warn('Message not sent. Keeping messageSent as false.');
-            }
-        }        
+
+            // Send the response to the user immediately
+            Response.json({ msg: true }, { status: 200 });
+
+            // Run the WhatsApp message sending and database update in the background
+            (async () => {
+                try {
+                    const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
+
+                    if (messageResult?.success) {
+                        // Update the database only after the message is sent successfully
+                        await Donation.findOneAndUpdate(
+                            { orderId: dict?.orderId },
+                            { $set: { messageSent: true } },
+                            { new: true }
+                        );
+                    } else {
+                        console.warn('Message not sent. Keeping messageSent as false.');
+                    }
+                } catch (error) {
+                    console.error('Error in background task:', error);
+                }
+            })();
+        }
 
         return Response.json({ msg: true }, { status: 200 });
     } catch (error) {
