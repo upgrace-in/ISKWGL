@@ -43,7 +43,7 @@ export async function POST(req) {
             const orderId = dict.orderId.replace('order_', '');
             const pdfFileName = `donation_receipt_${orderId}.pdf`;
 
-            const pdfUrl = await uploadToS3(pdfBuffer, `TempleReceipts/${pdfFileName}`);
+            const pdfUrl = await uploadToS3(pdfBuffer, `TempleReceipts/${pdfFileName}`, "application/pdf");
             console.log('PDF uploaded to S3:', pdfUrl);
 
             // Send the response to the user immediately

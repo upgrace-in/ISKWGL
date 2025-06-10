@@ -9,12 +9,12 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-export const uploadToS3 = async (buffer, key) => {
+export const uploadToS3 = async (buffer, key, contentType) => {
     const s3Params = {
         Bucket: 'myawswarangalbucket',
         Key: key,
         Body: buffer,
-        ContentType: 'application/pdf'
+        ContentType: contentType // Dynamically set the content type
     };
 
     try {

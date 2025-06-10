@@ -12,12 +12,56 @@ export async function POST(request) {
 
         const buffer = await file.arrayBuffer();
         const key = `${path}/${file.name}`;
+        const contentType = file.type || 'application/octet-stream'; // Get the MIME type of the file
 
-        const s3Url = await uploadToS3(Buffer.from(buffer), key);
+        // Upload to S3
+        const s3Url = await uploadToS3(Buffer.from(buffer), key, contentType);
 
-        return new Response(JSON.stringify({ success: true, url: s3Url }), { status: 200 });
+        // Upload to Dovesoft API
+        const handlerId = await uploadToDovesoft(file);
+
+        return new Response(
+            JSON.stringify({
+                success: true,
+                s3Url: s3Url, // Include the S3 URL
+                handlerId: handlerId, // Include the handler ID
+            }),
+            { status: 200 }
+        );
     } catch (error) {
         console.error('Error uploading file:', error);
-        return new Response(JSON.stringify({ error: 'Failed to upload file' }), { status: 500 });
+        return new Response(
+            JSON.stringify({ error: 'Failed to upload file' }),
+            { status: 500 }
+        );
+    }
+}
+
+// Function to upload the file to Dovesoft API
+async function uploadToDovesoft(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const headers = {
+        'wabaNumber': '918374047115', // Replace with the actual WABA number
+        'Key': process.env.WHATSAPP_API_KEY, // Replace with your API key
+    };
+
+    try {
+        const response = await fetch('https://api.dovesoft.io/REST/directApi/uploadMediaFile', {
+            method: 'POST',
+            headers,
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error(`Dovesoft API error: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        return result.handlerid; // Return the handler ID from the response
+    } catch (error) {
+        console.error('Error uploading to Dovesoft API:', error);
+        throw error;
     }
 }
