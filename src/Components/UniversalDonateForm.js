@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import HandlePayment from "@/Helpers/HandlePayment"
 import GetSearchParams from '@/Components/GetSearchParams'
 import Image from "next/image"
+import Slideshow from "@/Components/Slideshow"
 
 export default function UniversalDonateForm(props) {
 
@@ -255,12 +256,18 @@ export default function UniversalDonateForm(props) {
                             <div class="col-lg-4 pe-xl-4">
                                 <div class="donate-img">
                                     <figure class="up-right">
-                                        <Image
-                                            width={300}
-                                            height={300}
-                                            src={donateFor?.imagePath}
-                                            alt={donateFor?.title}
-                                        />
+                                        {
+                                            Array.isArray(donateFor?.imagePath) && donateFor.imagePath.length > 1 ? (
+                                                <Slideshow images={donateFor.imagePath} />
+                                            ) : (
+                                                <Image
+                                                    width={300}
+                                                    height={300}
+                                                    src={Array.isArray(donateFor?.imagePath) ? donateFor.imagePath[0] : donateFor?.imagePath}
+                                                    alt={donateFor?.title}
+                                                />
+                                            )
+                                        }
                                     </figure>
                                 </div>
                                 <div class="form-part mt-4 me-lg-2">
