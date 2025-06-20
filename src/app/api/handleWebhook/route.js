@@ -46,28 +46,26 @@ export async function POST(req) {
             const pdfUrl = await uploadToS3(pdfBuffer, `TempleReceipts/${pdfFileName}`, "application/pdf");
             console.log('PDF uploaded to S3:', pdfUrl);
 
-            // Send the response to the user immediately
-            Response.json({ msg: true }, { status: 200 });
+            // Send WhatsApp message before responding to the user
+            try {
+                const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
 
-            // Run the WhatsApp message sending and database update in the background
-            (async () => {
-                try {
-                    const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
-
-                    if (messageResult?.success) {
-                        // Update the database only after the message is sent successfully
-                        await Donation.findOneAndUpdate(
-                            { orderId: dict?.orderId },
-                            { $set: { messageSent: true } },
-                            { new: true }
-                        );
-                    } else {
-                        console.warn('Message not sent. Keeping messageSent as false.');
-                    }
-                } catch (error) {
-                    console.error('Error in background task:', error);
+                if (messageResult?.success) {
+                    // Update the database only after the message is sent successfully
+                    await Donation.findOneAndUpdate(
+                        { orderId: dict?.orderId },
+                        { $set: { messageSent: true } },
+                        { new: true }
+                    );
+                } else {
+                    console.warn('Message not sent. Keeping messageSent as false.');
                 }
-            })();
+            } catch (error) {
+                console.error('Error sending WhatsApp message:', error);
+            }
+
+            // Send the response to the user after completing WhatsApp message sending
+            return Response.json({ msg: true }, { status: 200 });
         }
 
         return Response.json({ msg: true }, { status: 200 });

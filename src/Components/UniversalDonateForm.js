@@ -39,6 +39,9 @@ export default function UniversalDonateForm(props) {
     const [memoryStatus, setMemoryStatus] = useState(false)
 
     const checkPropertyAndData = async (dict, propertyName) => {
+        if(propertyName == 'pan') {
+            return true; // PAN is optional, so we skip validation for it
+        }
         if (!dict.hasOwnProperty(propertyName) || dict[propertyName] === "" || dict[propertyName] === 0)
             throw { error: `Kindly fill ${propertyName}...` }
         if (propertyName === 'dob') {
