@@ -185,6 +185,15 @@ export default function CompetitionRegisterForm(props) {
                                                         </div>
                                                     </div>
                                                 );
+                                            case 'age':
+                                                return (
+                                                    <div className="col-md-6" key="age">
+                                                        <div className="form-part">
+                                                            <label htmlFor="age">Age*</label>
+                                                            <input type="number" name="age" placeholder="Age" min="1" max="100" />
+                                                        </div>
+                                                    </div>
+                                                );
                                             case 'pin':
                                                 return (
                                                     <div className="col-md-6" key="pin">

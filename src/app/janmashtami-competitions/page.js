@@ -23,10 +23,9 @@ export default function Page({ params }) {
                 'eventName',
                 'amount',
                 'name',
-                'gender',
+                'age',
                 'phone',
                 'email',
-                'dob',
                 'pin',
                 'address'
             ]}
