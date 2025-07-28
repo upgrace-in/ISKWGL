@@ -19,13 +19,12 @@ export default function Janmashtami({ params, defaultReferral }) {
     const [data, setData] = useState()
 
     const payForData = [
-        { title: "Mukhya Yajaman Seva", amount: 108000, imagePath: '/donateForIMGs/mukhya-yajaman-seva.webp', specialGifts: ["Special Puja on your name", "Opportunity to perform Panchamrita Abhishek", "Silver glass, spoon and bowl", "Radha Nilmadhav Photoframe", "Mahaprasadam Box", "Vastra Prasad"] },
-        { title: "Yajaman Seva", amount: 51111, imagePath: '/donateForIMGs/yajaman-seva.jpeg', specialGifts: ["Special Puja on your name", "Opportunity to perform Panchamrita Abhishek", "Silver glass", "Radha Nilmadhav Photoframe", "Mahaprasadam Box", "Vastra Prasad"] },
-        { title: "Devotee Prasadam Seva", amount: 25001, imagePath: '/donateForIMGs/devotee-prasadam-seva.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Radha Nilmadhav Photoframe", "Mahaprasadam Box", "Vastra Prasad", "Silver bowl"] },
-        { title: "Panchamrita Abhishek Seva", amount: 10116, imagePath: '/donateForIMGs/panchamrita-abhishek-seva.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Radha Nilmadhav Photoframe", "Mahaprasadam Box", "Vastra Prasad"] },
-        { title: "Vigraha Naivedya Seva", amount: 5001, imagePath: '/donateForIMGs/vigraha-naivedya-seva.jpeg', specialGifts: ["Opportunity to perform Milk Abhishek", "Vastra Prasad", "Mahaprasadam Box", "Radha Nilmadhav Photoframe"] },
-        { title: "Vigraha Alankar Seva", amount: 2501, imagePath: '/donateForIMGs/vigraha-alankarana-seva.jpeg', specialGifts: ["Opportunity to perform Milk Abhishek", "Vastra Prasad", "Mahaprasadam Box"] },
-        { title: "Milk Abhishek Seva", amount: 1501, imagePath: '/donateForIMGs/milk-abhishek-seva.jpeg', specialGifts: ["Opportunity to perform Milk Abhishek", "Mahaprasadam Box"] },
+        { title: "Mukhya Yajamana Seva", amount: 108000, imagePath: '/donateForIMGs/mukhya-yajaman-seva.webp', specialGifts: ["Special Puja on your name", "Opportunity to perform Panchamrita Abhishek", "Deities Maha Item (Glass, spoon and bowl)", "Radha Nilmadhav Photoframe", "Mahaprasadam Box", "Vastra Prasad"] },
+        { title: "Yajamana Seva", amount: 51116, imagePath: '/donateForIMGs/yajaman-seva.jpeg', specialGifts: ["Special Puja on your name", "Opportunity to perform Panchamrita Abhishek", "Deities Maha Item (Silver glass)", "Radha Krishna Photo", "Mahaprasadam Box", "Vastra Prasad"] },
+        { title: "Janmashtami Night Prasadam Seva", amount: 25116, imagePath: '/donateForIMGs/devotee-prasadam-seva.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Radha Krishna Photo", "Mahaprasadam Box", "Vastra Prasad", "Deities Maha Item (Silver bowl)"] },
+        { title: "Janmashtami Annadan Seva (40,000 cups)", amount: 10116, imagePath: '/donateForIMGs/panchamrita-abhishek-seva.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Radha Krishna Photo", "Mahaprasadam Box", "Vastra Prasad", "Deities Maha Item (silver spoon)"] },
+        { title: "Janmashtami Gau Seva", amount: 5016, imagePath: '/donateForIMGs/vigraha-naivedya-seva.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Mahaprasadam Box", "Radha Krishna Photo"] },
+        { title: "Panchamrita Abhishek Seva", amount: 3016, imagePath: '/donateForIMGs/milk-abhishek-seva.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Mahaprasadam Box"] },
         { title: "Custom", amount: 1, imagePath: '/donateForIMGs/krishna-eating-butter.webp' },
     ];
 
@@ -41,6 +40,18 @@ export default function Janmashtami({ params, defaultReferral }) {
             setAmount(JSON.parse(donateFor)?.amount || 0)
         }
     }, [donateFor])
+
+    const formatAmountWithCommas = (amount) => {
+        if (!amount) return '';
+        const numStr = amount.toString();
+        const lastThree = numStr.substring(numStr.length - 3);
+        const otherNumbers = numStr.substring(0, numStr.length - 3);
+        if (otherNumbers !== '') {
+            return otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + ',' + lastThree;
+        } else {
+            return lastThree;
+        }
+    }
 
     const checkPropertyAndData = async (dict, propertyName) => {
         if (!dict.hasOwnProperty(propertyName) || dict[propertyName] === "")
@@ -68,6 +79,9 @@ export default function Janmashtami({ params, defaultReferral }) {
 
             // VALIDATIONS
             let validateThem = ['name', 'email', 'phone', 'address', 'pin', 'amount']
+            if (!isCustomSelected) {
+                validateThem.push('abhishekamTimeSlot')
+            }
             for (var i = 0; i < validateThem.length; i++) {
                 await checkPropertyAndData(finalData, validateThem[i]).catch(e => { throw e })
             }
@@ -97,6 +111,7 @@ export default function Janmashtami({ params, defaultReferral }) {
     const selectedOption = JSON.parse(donateFor);
     const imagePath = selectedOption.imagePath || '/donateForIMGs/default.png';
     const specialGifts = selectedOption.specialGifts || [];
+    const isCustomSelected = selectedOption.title === "Custom";
 
     return (
         <section class="donation-form-sec">
@@ -146,7 +161,13 @@ export default function Janmashtami({ params, defaultReferral }) {
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-part"><label for="">Amount*</label><input type="text"
-                                            name="amount" onChange={(e) => setAmount(e.target.value)} value={amount} defaultValue={amount} placeholder="Enter Amount" /></div>
+                                            name="amount" 
+                                            onChange={(e) => setAmount(e.target.value)} 
+                                            value={isCustomSelected ? amount : formatAmountWithCommas(amount)} 
+                                            defaultValue={isCustomSelected ? amount : formatAmountWithCommas(amount)} 
+                                            placeholder="Enter Amount" 
+                                            readOnly={!isCustomSelected}
+                                            style={!isCustomSelected ? { backgroundColor: '#f5f5f5', cursor: 'not-allowed' } : {}} /></div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-part"><label for="">Mobile Number*</label><input type="tel"
@@ -176,6 +197,21 @@ export default function Janmashtami({ params, defaultReferral }) {
                                             type="text" minlength="6" maxlength="6" name="pin"
                                             placeholder="PIN Code" /></div>
                                     </div>
+                                    {!isCustomSelected && (
+                                        <div class="col-md-6">
+                                            <div class="form-part">
+                                                <label for="">Abhishekam Time Slot*</label>
+                                                <select name="abhishekamTimeSlot" required>
+                                                    <option value="" disabled selected>Select Time Slot</option>
+                                                    <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+                                                    <option value="12:00 PM - 2:00 PM">12:00 PM - 2:00 PM</option>
+                                                    <option value="2:00 PM - 4:00 PM">2:00 PM - 4:00 PM</option>
+                                                    <option value="4:00 PM - 6:00 PM">4:00 PM - 6:00 PM</option>
+                                                    <option value="6:00 PM - 9:00 PM">6:00 PM - 9:00 PM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    )}
                                     <div className="special-gifts form-part col-md-12">
                                         {specialGifts.length > 0 && (
                                             <>
