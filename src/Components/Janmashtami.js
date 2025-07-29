@@ -208,7 +208,7 @@ export default function Janmashtami({ params, defaultReferral }) {
                                                     <option value="12:00 PM - 2:00 PM">12:00 PM - 2:00 PM</option>
                                                     <option value="2:00 PM - 4:00 PM">2:00 PM - 4:00 PM</option>
                                                     <option value="4:00 PM - 6:00 PM">4:00 PM - 6:00 PM</option>
-                                                    <option value="7:00 PM - 9:00 PM">6:00 PM - 9:00 PM</option>
+                                                    <option value="7:00 PM - 9:00 PM">7:00 PM - 9:00 PM</option>
                                                 </select>
                                             </div>
                                         </div>
