@@ -19,12 +19,13 @@ export default function Janmashtami({ params, defaultReferral }) {
     const [data, setData] = useState()
 
     const payForData = [
-        { title: "Mukhya Yajamana Seva", amount: 108000, imagePath: '/donateForIMGs/mukhya-yajaman-seva.webp', specialGifts: ["Special Puja on your name", "Opportunity to perform Panchamrita Abhishek", "Deities Maha Item (Glass, spoon and bowl)", "Radha Nilmadhav Photoframe", "Mahaprasadam Box", "Vastra Prasad"] },
-        { title: "Yajamana Seva", amount: 51116, imagePath: '/donateForIMGs/yajaman-seva.jpeg', specialGifts: ["Special Puja on your name", "Opportunity to perform Panchamrita Abhishek", "Deities Maha Item (Silver glass)", "Radha Krishna Photo", "Mahaprasadam Box", "Vastra Prasad"] },
-        { title: "Janmashtami Night Prasadam Seva", amount: 25116, imagePath: '/donateForIMGs/devotee-prasadam-seva.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Radha Krishna Photo", "Mahaprasadam Box", "Vastra Prasad", "Deities Maha Item (Silver bowl)"] },
-        { title: "Janmashtami Annadan Seva (40,000 cups)", amount: 10116, imagePath: '/donateForIMGs/panchamrita-abhishek-seva.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Radha Krishna Photo", "Mahaprasadam Box", "Vastra Prasad", "Deities Maha Item (silver spoon)"] },
-        { title: "Janmashtami Gau Seva", amount: 5016, imagePath: '/donateForIMGs/vigraha-naivedya-seva.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Mahaprasadam Box", "Radha Krishna Photo"] },
-        { title: "Panchamrita Abhishek Seva", amount: 3016, imagePath: '/donateForIMGs/milk-abhishek-seva.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Mahaprasadam Box"] },
+        { title: "Mukhya Yajamana Seva", amount: 108000, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg', specialGifts: ["Special Puja on your name", "Opportunity to perform Panchamrita Abhishek", "Deities Maha Item (Glass, spoon and bowl)", "Radha Nilmadhav Photoframe", "Mahaprasadam Box", "Vastra Prasad"] },
+        { title: "Yajamana Seva", amount: 51116, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg', specialGifts: ["Special Puja on your name", "Opportunity to perform Panchamrita Abhishek", "Deities Maha Item (Silver glass)", "Radha Krishna Photo", "Mahaprasadam Box", "Vastra Prasad"] },
+        { title: "Janmashtami Night Prasadam Seva", amount: 25116, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Radha Krishna Photo", "Mahaprasadam Box", "Vastra Prasad", "Deities Maha Item (Silver bowl)"] },
+        { title: "Janmashtami Annadan Seva (40,000 cups)", amount: 10116, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Radha Krishna Photo", "Mahaprasadam Box", "Vastra Prasad", "Deities Maha Item (silver spoon)"] },
+        { title: "Janmashtami Gau Seva", amount: 5016, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Mahaprasadam Box", "Radha Krishna Photo"] },
+        { title: "Panchamrita Abhishek Seva", amount: 3016, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Mahaprasadam Box"] },
+        { title: "Dugdha Abhishek Seva", amount: 2016, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg', specialGifts: ["Opportunity to perform Milk Abhishek", "Mahaprasadam Box"] },
         { title: "Custom", amount: 1, imagePath: '/donateForIMGs/krishna-eating-butter.webp' },
     ];
 
@@ -200,14 +201,14 @@ export default function Janmashtami({ params, defaultReferral }) {
                                     {!isCustomSelected && (
                                         <div class="col-md-6">
                                             <div class="form-part">
-                                                <label for="">Abhishekam Time Slot*</label>
+                                                <label for="">Time Slot for doing  Abhishekam*</label>
                                                 <select name="abhishekamTimeSlot" required>
                                                     <option value="" disabled selected>Select Time Slot</option>
                                                     <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
                                                     <option value="12:00 PM - 2:00 PM">12:00 PM - 2:00 PM</option>
                                                     <option value="2:00 PM - 4:00 PM">2:00 PM - 4:00 PM</option>
                                                     <option value="4:00 PM - 6:00 PM">4:00 PM - 6:00 PM</option>
-                                                    <option value="6:00 PM - 9:00 PM">6:00 PM - 9:00 PM</option>
+                                                    <option value="7:00 PM - 9:00 PM">6:00 PM - 9:00 PM</option>
                                                 </select>
                                             </div>
                                         </div>

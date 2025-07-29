@@ -129,7 +129,8 @@ export default function CompetitionRegisterForm(props) {
                                                                 type="text"
                                                                 name="amount"
                                                                 value={amount}
-                                                                onChange={e => setAmount(e.target.value)}
+                                                                readOnly
+                                                                className="readonly-input"
                                                                 placeholder="Enter Amount"
                                                             />
                                                         </div>
