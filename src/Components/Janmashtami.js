@@ -26,7 +26,7 @@ export default function Janmashtami({ params, defaultReferral }) {
         { title: "Janmashtami Gau Seva", amount: 5016, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Mahaprasadam Box", "Radha Krishna Photo"] },
         { title: "Panchamrita Abhishek Seva", amount: 3016, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg', specialGifts: ["Opportunity to perform Panchamrita Abhishek", "Mahaprasadam Box"] },
         { title: "Dugdha Abhishek Seva", amount: 2016, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg', specialGifts: ["Opportunity to perform Milk Abhishek", "Mahaprasadam Box"] },
-        { title: "Custom", amount: 1, imagePath: '/donateForIMGs/krishna-eating-butter.webp' },
+        { title: "Custom", amount: 1, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg' },
     ];
 
 
