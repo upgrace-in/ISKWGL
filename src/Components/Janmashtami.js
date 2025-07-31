@@ -75,7 +75,8 @@ export default function Janmashtami({ params, defaultReferral }) {
         const formData = new FormData(e.target)
         formData.forEach((value, property) => finalData[property] = value);
         finalData['donationType'] = JSON.parse(finalData['donationType'])?.title || "Custom"
-
+        finalData['amount'] = finalData['amount'].toString().replace(/,/g, '');
+        
         try {
 
             // VALIDATIONS
