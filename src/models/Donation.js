@@ -8,6 +8,9 @@ const DonationSchema = new Schema({
     donatedFor: {
         type: String
     },
+    abhishekamTimeSlot: {
+        type: String
+    },
     name: {
         type: String,
         required: true

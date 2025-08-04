@@ -33,6 +33,12 @@ function Donations() {
             selector: row => <div className="text-wrap text-left">{row?.donatedFor?.charAt(0) === '{' ? JSON.parse(row?.donatedFor)?.title : row?.donatedFor || '-'}</div>,
             width: "200px"
         },
+        // Add a new column for Abhishekam Time Slot
+        {
+            name: 'Abhishekam Time Slot',
+            selector: row => <div className="text-wrap text-left">{row?.abhishekamTimeSlot || '-'}</div>,
+            width: "200px"
+        },
         {
             name: 'Amount',
             selector: row => <div className="text-wrap text-left">{row?.webhookData?.orderAmount || row?.amount}</div>,
@@ -102,6 +108,7 @@ function Donations() {
             "orderId": item?.webhookData?.orderId || item?.orderId,
             "name": item?.name,
            "donatedFor": item?.donatedFor?.charAt(0) === '{' ? JSON.parse(item?.donatedFor)?.title : item?.donatedFor || '-',
+            "abhishekamTimeSlot": item?.abhishekamTimeSlot || '-', // Add this field for the CSV
             "amount": item?.webhookData?.orderAmount || item?.amount,
             "source": item?.redirectedFrom || 'Other',
             "email": item?.email,
@@ -194,31 +201,3 @@ function Donations() {
 };
 
 export default Donations
-
-/**
- {
-            "_id": "663b30f4d04d46081cc82941",
-            "orderId": "order_195476",
-            "name": "Prince",
-            "email": "thedesiretree47@gmail.com",
-            "phone": "7001617004",
-            "address": "B 3/1, Imagine Residency\nNear Eyelex Cinemas",
-            "pin": "831012",
-            "amount": "1.00",
-            "pan": "",
-            "memoryOfSomeoneName": "Hari Hari",
-            "status": "SUCCESS",
-            "signature": "Bo8lu+h2DtL1mdcvR9xuVLDJ4F5Lh8arLnb0sYoJumM=",
-            "createdAt": "2024-05-08T07:59:46.751Z",
-            "__v": 0,
-            "webhookData": {
-                "orderId": "order_195476",
-                "orderAmount": "1.00",
-                "referenceId": "2714945733",
-                "txStatus": "SUCCESS",
-                "paymentMode": "UPI",
-                "txMsg": "00%3A%3ATransaction+is+Successful",
-                "txTime": "2024-05-08+13%3A30%3A24",
-                "signature": "osQUBrjJrikICHNAHWEKPo0oxlA%2FVgN6cUWz4LqYk4A%3D"
-            }
- */

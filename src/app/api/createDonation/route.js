@@ -20,12 +20,13 @@ export async function POST(request) {
 
         await dbConnect()
 
-        let { name, email, donationType, phone, address, pin, amount, pan, memoryOfSomeoneName, dob, redirectedFrom } = await request.json()
+        let { name, email, donationType, phone, address, pin, amount, pan, memoryOfSomeoneName, abhishekamTimeSlot, dob, redirectedFrom } = await request.json()
 
         if(dob){
             dob = Number(new Date(dob))
         }
 
+        console.log("Abhishekam Timeslot: ", abhishekamTimeSlot);
         let orderId = `order_${Math.floor(Math.random() * 1000000)}`
 
         let formData = {
@@ -42,7 +43,8 @@ export async function POST(request) {
                 "pin": pin,
                 "pan": pan,
                 "dob": dob,
-                "memoryOfSomeoneName": memoryOfSomeoneName
+                "memoryOfSomeoneName": memoryOfSomeoneName,
+                "abhishekTimeSlot": abhishekamTimeSlot,
             },
 
             "appId": clientID,
@@ -65,9 +67,12 @@ export async function POST(request) {
             phone,
             donatedFor: donationType,
             redirectedFrom,
-            memoryOfSomeoneName
+            memoryOfSomeoneName,
+            abhishekamTimeSlot,
         })
+
         await dod.save()
+        console.log("New Donation object:", dod);
 
         return Response.json({ ...formData, signature }, { status: 200 })
 
