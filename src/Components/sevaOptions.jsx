@@ -57,7 +57,7 @@ const sevaList = [
   {
     title: "Janmashtami Gau Seva",
     amount: 5016,
-    imagePath: "/donateForIMGs/123.jpeg",
+    imagePath: "/donateForIMGs/128.jpeg",
     specialGifts: [
       "Opportunity to perform Panchamrita Abhishek",
       "Mahaprasadam Box",
