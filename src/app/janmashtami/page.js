@@ -1,7 +1,7 @@
 'use client'
 
-import Janmashtami from "@/Components/Janmashtami"
+import SevaOptions from "@/Components/sevaOptions"
 
 export default function Page({ params }) {
-    return <Janmashtami {...params} defaultReferral={"facebook"} />
+    return <SevaOptions />
 }

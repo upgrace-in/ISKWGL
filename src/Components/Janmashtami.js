@@ -5,7 +5,7 @@ import HandlePayment from "@/Helpers/HandlePayment"
 import Image from "next/image"
 import GetSearchParams from '@/Components/GetSearchParams'
 
-export default function Janmashtami({ params, defaultReferral }) {
+export default function Janmashtami({ params, defaultReferral, defaultValue }) {
 
     const value = GetSearchParams()
     const [redirectedFrom, setRedirectedFrom] = useState(defaultReferral)
@@ -29,9 +29,9 @@ export default function Janmashtami({ params, defaultReferral }) {
         { title: "Custom", amount: 1, imagePath: '/donateForIMGs/janmashtami-abhishek.jpeg' },
     ];
 
-
-    const [amount, setAmount] = useState(!params?.amount || params?.amount === '0' ? payForData[0]?.amount : params?.amount)
-    const [donateFor, setDonateFor] = useState(JSON.stringify(payForData[0]))
+    console.log("defeaultvalue", defaultValue)
+    const [amount, setAmount] = useState(!params?.amount || params?.amount === '0' ? payForData[defaultValue]?.amount : params?.amount)
+    const [donateFor, setDonateFor] = useState(JSON.stringify(payForData[defaultValue || 0]) || JSON.stringify(payForData[0]))
 
     const [status, setStatus] = useState({})
     const [memoryStatus, setMemoryStatus] = useState(false)
@@ -150,15 +150,17 @@ export default function Janmashtami({ params, defaultReferral }) {
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-part"><label for="">Donate For</label><select
-                                            name="donationType" onChange={(e) => setDonateFor(e.target.value)}>
-                                            {
-                                                payForData.map((d, i) => {
-                                                    return donateFor?.replace('_', ' ') === d.title
-                                                        ? <option selected value={JSON.stringify(d)} key={i}>{d.title}</option>
-                                                        : <option value={JSON.stringify(d)} key={i}>{d.title}</option>
-                                                })
-                                            }
-                                        </select>
+                                            name="donationType"
+                                            value={donateFor}
+                                            onChange={(e) => setDonateFor(e.target.value)}
+                                            className="form-select"
+                                            required>
+                                                {payForData.map((d, i) => (
+                                                <option value={JSON.stringify(d)} key={i}>
+                                                {d.title}
+                                                </option>
+                                        ))}
+                                    </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
