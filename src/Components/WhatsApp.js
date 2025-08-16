@@ -4,19 +4,19 @@ import React from "react";
 const whatsappGroups = [
   {
     name: "ISKCON Warangal Group 13",
-    link: "https://chat.whatsapp.com/JYwdEI5X7ihEMUwh8Q7AC1",
+    link: "https://chat.whatsapp.com/HgmOCL5hHGeKRVDKNEqFz3",
   },
   {
     name: "ISKCON Warangal Group 14",
-    link: "https://chat.whatsapp.com/FuRFmMsCOMhJGSM0Iu2qMr",
+    link: "https://chat.whatsapp.com/DaoVN81hhdPAS9yRhfLad3",
   },
   {
     name: "ISKCON Warangal Group 15",
-    link: "https://chat.whatsapp.com/HRljmwu2PYyJEylYon80zU",
+    link: "https://chat.whatsapp.com/FnJEyjYdxJC1FERVDWJDbY",
   },
   {
-    name: "ISKCON Warangal Group 15",
-    link: "https://chat.whatsapp.com/KifxBIfX8Yt55BC2hXjIdR",
+    name: "ISKCON Warangal Group 16",
+    link: "https://chat.whatsapp.com/ByBq5iAhuvY0x1LZTrB5sk",
   },
 ];
 
