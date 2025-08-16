@@ -3,21 +3,21 @@ import React from "react";
 
 const whatsappGroups = [
   {
-    name: "ISKCON Warangal Group",
-    link: "https://chat.whatsapp.com/ELaYGYMrFRFJyrnlZ7AY8C?mode=ac_t",
+    name: "ISKCON Warangal Group 13",
+    link: "https://chat.whatsapp.com/JYwdEI5X7ihEMUwh8Q7AC1",
   },
-//   {
-//     name: "Janmashtami Volunteers",
-//     link: "https://chat.whatsapp.com/EXAMPLE2",
-//   },
-//   {
-//     name: "Daily Krishna Katha",
-//     link: "https://chat.whatsapp.com/EXAMPLE3",
-//   },
-//   {
-//     name: "Warangal Temple Events",
-//     link: "https://chat.whatsapp.com/EXAMPLE4",
-//   },
+  {
+    name: "ISKCON Warangal Group 14",
+    link: "https://chat.whatsapp.com/FuRFmMsCOMhJGSM0Iu2qMr",
+  },
+  {
+    name: "ISKCON Warangal Group 15",
+    link: "https://chat.whatsapp.com/HRljmwu2PYyJEylYon80zU",
+  },
+  {
+    name: "ISKCON Warangal Group 15",
+    link: "https://chat.whatsapp.com/KifxBIfX8Yt55BC2hXjIdR",
+  },
 ];
 
 export default function WhatsAppGroups() {
