@@ -19,10 +19,10 @@ export default function PitruPaksha({ params, defaultReferral }) {
     const [data, setData] = useState()
 
     const payForData = [
-        { title: "Pitrupaksha Prasadam Seva (30 Devotees)", amount: 3116, imagePath: '/donateForIMGs/Pitrupaksha.jpg'},
-        { title: "Pitrupaksha Prasadam Seva (20 Devotees)", amount: 2116, imagePath: '/donateForIMGs/Pitrupaksha.jpg'},
-        { title: "Pitrupaksha Prasadam Seva (10 Devotees)", amount: 1116, imagePath: '/donateForIMGs/Pitrupaksha.jpg'},
-        { title: "Pitrupaksha Prasadam Seva (5 Devotees)", amount: 516, imagePath: '/donateForIMGs/Pitrupaksha.jpg'},
+        { title: "Pitrupaksha Go Seva - Feed 2 cows (1 Day)", amount: 250, imagePath: '/donateForIMGs/GoSevaPitrapaksha.png'},
+        { title: "Pitrupaksha Go Seva - Feed 2 cows (3 Day)", amount: 750, imagePath: '/donateForIMGs/GoSevaPitrapaksha.png'},
+        { title: "Pitrupaksha Go Seva - Feed 2 cows (7 Day)", amount: 1750, imagePath: '/donateForIMGs/GoSevaPitrapaksha.png'},
+        { title: "Pitrupaksha Go Seva - Feed 2 cows (15 Day)", amount: 3750, imagePath: '/donateForIMGs/GoSevaPitrapaksha.png'},
     ];
 
 
@@ -101,7 +101,7 @@ export default function PitruPaksha({ params, defaultReferral }) {
                 <div class="row d-flex justify-content-center mb-5">
                     <div class="col-md-10">
                         <div id="scrollToDonationForm" class="heading">
-                            <h2 class="head-1">PITRUPAKSHA SEVA OPPORTUNITIES</h2>
+                            <h2 class="head-1">PITRUPAKSHA GO SEVA OPPORTUNITIES</h2>
 
                             {/* <p class="b-line">If you would like to make a donation towards a particular area of
                                 activity, please select an option from below. ISKCON relies entirely on voluntary
