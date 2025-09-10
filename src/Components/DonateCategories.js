@@ -140,6 +140,7 @@ export default function DonateCategories() {
                                         { title: "Srila Prabhupada's Appearance Day" },
                                         { title: "Radha Ashtami", src: "/radhashtami" },
                                         { title: "Pitru Paksha", src: "/pitrupaksha" },
+                                        { title: "Nitya Seva", src: "/nityaSeva" },
                                         { title: "Jhulan Yatra", src: "/jhulanYatra"},
                                         { title: "Govardhan Puja" },
                                         { title: "Gita Jayanti" },
