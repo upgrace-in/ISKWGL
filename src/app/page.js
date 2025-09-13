@@ -16,7 +16,7 @@ import BirthdayHandler from "@/Components/BirthdayHandler"
 
 function Home() {
 
-  ReactGA.initialize("G-MWSM61X0BD");
+  ReactGA.initialize("G-4J5T8R3ZRR");
 
   return <>
     <Header />

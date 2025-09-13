@@ -4,6 +4,8 @@ import axios from 'axios'
 import HandlePayment from "@/Helpers/HandlePayment"
 import Image from "next/image"
 import GetSearchParams from '@/Components/GetSearchParams'
+import ReactGA from "react-ga4"
+import SocialShare from "./SocialShare"
 
 export default function Radhastami({ params, defaultReferral }) {
 
@@ -19,7 +21,7 @@ export default function Radhastami({ params, defaultReferral }) {
     const [data, setData] = useState()
 
     const payForData = [
-        { title: "Radhastami Prasadam Seva (20 Devotees)", amount: 2116, imagePath: '/donateForIMGs/Radhastami.jpeg'},
+        { title: "Radhastami Prasadam Seva (50 Devotees)", amount: 2116, imagePath: '/donateForIMGs/Radhastami.jpeg'},
         { title: "Radhastami Prasadam Seva (10 Devotees)", amount: 1116, imagePath: '/donateForIMGs/Radhastami.jpeg'},
         { title: "Radhastami Decoration Seva", amount: 516, imagePath: '/donateForIMGs/Radhastami.jpeg'},
     ];
@@ -70,6 +72,14 @@ export default function Radhastami({ params, defaultReferral }) {
                 await checkPropertyAndData(finalData, 'memoryOfSomeoneName').catch(e => { throw e })
             if (!parseFloat(finalData['amount']) > 0) throw { error: "Invalid Amount !!!" }
 
+            // Track donation button click in Google Analytics
+            ReactGA.event({
+                category: 'Radhastami Donation',
+                action: 'Donate Button Clicked',
+                label: `${finalData.donationType} - ₹${finalData.amount}`,
+                value: parseFloat(finalData.amount)
+            })
+
             // ALL INPUTS are correct... Start showing progress
             let intern = setInterval(() => {
                 increaseDots()
@@ -80,10 +90,25 @@ export default function Radhastami({ params, defaultReferral }) {
             clearInterval(intern)
             if (response?.status !== 200) throw { error: "Unable to save data, please try again later !!!" }
 
+            // Track successful donation form submission
+            ReactGA.event({
+                category: 'Radhastami Donation',
+                action: 'Form Submitted Successfully',
+                label: `${finalData.donationType} - ₹${finalData.amount}`,
+                value: parseFloat(finalData.amount)
+            })
+
             // pass the orderID with data to HandlePayment
             setData(response.data)
 
         } catch (e) {
+            // Track donation form errors
+            ReactGA.event({
+                category: 'Radhastami Donation',
+                action: 'Form Submission Error',
+                label: e.error || 'Unknown Error',
+                value: 0
+            })
             console.log(e)
             setStatus({ ...e, default: false })
         }
@@ -100,7 +125,7 @@ export default function Radhastami({ params, defaultReferral }) {
                 <div class="row d-flex justify-content-center mb-5">
                     <div class="col-md-10">
                         <div id="scrollToDonationForm" class="heading">
-                            <h2 class="head-1">JANMASHTAMI SEVA OPPORTUNITIES</h2>
+                            <h2 class="head-1">RADHASHTAMI SEVA OPPORTUNITIES</h2>
 
                             {/* <p class="b-line">If you would like to make a donation towards a particular area of
                                 activity, please select an option from below. ISKCON relies entirely on voluntary
@@ -234,6 +259,9 @@ export default function Radhastami({ params, defaultReferral }) {
                     </p>
                     <p>&quot;Exemption order ref no. AAATI0017PF2021901 dated 24/09/2021 valid up-to 31/03/2026.&quot;</p>
                 </div>
+                
+                {/* Social Sharing Component */}
+                <SocialShare donationType={selectedOption?.title || "Radhastami Seva"} amount={amount} />
             </div>
         </section>
     )
