@@ -72,14 +72,6 @@ export default function Radhastami({ params, defaultReferral }) {
                 await checkPropertyAndData(finalData, 'memoryOfSomeoneName').catch(e => { throw e })
             if (!parseFloat(finalData['amount']) > 0) throw { error: "Invalid Amount !!!" }
 
-            // Track donation button click in Google Analytics
-            ReactGA.event({
-                category: 'Radhastami Donation',
-                action: 'Donate Button Clicked',
-                label: `${finalData.donationType} - ₹${finalData.amount}`,
-                value: parseFloat(finalData.amount)
-            })
-
             // ALL INPUTS are correct... Start showing progress
             let intern = setInterval(() => {
                 increaseDots()
@@ -102,13 +94,6 @@ export default function Radhastami({ params, defaultReferral }) {
             setData(response.data)
 
         } catch (e) {
-            // Track donation form errors
-            ReactGA.event({
-                category: 'Radhastami Donation',
-                action: 'Form Submission Error',
-                label: e.error || 'Unknown Error',
-                value: 0
-            })
             console.log(e)
             setStatus({ ...e, default: false })
         }

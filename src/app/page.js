@@ -1,3 +1,5 @@
+"use client"
+import { useEffect } from "react";
 import Header from "@/Components/Header";
 import Mission from "@/Components/Mission";
 import Founder from "@/Components/Founder";
@@ -16,7 +18,10 @@ import BirthdayHandler from "@/Components/BirthdayHandler"
 
 function Home() {
 
-  ReactGA.initialize("G-4J5T8R3ZRR");
+  useEffect(() => {
+    ReactGA.initialize("G-MWSM61X0BD", { debug: true });
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname + window.location.search });
+  }, []);
 
   return <>
     <Header />
