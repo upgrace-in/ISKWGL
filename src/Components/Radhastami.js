@@ -13,6 +13,9 @@ export default function Radhastami({ params, defaultReferral }) {
     const [redirectedFrom, setRedirectedFrom] = useState(defaultReferral)
 
     useEffect(() => {
+        // Initialize ReactGA for Radhashtami page
+        ReactGA.initialize("G-4J5T8R3ZRR");
+        
         if (value) {
             setRedirectedFrom(value)
         }
@@ -60,7 +63,14 @@ export default function Radhastami({ params, defaultReferral }) {
         const formData = new FormData(e.target)
         formData.forEach((value, property) => finalData[property] = value);
         finalData['donationType'] = JSON.parse(finalData['donationType'])?.title || "Custom"
-
+        console.log("Sending event to GA")
+        
+        ReactGA.event('donate_click', {
+            donation_type: finalData.donationType,
+            value: parseFloat(finalData.amount),
+            currency: 'INR',
+            debug_mode: true
+          });
         try {
 
             // VALIDATIONS
@@ -84,8 +94,8 @@ export default function Radhastami({ params, defaultReferral }) {
 
             // Track successful donation form submission
             ReactGA.event({
+                action: 'form_submitted_successfully',
                 category: 'Radhastami Donation',
-                action: 'Form Submitted Successfully',
                 label: `${finalData.donationType} - ₹${finalData.amount}`,
                 value: parseFloat(finalData.amount)
             })

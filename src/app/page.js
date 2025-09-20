@@ -19,7 +19,6 @@ import BirthdayHandler from "@/Components/BirthdayHandler"
 function Home() {
 
   useEffect(() => {
-    ReactGA.initialize("G-MWSM61X0BD", { debug: true });
     ReactGA.send({ hitType: "pageview", page: window.location.pathname + window.location.search });
   }, []);
 

@@ -31,15 +31,7 @@ export default function SocialShare({ donationType = "General Donation", amount 
         try {
             await navigator.clipboard.writeText(url)
             setCopied(true)
-            
-            // Track the copy event
-            ReactGA.event({
-                category: 'Social Share',
-                action: 'Copy Link',
-                label: `${donationType} - ${amount}`,
-                value: 1
-            })
-            
+                   
             setTimeout(() => setCopied(false), 2000)
         } catch (err) {
             console.error('Failed to copy: ', err)
