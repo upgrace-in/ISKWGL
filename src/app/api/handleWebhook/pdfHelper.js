@@ -42,7 +42,7 @@ export const generatePDF = (dict, donation) => {
                         [{ text: 'Amount: ', style: 'boldLabel' }, { text: '₹'+ dict.orderAmount, style: 'tableValue' }],
                         [{ text: 'Donor PAN No: ', style: 'boldLabel' }, { text: donation.pan, style: 'tableValue' }],
                         [{ text: 'Mode Of Payment: ', style: 'boldLabel' }, { text: donation.webhookData.paymentMode , style: 'tableValue' }],
-                        [{ text: 'Bank: ', style: 'boldLabel' }, { text: 'Cashfree Payment Gateway', style: 'tableValue' }],
+                        [{ text: 'Bank: ', style: 'boldLabel' }, { text: donation.webhookData.bank || 'Cashfree Payment Gateway', style: 'tableValue' }],
                         [{ text: 'On Account of: ', style: 'boldLabel' }, { text: 'DONATION', style: 'tableValue' }],
                         [{ text: 'Transaction Timestamp: ', style: 'boldLabel' }, { text: decodeURIComponent(donation.webhookData.txTime), style: 'tableValue' }],
                         [{ text: 'Transaction Reference Id: ', style: 'boldLabel' }, { text: donation.webhookData.referenceId, style: 'tableValue' }]
