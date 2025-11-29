@@ -69,7 +69,7 @@ export default function GitaJayanti({ params, defaultReferral }) {
         try {
 
             // VALIDATIONS
-            let validateThem = ['name', 'phone', 'address', 'pin', 'amount', 'dob']
+            let validateThem = ['name', 'phone', 'email', 'address', 'pin', 'amount', 'dob']
             for (var i = 0; i < validateThem.length; i++) {
                 await checkPropertyAndData(finalData, validateThem[i]).catch(e => { throw e })
             }
@@ -155,7 +155,7 @@ export default function GitaJayanti({ params, defaultReferral }) {
                                             placeholder="Phone Number" maxlength="10" name="phone" /></div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-part"><label for="">Email</label><input type="text"
+                                        <div class="form-part"><label for="">Email*</label><input type="text"
                                             name="email" placeholder="Email" /></div>
                                     </div>
                                     <div class="col-md-6">
