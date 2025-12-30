@@ -13,6 +13,7 @@ const nextConfig = {
     },
     experimental: {
         missingSuspenseWithCSRBailout: false,
+        serverComponentsExternalPackages: ['@sparticuz/chromium'],
     },
 }
 

@@ -18,11 +18,20 @@ export default function KartikMonth({ params, defaultReferral }) {
 
     const [data, setData] = useState()
 
+    
     const payForData = [
-        { title: "Kartik Month Prasadam Seva (20 Devotees)", amount: 2116, imagePath: '/donateForIMGs/kartikMonth.jpeg'},
-        { title: "Kartik Month Prasadam Seva (10 Devotees)", amount: 1116, imagePath: '/donateForIMGs/kartikMonth.jpeg'},
-        { title: "Kartik Month Prasadam Seva (5 Devotees)", amount: 516, imagePath: '/donateForIMGs/kartikMonth.jpeg'},
-        { title: "Kartik Month Deepdan and Visitors' Prasadam Seva", amount: 1516, imagePath: '/donateForIMGs/kartikMonth.jpeg'},
+        { title: "Go seva for 1 day", amount: 216, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "⁠Go seva for 2 days", amount: 416, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "⁠Go seva for 1 week", amount: 1516, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "Go seva for Full Kartik month", amount: 6516, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "Deep Daan Seva for 1 Day", amount: 516, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "Deep Daan Seva for 2 Days", amount: 1116, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "Deep Daan Seva for 1 Week", amount: 3516, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "Deep Daan Seva for whole Kartik", amount: 15116, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "Prasad Seva for 1 day", amount: 1116, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "⁠Prasad Seva for 2 days", amount: 2116, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "Prasad seva for 1 week", amount: 7516, imagePath: '/donateForIMGs/kartik.png'},
+        { title: "⁠Prasad Seva for 1 month", amount: 31116, imagePath: '/donateForIMGs/kartik.png'},
     ];
 
 

@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import fs from 'fs';
 import path from 'path';
 
@@ -83,10 +83,24 @@ export const generatePDF = async (dict, donation) => {
             htmlContent = htmlContent.split(key).join(value);
         }
 
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
+        let browser;
+        if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+            // Serverless environment (Vercel/Lambda)
+            const chromium = (await import('@sparticuz/chromium')).default;
+            browser = await puppeteer.launch({
+                args: chromium.args,
+                defaultViewport: chromium.defaultViewport,
+                executablePath: await chromium.executablePath(),
+                headless: chromium.headless,
+            });
+        } else {
+            // Local development (Mac fallback)
+            browser = await puppeteer.launch({
+                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+                headless: true,
+                executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            });
+        }
         const page = await browser.newPage();
 
         // Set content and wait for load

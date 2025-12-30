@@ -143,7 +143,7 @@ export default function DonateCategories() {
                                         { title: "Nitya Seva", src: "/nityaSeva" },
                                         { title: "Jhulan Yatra", src: "/jhulanYatra"},
                                         { title: "Govardhan Puja" },
-                                        { title: "Gita Jayanti" },
+                                        { title: "Gita Jayanti", src: "/gitaJayanti" },
                                         { title: "Sharad Purnima" },
                                         { title: "Kartik - The Holiest Month", src: "/kartikMonth" },
                                         { title: "Nityananda Trayodasi" },
