@@ -1,6 +1,6 @@
 import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation';
-import { sendMessage } from './twilioHelper';
+
 import { generatePDF } from './pdfHelper';
 import { uploadToS3 } from '../../../Helpers/awsHelper';
 import { sendWhatsAppMessage } from './whatsappHelper';
@@ -46,6 +46,7 @@ export async function POST(req) {
             const pdfUrl = await uploadToS3(pdfBuffer, `TempleReceipts/${pdfFileName}`, "application/pdf");
             console.log('PDF uploaded to S3:', pdfUrl);
 
+            return Response.json({ msg: true }, { status: 200 });
             // Send WhatsApp message before responding to the user
             try {
                 const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);

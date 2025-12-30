@@ -1,99 +1,118 @@
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
+import puppeteer from 'puppeteer';
 import fs from 'fs';
 import path from 'path';
 
-// Register fonts
+const numberToWords = (num) => {
+    const a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+    const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
+    if ((num = num.toString()).length > 9) return 'overflow';
+    const n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+    if (!n) return;
+    let str = '';
+    str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'Crore ' : '';
+    str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'Lakh ' : '';
+    str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'Thousand ' : '';
+    str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'Hundred ' : '';
+    str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'Only ' : 'Only';
+    return str;
+};
 
-export const generatePDF = (dict, donation) => {
-    const logoPath = path.resolve(process.cwd(), 'public', 'assets', 'iskcon_logo.png');
-    const logoBase64 = fs.readFileSync(logoPath, 'base64');
+export const generatePDF = async (dict, donation) => {
+    try {
+        // Paths
+        const templateDir = path.resolve(process.cwd(), 'src/app/api/handleWebhook/templates');
+        const publicAssetsDir = path.resolve(process.cwd(), 'public/assets');
 
-    const docDefinition = {
-        content: [
-            {
-                image: `data:image/png;base64,${logoBase64}`,
-                width: 60,
-                alignment: 'center'
-            },
-            { text: 'INTERNATIONAL SOCIETY FOR KRISHNA CONSCIOUSNESS (ISKCON)', style: 'header' },
-            { text: 'Founder Acharya: His Divine Grace A.C. Bhaktivedanta Swami Srila Prabhupada', style: 'subheaderSmallBold' },
-            { text: '(Head Office: Hare Krishna Land, Juhu, Mumbai - 400 049)', style: 'subheaderSmallBold' },
-            { text: 'Preaching Centre : ISKCON Warangal - Mulugu Road 506007', style: 'subheaderSmall' },
-            { text: 'Mob: +91 95156 73115 Email: iskcon.wgl@gmail.com', style: 'subheaderSmall' },
-            { text: '(Registered under Bombay Public Trusts Act Vide Registration No. F2179(Bom), PAN-AAATI0017P)', style: 'subheaderSmall' },
-            {
-                canvas: [
-                    { type: 'line', x1: 0, y1: 0, x2: 595 - 2 * 40, y2: 0, lineWidth: 1 }
-                ],
-                margin: [0, 10, 0, 20]
-            },
-            { text: 'Receipt', style: 'header' }, // Added title "Receipt"
-            {
-                table: {
-                    widths: ['auto', '*'],
-                    body: [
-                        [{ text: 'Receipt No: ', style: 'boldLabel' }, { text: dict.orderId, style: 'tableValue' }],
-                        [{ text: 'Received with thanks from: ', style: 'boldLabel' }, { text: donation.name, style: 'tableValue' }],
-                        [{ text: 'Address: ', style: 'boldLabel' }, { text: donation.address, style: 'tableValue' }],
-                        [{ text: 'Amount: ', style: 'boldLabel' }, { text: '₹'+ dict.orderAmount, style: 'tableValue' }],
-                        [{ text: 'Donor PAN No: ', style: 'boldLabel' }, { text: donation.pan, style: 'tableValue' }],
-                        [{ text: 'Mode Of Payment: ', style: 'boldLabel' }, { text: donation.webhookData.paymentMode , style: 'tableValue' }],
-                        [{ text: 'Bank: ', style: 'boldLabel' }, { text: donation.webhookData.bank || 'Cashfree Payment Gateway', style: 'tableValue' }],
-                        [{ text: 'On Account of: ', style: 'boldLabel' }, { text: 'DONATION', style: 'tableValue' }],
-                        [{ text: 'Transaction Timestamp: ', style: 'boldLabel' }, { text: decodeURIComponent(donation.webhookData.txTime), style: 'tableValue' }],
-                        [{ text: 'Transaction Reference Id: ', style: 'boldLabel' }, { text: donation.webhookData.referenceId, style: 'tableValue' }]
-                    ]
-                },
-                layout: 'noBorders'
-            },
-            { text: [{ text: 'Note: ', style: 'boldLabel' }, 'This is a computer generated receipt and does not require a signature'], style: 'subheader', margin: [0, 10, 0, 0] } // Made "Note" bold
-        ],
-        styles: {
-            header: {
-                fontSize: 18,
-                bold: true,
-                margin: [0, 0, 0, 10],
-                alignment: 'center'
-            },
-            subheader: {
-                fontSize: 12,
-                margin: [0, 10, 0, 5],
-            },
-            tableValue: {
-                fontSize: 12,
-                margin: [0, 0, 0, 0],
-            },
-            subheaderSmall: {
-                fontSize: 10,
-                alignment: 'center'
-            },
-            subheaderSmallBold: {
-                fontSize: 10,
-                alignment: 'center',
-                bold: true
-            },
-            boldLabel: {
-                bold: true
+        // Load Assets
+        const loadAsset = (filename) => {
+            const publicPath = path.join(publicAssetsDir, filename);
+            try {
+                if (fs.existsSync(publicPath)) {
+                    return `data:image/png;base64,${fs.readFileSync(publicPath, 'base64')}`;
+                }
+            } catch (e) {
+                console.warn(`Asset ${filename} not found in public/assets`);
             }
-        },
-        defaultStyle: {
-            font: 'Roboto'
-        },
-        footer: {
-            columns: [
-                { text: 'Hare Krishna Hare Krishna Krishna Krishna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare', alignment: 'center', margin: [0, 10, 0, 0] }
-            ]
-        }
-    };
+            return '';
+        };
 
-    return new Promise((resolve, reject) => {
-        const pdfDoc = pdfMake.createPdf(docDefinition);
-        pdfDoc.getBuffer((buffer) => {
-            resolve(buffer);
+        const logoDataUrl = loadAsset('logo.png') || loadAsset('iskcon_logo.png') || loadAsset('iskcon_logo.jpg');
+        const badgeDataUrl = loadAsset('badge.png');
+        const watermarkDataUrl = loadAsset('watermark_pattern.png');
+
+        // Date Formatting
+        const txDate = donation.webhookData?.txTime ? new Date(decodeURIComponent(donation.webhookData.txTime)) : new Date();
+        const formattedDate = txDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+        // Amount in Words
+        const amountWords = numberToWords(dict.orderAmount);
+
+        // Sidebar Year
+        const currentYear = new Date().getFullYear();
+
+        // Load Templates
+        let htmlTemplate = fs.readFileSync(path.join(templateDir, 'receipt.html'), 'utf-8');
+
+        // Prepare Placeholders
+        const badgeHtml = badgeDataUrl ? `<img src="${badgeDataUrl}" alt="Founder Acharya Badge" style="width: 100%; height: 100%; object-fit: contain;">` : '';
+
+        const placeholders = {
+            '{{currentYear}}': currentYear,
+            '{{logoDataUrl}}': logoDataUrl,
+            '{{badgeHtml}}': badgeHtml,
+            '{{watermarkDataUrl}}': watermarkDataUrl,
+            '{{orderId}}': dict.orderId,
+            '{{formattedDate}}': formattedDate,
+            '{{amountWords}}': amountWords,
+            '{{orderAmount}}': dict.orderAmount,
+            '{{donorName}}': donation.name,
+            '{{donorAddress}}': donation.address || '',
+            '{{donorPin}}': donation.pin || '',
+            '{{donorPan}}': donation.pan || '',
+            '{{donorPhone}}': donation.phone,
+            '{{donorEmail}}': donation.email || '',
+            '{{paymentMode}}': donation.webhookData?.paymentMode || 'Online',
+            '{{referenceId}}': donation.webhookData?.referenceId || 'N/A',
+            '{{donatedFor}}': donation.donatedFor || 'General'
+        };
+
+        // Replace Placeholders
+        let htmlContent = htmlTemplate;
+        for (const [key, value] of Object.entries(placeholders)) {
+            htmlContent = htmlContent.split(key).join(value);
+        }
+
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
-    });
+        const page = await browser.newPage();
+
+        // Set content and wait for load
+        await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+
+        // Calculate content height
+        const height = await page.evaluate(() => {
+            return document.documentElement.offsetHeight;
+        });
+
+        const pdfBuffer = await page.pdf({
+            width: '794px', // Standard A4 width at 96 DPI
+            height: `${height + 2}px`, // Content height + tiny safety buffer
+            printBackground: true,
+            margin: {
+                top: '0',
+                bottom: '0',
+                left: '20px',
+                right: '20px'
+            }
+        });
+
+        await browser.close();
+        return pdfBuffer;
+    } catch (error) {
+        console.error("Error generating PDF:", error);
+        throw error;
+    }
 };
