@@ -48,7 +48,7 @@ async function uploadToDovesoft(file) {
     };
 
     try {
-        const response = await fetch('https://whatsappapi.dovesoft.io/REST/directApi/uploadMediaFile', {
+        const response = await fetch('https://api.dovesoft.io/REST/directApi/uploadMediaFile', {
             method: 'POST',
             headers,
             body: formData,
