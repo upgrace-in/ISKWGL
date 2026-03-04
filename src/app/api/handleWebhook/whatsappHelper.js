@@ -5,7 +5,7 @@ dotenv.config();
 
 export const sendWhatsAppMessage = async (to, pdfUrl, name, transactionId, amount) => {
     try {
-        const whatsappResponse = await axios.post('https://api.dovesoft.io/REST/directApi/message', {
+        const whatsappResponse = await axios.post('https://whatsappapi.dovesoft.io/REST/directApi/message', {
             to,
             type: 'template',
             template: {
