@@ -68,3 +68,71 @@ export const sendWhatsAppMessage = async (to, pdfUrl, name, transactionId, amoun
         return { success: false, error: error.response?.data || error.message };
     }
 };
+
+export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
+
+    try {
+        const whatsappResponse = await axios.post('https://api.dovesoft.io/REST/directApi/message', {
+            messaging_product:"whatsapp",
+            to:to,
+            type: 'template',
+            template: {
+                language: {
+                    policy: 'deterministic',
+                    code: 'en'
+                },
+                name: 'webdonationrec',
+                components: [
+                    {
+                        type: 'header',
+                        parameters: [
+                            {
+                                type: 'document',
+                                document: {
+                                    link: 'https://myawswarangalbucket.s3.ap-southeast-2.amazonaws.com/TempleReceipts/donation_receipt_808139.pdf',
+                                    filename: `donation_receipt_order_808139.pdf`
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        type: 'body',
+                        parameters: [
+                            {
+                                type: 'text',
+                                text: name
+                            },
+                            {
+                                type: 'text',
+                                text: 'order_808139'
+                            },
+                            {
+                                type: 'text',
+                                text: 'Rs 100'
+                            }
+                        ]
+                    }
+                ]
+            }
+        }, {
+            headers: {
+                'wabaNumber': '918374047115',
+                'Key': '83f4e8ac08XX',
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Check if the response indicates success
+        
+        if (whatsappResponse.status === 200 && whatsappResponse.data?.messages?.[0]?.message_status === 'accepted') {
+            console.log('WhatsApp message sent successfully:', whatsappResponse.data);
+            return { success: true, data: whatsappResponse.data };
+        } else {
+            console.error('WhatsApp message failed:', whatsappResponse.data);
+            return { success: false, error: whatsappResponse.data };
+        }
+    } catch (error) {
+        console.error('Error sending WhatsApp message:', error.response?.data || error.message);
+        return { success: false, error: error.response?.data || error.message };
+    }
+};
