@@ -14,7 +14,7 @@ export const sendWhatsAppMessage = async (to, pdfUrl, name, transactionId, amoun
                     policy: 'deterministic',
                     code: 'en'
                 },
-                name: 'webdonationrec',
+                name: 'webdonationrec1',
                 components: [
                     {
                         type: 'header',
@@ -81,7 +81,7 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
                     policy: 'deterministic',
                     code: 'en'
                 },
-                name: 'webdonationrec',
+                name: 'webdonationrec1',
                 components: [
                     {
                         type: 'header',
