@@ -1,0 +1,112 @@
+.checkout-page {
+    min-height: 100vh;
+    background-color: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    /* margin-top: 80px;    */
+}
+
+.checkout-container {
+    display: flex;
+    width: 100%;
+    /* max-width: 100; */
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* LEFT SIDE */
+.summary-section {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 800px;
+}
+
+.summary-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+    padding: 40px;
+    display: flex;
+    flex-direction: column;/* Change this to flex-end */
+    justify-content: flex-end; 
+    /* This ensures it sits around the 70-80% mark from the top */
+    padding-bottom: 20%;
+}
+
+.checkout-logo { width: 80px; }
+
+.summary-sub { color: #d4a054; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+.summary-main { color: white; font-size: 2.2rem; font-family: 'Playfair Display', serif; margin-top: 10px; }
+
+/* RIGHT SIDE */
+.form-section {
+    flex: 1.2;
+    padding: 40px;
+    padding-top: 20px;
+    background: white;
+}
+
+.form-title { font-family: 'Playfair Display', serif; color: #1f2937; margin-bottom: 10px; }
+
+.form-group-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #4b5563;
+    /* margin: 15px 0 5px 0; */
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 5px;
+}
+
+.checkout-form { display: flex; flex-direction: column; gap: 15px; }
+
+.form-row { display: flex; gap: 15px; margin-top: -10px;}
+.form-row input { flex: 1; }
+
+input {
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.3s;
+}
+.pan-input{
+    margin-top: -10px;
+}
+.maemorystatus{
+    gap: 5px;
+    display: flex;
+}
+input:focus { border-color: #d4a054; box-shadow: 0 0 0 2px rgba(212, 160, 84, 0.1); }
+
+.helper-text { font-size: 11px; color: #6b7280; margin-top: -10px; margin-bottom: 10px;}
+
+.final-donate-btn {
+    margin-top: 0px;
+    background: linear-gradient(to right, #b45309, #78350f);;
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.final-donate-btn:hover { transform: translateY(-2px); }
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 900px) {
+    .checkout-container { flex-direction: column; }
+    .summary-section { min-height: 250px; background-position: top;}
+    .form-row { flex-direction: column; gap: 15px; }
+    .summary-main { font-size: 1.6rem; }
+    .summary-overlay{ padding-bottom: 10px;}
+}
