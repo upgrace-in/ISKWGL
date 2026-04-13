@@ -161,7 +161,7 @@ export default function TulaDanSeva({ }){
                                         <span className="total-amount">{(weight * currentPricePerKg).toFixed(2)}</span>
                                     </div>
 
-                                    <button className="donate-btn" onClick={() =>handleDonateClick((weight * currentPricePerKg).toFixed(2), activeItem.id)}>Donate</button>
+                                    <button className="donate-btn" onClick={() =>handleDonateClick((weight * currentPricePerKg).toFixed(2), "Tula Dan Seva - "+activeItem.id)}>Donate</button>
                                     </div>
                                 {/* </div> */}
                                 {/* </div> */}

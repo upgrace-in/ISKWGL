@@ -47,6 +47,7 @@ export default function DonationCheckout() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         let finalData = {}
+        // combining maultiple parts of address to make one final
         const addressParts = [
             formData.flatNo, 
             formData.street, 
@@ -55,6 +56,8 @@ export default function DonationCheckout() {
             formData.state
         ].filter(part => part && part.trim() !== "");
         const completeAddress = `${addressParts.join(', ')}`
+
+        // making final data to be parsed to server
         const submissionData = {
             name: formData.name,
             email: formData.email,
@@ -63,12 +66,14 @@ export default function DonationCheckout() {
             address: completeAddress, // The combined variable
             pin: formData.pin,
             amount: donationData.amount, // From your Context
+            donationType: donationData.reason,
             memoryOfSomeoneName: formData.memoryOfSomeoneName
         };
         console.log("Passing this to the final function:", submissionData);
         Object.entries(submissionData).forEach(([property, value]) => {
             finalData[property] = value;
         });
+
         try {
             if (!parseFloat(finalData['amount']) > 0) throw { error: "Invalid Amount !!!" }
             // ALL INPUTS are correct... Start showing progress
