@@ -1,0 +1,527 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.6; /* Adds comfortable spacing like in your screenshot */
+}
+
+/* If you want to match the bolding in the screenshot */
+.highlight-text {
+  font-weight: 700;
+}
+.benefit-list{
+    color: #000000;      /* Standard black text (or use #333333 for a softer dark gray) */
+    font-weight: 400;    /* 400 is standard 'normal' weight */
+    font-family: 'Open Sans', sans-serif; /* A very standard, plain font */
+    font-size: 16px;     /* Standard base size */
+    line-height: 1.5;    /* Normal readability spacing */
+    opacity: 1;
+}
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 620px;
+    background: url('/donateForIMGs/Tula_Dan/tuladan_jayapataka_swami_maharaj.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px;
+}
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.4));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hero-content { text-align: center; color: white; z-index: 1; }
+.hero-subtext { font-size: 1.4rem; color: #FF9933; margin-bottom: 5px; font-weight: 500; }
+.hero-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; margin: 0; }
+.hero-line { width: 100px; height: 4px; background: #FF9933; margin: 15px auto 0; border-radius: 10px; }
+.hero-content{
+    width: 800px;
+}
+
+.ffl-story-container_1 {
+    display: flex;
+    align-items: center; /* Vertically centers text/image */
+    justify-content: space-between; /* Pushes them apart */
+    max-width: 1450px; /* Adjust based on your design */
+    margin: 20px 10px -50px; /* Centers the whole block */
+    gap: 40px; /* Spacing between text and image */
+    padding: 0 20px;
+}
+/* Defines how much space the text section takes (60%) */
+.ffl-story-text-1 {
+    flex: 0 0 55%;
+}
+/* Defines how much space the image section takes (35%) */
+.ffl-story-image-wrapper-1 {
+    flex: 0 0 45%;
+    text-align: right; /* Keeps image aligned right on desktop */
+}
+/* Styling for the image itself */
+.story-image-1 {
+    width: 100%; /* Spans the full 35% allocated space */
+    height: 400px;
+    border-radius: 15px; /* Optional: adds rounded corners */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Optional: adds depth */
+    margin-bottom: 10px;
+}
+.tier-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap; /* Good for mobile responsiveness */
+    margin-bottom: 40px;
+}
+.donation-card-wrapper {
+    max-width: 1500px;
+    margin: 60px auto 60px;
+    background: white;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 10;
+    scroll-margin-top: 100px; /* Offset for smooth scroll so it doesn't hit the header */
+}
+.about-ffl-section h2 {
+    color: #d4a054;
+    font-size: 2 rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+/* Tax exemption text */
+.tax-info {
+  font-weight: 700;
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+/* --- NEW TAB STYLES --- */
+.item-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.tab-button {
+  background-color: transparent;
+  color: #d4a054; /* Light blue text for inactive tabs */
+  border: 1px solid transparent;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Active state matches the blue button from your first image */
+.tab-button.active {
+  background-color: #d4a054; 
+  color: white;
+}
+/* ---------------------- */
+
+/* Label styling */
+.input-label {
+  display: block;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: #000
+}
+
+.price-hint {
+  font-size: 14px;
+  color: rgba(144, 15, 15, 0.8);
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+/* 1. Forces everything in this section to align to the left */
+.input-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Pushes content to the left */
+  text-align: left;
+  margin-bottom: 10px;
+}
+/* Dropdown Container Setup */
+.select-container {
+  position: relative;
+  width: 200px;
+  margin-bottom: 30px;
+}
+
+/* The actual select dropdown */
+.weight-dropdown {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: transparent;
+  /* color: white; */
+  border: 1px solid #d4a054;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  /* appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none; */
+  cursor: pointer;
+  outline: none;
+}
+
+.weight-dropdown option {
+  color: black; 
+}
+
+/* Custom dropdown arrow */
+.select-container::after {
+  content: '⌄';
+  position: absolute;
+  right: 20px;
+  top: 45%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 20px;
+  pointer-events: none; 
+}
+
+/* Price Display Flexbox */
+.price-display {
+  display: flex;
+  align-items: center;
+}
+
+/* Orange circular Rupee icon */
+.currency-circle {
+  background-color: #f35b30; 
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: normal;
+  z-index: 2; 
+  position: relative;
+}
+
+/* White pill container for the amount */
+.price-pill {
+  background-color: white;
+  color: #000;
+  border: 1px solid #d4a054;
+  font-weight: 700;
+  font-size: 18px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px 0 40px; 
+  border-radius: 30px; 
+  /* margin-left: -5px;  */
+  z-index: 1;
+}
+
+.donate_button{
+  background-color: 'linear-gradient(135deg, #d4a054 0%, #6b2d2d 100%)';
+  color: white;
+  border: 1px solid #d4a054;
+  font-weight: 700;
+  font-size: 18px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px 0 40px; 
+  border-radius: 30px; 
+  margin-right: -5px; 
+  z-index: 1;
+}
+.bg-mandala {
+  /* background-image: url('your-pattern-url.png'); */
+  background-size: 300px;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+/* Container & Card */
+.tula-container {
+  min-height: 100vh;
+  background-color: #f5f5f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font-family: 'Inter', sans-serif;
+}
+
+.tula-card {
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 550px;
+  overflow: hidden;
+  border: 1px solid #e7e5e4;
+}
+
+.tula-content {
+  padding: 32px;
+}
+
+.tula-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #451a03;
+  margin-bottom: 32px;
+}
+
+/* Icon Grid */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.category-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.icon-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e7e5e4;
+  background: white;
+  margin-bottom: 8px;
+  color: #451a03;
+  transition: all 0.3s ease;
+}
+
+.category-btn.active .icon-circle {
+  background-color: #92400e;
+  border-color: #92400e;
+  color: white;
+  transform: scale(1.1);
+}
+
+.category-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #78716c;
+}
+
+.category-btn.active .category-label {
+  color: #451a03;
+}
+
+/* Form Elements */
+.input-group {
+  margin-top: 16px;
+}
+
+.label-main {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #292524;
+  margin-bottom: 4px;
+}
+
+.label-sub {
+  font-size: 12px;
+  color: #7f1d1d;
+  margin-bottom: 8px;
+  padding-left: 5px;
+  font-weight: 600;
+}
+
+.tula-select {
+  width: 100%;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  background-color: #fafaf9;
+  border: 1px solid #e7e5e4;
+  font-weight: 700;
+  color: #292524;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Action Bar */
+.action-bar {
+  background-color: #fafaf9;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f5f5f4;
+}
+
+.price-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: 1px solid #e7e5e4;
+  border-radius: 9999px;
+  padding: 4px 20px 4px 4px;
+}
+
+.currency-symbol {
+  width: 40px;
+  height: 40px;
+  background-color: #ea580c;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.total-amount {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #292524;
+}
+
+.donate-btn {
+  background: linear-gradient(to right, #b45309, #78350f);
+  color: white;
+  padding: 12px 40px;
+  border-radius: 9999px;
+  border: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.donate-btn:hover {
+  transform: translateY(-2px);
+}
+
+.mobile-only-banner {
+    display: none;
+}
+
+/* --- Mobile Responsive Queries --- */
+
+@media (max-width: 768px) {
+    /* 1. Stack the Main Container */
+    .mobile-only-banner {
+        display: block;
+        width: 100%;
+        margin-top: 100px; /* Adjust based on your Header height */
+    }
+
+    .mobile-only-banner img {
+        width: 100%;
+        height: auto;
+        display: block; /* Removes bottom whitespace */
+        object-fit: cover;
+    }
+    
+    .ffl-story-container_1 {
+        display: flex;
+        flex-direction: column-reverse; /* Stacks text on top of the donation card */
+        padding: 0px;
+        margin: auto;
+        margin-top: -10px;
+        gap: 0px;
+    }
+
+    .ffl-story-text-1, 
+    .ffl-story-image-wrapper-1 {
+        width: 100% !important; /* Forces full width on mobile */
+    }
+    .about-ffl-section h2{
+        font-size: 1.25 rem;
+        text-align: center;
+    }
+    /* 2. Adjust the Title */
+    .tula-title {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* 3. Re-organize the Icon Grid */
+    .icon-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2x2 grid instead of 4 in a row */
+        gap: 12px;
+    }
+
+    .icon-circle {
+        width: 50px; /* Slightly smaller icons for mobile */
+        height: 50px;
+    }
+
+    .category-label {
+        font-size: 10px;
+        white-space: normal; /* Allows text to wrap if it's too long */
+        height: 30px; /* Constant height to keep grid aligned */
+    }
+
+    /* 4. Optimize the Action Bar */
+    .action-bar {
+        flex-direction: column; /* Stacks Price and Button */
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .price-display {
+        width: 100%;
+        justify-content: center; /* Centers the total price */
+    }
+
+    .donate-btn {
+        width: 100%; /* Full-width button for easy thumb-tapping */
+        padding: 15px;
+    }
+
+    /* 5. Adjust Story Image */
+    .story-image-1 {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
+
+    /* 6. List Spacing */
+    .benefit-list {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+}
+
+/* Extra small devices (phones in portrait) */
+@media (max-width: 480px) {
+    .tula-content {
+        padding: 15px; /* Reduce inner padding */
+    }
+}

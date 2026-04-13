@@ -1,6 +1,7 @@
+'use client'
 import $ from "jquery";
 
-export default function SideNav({ openNav, handleNav }) {
+export default function SideNav({ openNav = "", handleNav = () => {} }) {
 
   return (
     <div class={`side-nav ${openNav}`}>
@@ -29,7 +30,7 @@ export default function SideNav({ openNav, handleNav }) {
               </span>
               <span class="ripple"></span>
             </div>
-            <a href="#donate" onClick={() => handleNav()} className="donateBTN main-list">Donate</a>
+            <a href="/#donate" onClick={() => handleNav()} className="donateBTN main-list">Donate</a>
           </button>
           <button class="side-menu-close" onClick={() => handleNav()}>
             <svg
@@ -55,32 +56,32 @@ export default function SideNav({ openNav, handleNav }) {
               </a>
             </li>
             <li class="main-list" onClick={() => handleNav()}>
-              <a class="main-anc" href="#gallery">
+              <a class="main-anc" href="/#gallery">
                 Gallery
               </a>
             </li>
             <li class="main-list" onClick={() => handleNav()}>
-              <a class="main-anc" href="#about-us">
+              <a class="main-anc" href="/#about-us">
                 About us
               </a>
             </li>
             <li class="main-list" onClick={() => handleNav()}>
-              <a class="main-anc" href="#founder">
+              <a class="main-anc" href="/#founder">
                 Founder
               </a>
             </li>
             <li class="main-list" onClick={() => handleNav()}>
-              <a class="main-anc" href="#annadan">
+              <a class="main-anc" href="/FoodForLife">
                 Food For Life
               </a>
             </li>
             <li class="main-list" onClick={() => handleNav()}>
-              <a class="main-anc" href="#contact-us">
+              <a class="main-anc" href="/#contact-us">
                 Contact
               </a>
             </li>
             <li class="main-list" onClick={() => handleNav()}>
-              <a class="main-anc" href="#quick-donate">
+              <a class="main-anc" href="/#quick-donate">
                 Quick Donate
               </a>
             </li>
