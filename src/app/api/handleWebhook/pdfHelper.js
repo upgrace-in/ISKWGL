@@ -118,9 +118,7 @@ export const generatePDF = async (dict, donation) => {
         const page = await browser.newPage();
 
         // Set content and wait for load
-        console.log('came here pdf14');
         await page.setContent(htmlContent, { waitUntil: 'domcontentloaded' });
-        console.log('came here pdf15');
 
         // Calculate content height
         const height = await page.evaluate(() => {
