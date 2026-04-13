@@ -128,7 +128,7 @@ export default function DirectDonation() {
                                 Gentle Request! While doing Paytm/UPI App Payments or Bank
                                 (NEFT/RTGS) please send us a screenshot along with complete
                                 address and PAN details on our Whatsapp number -
-                                <a target="_blank" href="https://wa.me/+919121630614">+91 95156 73115</a>
+                                <a target="_blank" href="https://wa.me/+919121630614">+919121630614</a>
                                 or to our email ID -<a target="_blank"
                                     href="mailto:warangaliskcon@gmail.com">warangaliskcon@gmail.com</a>. You may
                                 also call on this number for other queries.
