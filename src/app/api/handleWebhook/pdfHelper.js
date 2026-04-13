@@ -21,14 +21,19 @@ const numberToWords = (num) => {
 export const generatePDF = async (dict, donation) => {
     try {
         // Paths
+        console.log('came here pdf');
         const templateDir = path.resolve(process.cwd(), 'src/app/api/handleWebhook/templates');
+        console.log('came here pdf - 1');
         const publicAssetsDir = path.resolve(process.cwd(), 'public/assets');
+        console.log('came here pdf - 2');
 
         // Load Assets
         const loadAsset = (filename) => {
             const publicPath = path.join(publicAssetsDir, filename);
             try {
                 if (fs.existsSync(publicPath)) {
+                    
+                    console.log('came here pdf - 3');
                     return `data:image/png;base64,${fs.readFileSync(publicPath, 'base64')}`;
                 }
             } catch (e) {
@@ -36,10 +41,15 @@ export const generatePDF = async (dict, donation) => {
             }
             return '';
         };
-
+        
+        console.log('came here pdf4');
         const logoDataUrl = loadAsset('logo.png') || loadAsset('iskcon_logo.png') || loadAsset('iskcon_logo.jpg');
+        
+        console.log('came here pdf5');
         const badgeDataUrl = loadAsset('badge.png');
+        console.log('came here pdf6');
         const watermarkDataUrl = loadAsset('watermark_pattern.png');
+        console.log('came here pdf7');
 
         // Date Formatting
         const txDate = donation.webhookData?.txTime ? new Date(decodeURIComponent(donation.webhookData.txTime)) : new Date();
@@ -76,7 +86,7 @@ export const generatePDF = async (dict, donation) => {
             '{{referenceId}}': donation.webhookData?.referenceId || 'N/A',
             '{{donatedFor}}': donation.donatedFor || 'General'
         };
-
+        console.log('came here pdf9');
         // Replace Placeholders
         let htmlContent = htmlTemplate;
         for (const [key, value] of Object.entries(placeholders)) {
@@ -86,15 +96,19 @@ export const generatePDF = async (dict, donation) => {
         let browser;
         if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
             // Serverless environment (Vercel/Lambda)
+            console.log('came here pdf10');
             const chromium = (await import('@sparticuz/chromium')).default;
+            console.log('came here pdf11');
             browser = await puppeteer.launch({
                 args: chromium.args,
                 defaultViewport: chromium.defaultViewport,
                 executablePath: await chromium.executablePath(),
                 headless: chromium.headless,
             });
+            console.log('came here pdf12');
         } else {
             // Local development (Mac fallback)
+            console.log('came here pdf13');
             browser = await puppeteer.launch({
                 args: ['--no-sandbox', '--disable-setuid-sandbox'],
                 headless: true,
@@ -104,13 +118,15 @@ export const generatePDF = async (dict, donation) => {
         const page = await browser.newPage();
 
         // Set content and wait for load
+        console.log('came here pdf14');
         await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+        console.log('came here pdf15');
 
         // Calculate content height
         const height = await page.evaluate(() => {
             return document.documentElement.offsetHeight;
         });
-
+        console.log('came here pdf16');
         const pdfBuffer = await page.pdf({
             width: '794px', // Standard A4 width at 96 DPI
             height: `${height + 2}px`, // Content height + tiny safety buffer
