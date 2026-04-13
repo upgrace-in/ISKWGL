@@ -27,16 +27,18 @@ export async function POST(req) {
         donation.amount = dict?.orderAmount;
         donation.status = dict?.txStatus;
         donation.webhookData = dict;
-        //console.log('Webhook data', donation.webhookData);
+        console.log('Webhook data', donation.webhookData);
         await donation.save();
 
         if (dict?.txStatus === 'SUCCESS') {
+            console.log('came here');
             const alreadySent = await Donation.findOne({ orderId: dict?.orderId, messageSent: true });
             if (alreadySent) {
                 console.log('Message already sent, skipping...');
                 return Response.json({ msg: 'Already sent' }, { status: 200 });
             }
-
+            
+            console.log('came here too');
             const pdfBuffer = await generatePDF(dict, donation);
             console.log('PDF generated successfully');
 
@@ -49,10 +51,15 @@ export async function POST(req) {
             //return Response.json({ msg: true }, { status: 200 });
             // Send WhatsApp message before responding to the user
             try {
+                
+                console.log('came here again');
                 const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
-
+                
+                console.log('came here again too');
                 if (messageResult?.success) {
                     // Update the database only after the message is sent successfully
+                    
+                    console.log('came here again again');
                     await Donation.findOneAndUpdate(
                         { orderId: dict?.orderId },
                         { $set: { messageSent: true } },
