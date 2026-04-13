@@ -35,6 +35,15 @@ export default function DonationCheckout() {
         const cleanedValue = value.replace(/\D/g, '').slice(0, 10);
         setFormData({ ...formData, phone: cleanedValue });
     };
+    const increaseDots = () => {
+        setStatus({ message: "Processing Payment.", disabled: true })
+        setTimeout(() => {
+            setStatus({ message: "Processing Payment..", disabled: true })
+            setTimeout(() => {
+                setStatus({ message: "Processing Payment...", disabled: true })
+            }, 150)
+        }, 150)
+    }
     const handleSubmit = async (e) => {
         e.preventDefault()
         let finalData = {}
@@ -62,7 +71,10 @@ export default function DonationCheckout() {
         });
         try {
             if (!parseFloat(finalData['amount']) > 0) throw { error: "Invalid Amount !!!" }
-
+            // ALL INPUTS are correct... Start showing progress
+            let intern = setInterval(() => {
+                increaseDots()
+            }, 500)
             // save the data with an orderID
             const response = await axios.post(`/api/createDonation/`, finalData)
             clearInterval(intern)
