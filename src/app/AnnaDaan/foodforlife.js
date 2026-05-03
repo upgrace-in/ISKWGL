@@ -215,7 +215,7 @@ export default function FoodForLife({ }) {
                     <p><b>
                         The Anna Daan (Food For Life) initiative by ISKCON, inspired by the teachings of Srila Prabhupada, 
                         the founder of ISKCON, provides nutritious vegetarian meals globally, embodying the 
-                        principle of "Prasadam" to nourish both body and soul. Through compassionate outreach, 
+                        principle of {"\"Prasadam\""} to nourish both body and soul. Through compassionate outreach, 
                         it aims to alleviate hunger, promote social equality and foster a caring global community.</b>
                     </p>
                 </div>
@@ -313,7 +313,7 @@ export default function FoodForLife({ }) {
                         <h2>Donation Benefits</h2>
                     </div>
                     <p className="benefits-subtitle">
-                        By donating to Anna Daan, you'll not only be supporting a noble cause, but you'll also receive several benefits:
+                        By donating to Anna Daan, you will not only be supporting a noble cause, but you will also receive several benefits:
                     </p>
 
                     <div className="benefits-grid">
@@ -333,7 +333,7 @@ export default function FoodForLife({ }) {
                                 <img src="/icons/spiritual.jpg" alt="Spiritual" width="90" height="90"  style={{marginBottom: '0px', marginLeft: '0px'}}/>
                             </div>
                             <h3>Spiritual Benefits</h3>
-                            <p>By participating in the sacred act of anna daan, you'll be accumulating spiritual merit and blessings.</p>
+                            <p>By participating in the sacred act of anna daan, you will be accumulating spiritual merit and blessings.</p>
                         </div>
 
                         {/* Card 3 */}
@@ -342,7 +342,7 @@ export default function FoodForLife({ }) {
                                 <img src="/icons/updates.jpg" alt="Updates" width="90" height="90" />
                             </div>
                             <h3>Updates on Impact</h3>
-                            <p>We'll keep you informed about the impact of your donation through regular newsletters and updates.</p>
+                            <p>We will keep you informed about the impact of your donation through regular newsletters and updates.</p>
                         </div>
 
                         {/* Card 4 */}
@@ -351,7 +351,7 @@ export default function FoodForLife({ }) {
                                 <img src="/icons/fulfillment.webp" alt="Fulfillment" width="110" height="110" style={{marginBottom: '-10px', marginTop: '-10px'}} />
                             </div>
                             <h3>Sense of Fulfillment</h3>
-                            <p>Most importantly, you'll experience the joy and satisfaction of knowing that you're making a positive difference in someone's life.</p>
+                            <p>Most importantly, you will experience the joy and satisfaction of knowing that you're making a positive difference in someone's life.</p>
                         </div>
                     </div>
                 </section>
