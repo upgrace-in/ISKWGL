@@ -351,7 +351,7 @@ export default function FoodForLife({ }) {
                                 <img src="/icons/fulfillment.webp" alt="Fulfillment" width="110" height="110" style={{marginBottom: '-10px', marginTop: '-10px'}} />
                             </div>
                             <h3>Sense of Fulfillment</h3>
-                            <p>Most importantly, you will experience the joy and satisfaction of knowing that you're making a positive difference in someone's life.</p>
+                            <p>Most importantly, you will experience the joy and satisfaction of knowing that you are making a positive difference in {"someone\'s"} life.</p>
                         </div>
                     </div>
                 </section>
