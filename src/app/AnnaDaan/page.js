@@ -1,7 +1,7 @@
 import FoodForLife from './foodforlife';
 
 export const metadata = {
-  title: 'Food For Life | ISKCON Warangal',
+  title: 'AnnaDaan | ISKCON Warangal',
   description: 'Donate to the Food For Life program.',
 };
 
