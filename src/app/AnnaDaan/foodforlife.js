@@ -321,7 +321,7 @@ export default function FoodForLife({ }) {
                         <div className="benefit-card">
                             <div className="benefit-icon">
                                 {/* Replace with your specific SVG or Icon */}
-                                <img src="/icons/tax.webp" alt="Tax" width="70" height="70" style={{marginBottom: '20px', marginLeft: '0px'}}/>
+                                <img src="/Icons/tax.webp" alt="Tax" width="70" height="70" style={{marginBottom: '20px', marginLeft: '0px'}}/>
                             </div>
                             <h3>Tax Exemption</h3>
                             <p>Your donation is eligible for tax exemption under Section 80G of the Income Tax Act.</p>
@@ -330,7 +330,7 @@ export default function FoodForLife({ }) {
                         {/* Card 2 */}
                         <div className="benefit-card">
                             <div className="benefit-icon">
-                                <img src="/icons/spiritual.jpg" alt="Spiritual" width="90" height="90"  style={{marginBottom: '0px', marginLeft: '0px'}}/>
+                                <img src="/Icons/spiritual.jpg" alt="Spiritual" width="90" height="90"  style={{marginBottom: '0px', marginLeft: '0px'}}/>
                             </div>
                             <h3>Spiritual Benefits</h3>
                             <p>By participating in the sacred act of anna daan, you will be accumulating spiritual merit and blessings.</p>
@@ -339,7 +339,7 @@ export default function FoodForLife({ }) {
                         {/* Card 3 */}
                         <div className="benefit-card">
                             <div className="benefit-icon">
-                                <img src="/icons/updates.jpg" alt="Updates" width="90" height="90" />
+                                <img src="/Icons/updates.jpg" alt="Updates" width="90" height="90" />
                             </div>
                             <h3>Updates on Impact</h3>
                             <p>We will keep you informed about the impact of your donation through regular newsletters and updates.</p>
@@ -348,7 +348,7 @@ export default function FoodForLife({ }) {
                         {/* Card 4 */}
                         <div className="benefit-card">
                             <div className="benefit-icon">
-                                <img src="/icons/fulfillment.webp" alt="Fulfillment" width="110" height="110" style={{marginBottom: '-10px', marginTop: '-10px'}} />
+                                <img src="/Icons/fulfillment.webp" alt="Fulfillment" width="110" height="110" style={{marginBottom: '-10px', marginTop: '-10px'}} />
                             </div>
                             <h3>Sense of Fulfillment</h3>
                             <p>Most importantly, you will experience the joy and satisfaction of knowing that you are making a positive difference in {"someone\'s"} life.</p>
