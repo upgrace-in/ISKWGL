@@ -1,0 +1,238 @@
+.rath-page {
+    background-color: white; /* Cream background from poster */
+    color: #1a2a4a;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Hero Section */
+.rath-hero {
+    height: 60vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+.progress-header{
+    /* 1. Turn on Flexbox */
+  display: flex;
+  
+  /* 2. Pushes items to opposite sides */
+  justify-content: space-between; 
+  
+  /* Optional styling: adds spacing below the text */
+  margin-bottom: 10px;
+}
+.hero-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.full-rath-sponsor {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 2px; /* For the gold border effect */
+    background: linear-gradient(45deg, #d4a054, #f9e297, #d4a054);
+    border-radius: 15px;
+}
+
+.sponsor-banner {
+    background: #6b2d2d; /* Maroon from the poster */
+    color: white;
+    padding: 40px;
+    border-radius: 13px;
+    text-align: center;
+}
+
+.premium-tag {
+    background: #d4a054;
+    color: #6b2d2d;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.price-tag {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #f9e297;
+    margin: 20px 0;
+}
+
+.grand-donate-btn {
+    background: #f9e297;
+    color: #6b2d2d;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.grand-donate-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.gold-text { color: #d4a054; }
+
+/* Progress Tracker */
+.progress-container {
+    max-width: 900px;
+    margin: -50px auto 40px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 10;
+}
+
+.progress-bar-bg {
+    height: 12px;
+    background: #eee;
+    border-radius: 10px;
+    margin-top: 20px;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6b2d2d, #d4a054);
+    border-radius: 10px;
+    position: relative;
+}
+
+.progress-wheel-icon {
+    position: absolute;
+    right: -20px;
+    top: -15px;
+    width: 40px;
+    height: 40px;
+    animation: rotate 10s linear infinite;
+}
+
+/* The main container */
+.seva-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Divide row into 6 equal parts */
+    gap: 25px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Base style for all cards */
+.seva-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 2px solid #d4a054;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Ensures the zoom is smooth, not jerky */
+}
+.seva-card:hover{
+    transform: scale(1.03); 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
+    
+    /* Ensures the zoomed card stays on top of neighbors */
+    z-index: 5; 
+}
+/* First 3 cards: Each takes 2 columns (Total 6) */
+.row-item-3 {
+    grid-column: span 2;
+}
+
+/* Last 2 cards: Each takes 3 columns (Total 6) */
+.row-item-2 {
+    grid-column: span 3;
+}
+/* Responsive: Stack them on mobile */
+@media (max-width: 768px) {
+    .seva-grid {
+        grid-template-columns: 1fr;
+    }
+    .row-item-3, .row-item-2 {
+        grid-column: span 1;
+    }
+    .custom-dination-container {padding-right: 10px; padding-left: 10px;}
+    .donation-card-wrapper { margin: 30px 15px 40px; padding: 25px; }
+}
+.featured-card {
+    border: 2px solid #d4a054;
+    background: #fff9eb;
+    transform: scale(1.05);
+}
+
+.contribute-btn {
+    background: #6b2d2d; /* Maroon from image_b6c0d9.png */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+
+.contribute-btn:hover { background: #8b3d3d; }
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.custom-dination-container {
+    display: flex;           /* This puts items side-by-side */
+    flex-direction: row;      /* Ensures horizontal alignment */
+    align-items: center;      /* Vertically centers the items */
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    gap: 6px                /* Adds space between input and button */
+}
+.inputWrapper {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;               /* Makes the input take up remaining space */
+    background-color: #F7F8F9;
+    border-radius: 8px;
+    padding: 0 12px;
+    height: 48px
+}
+
+.inputField {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    color: #374151
+} 
+.button {
+background: linear-gradient(135deg, #d4a054 0%, #6b2d2d 100%);
+padding: 0 24px;
+height: 48px;
+background-color: #f3f4f6;
+border: 1px solid #9ca3af;
+border-radius: 9999px;     /*Creates the pill shape*/
+font-weight: bold;
+color: #111827;
+cursor: pointer;
+white-space: nowrap       /* Keeps text on one line*/
+}
