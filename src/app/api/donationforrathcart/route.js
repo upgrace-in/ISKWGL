@@ -17,22 +17,28 @@ export async function GET() {
             "New Rath 2026 - Sudarshan Seva", 
             "New Rath 2026 - Prabhupad Seva",
             "New Rath 2026 - Full Rath Construction",
-            "New Rath 2026 - Rath Cart Construction",
-            "Prasadam Seva (10 devotees)"
+            "New Rath 2026 - Rath Cart Construction"
         ];
 
         // Let the Database do the math (Faster)
         const result = await Donation.aggregate([
             { 
                 $match: { 
-                    status: 'success', 
+                    status: 'SUCCESS', 
                     donatedFor: { $in: targetSevas } 
                 } 
             },
             { 
+                // Step 2: Convert the string 'amount' to a number
+                $addFields: {
+                    amountNumeric: { $toDouble: "$amount" }
+                }
+            },
+            { 
                 $group: { 
                     _id: null, 
-                    totalAmount: { $sum: "$amount" } 
+                    // Step 3: Sum the newly created numeric field
+                    totalAmount: { $sum: "$amountNumeric" } 
                 } 
             }
         ]);
