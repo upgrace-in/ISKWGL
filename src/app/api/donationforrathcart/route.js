@@ -25,7 +25,7 @@ export async function GET() {
         const result = await Donation.aggregate([
             { 
                 $match: { 
-                    status: 'success', 
+                    status: 'SUCCESS', 
                     donatedFor: { $in: targetSevas } 
                 } 
             },
