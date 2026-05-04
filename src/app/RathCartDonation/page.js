@@ -78,7 +78,7 @@ export default function RathDonation() {
             <section className="rath-hero" style={{ backgroundImage: `url('/rath-skeleton.jpg')` }}>
                 <div className="hero-overlay">
                     <h2 className="year-tag">THIS YEAR 2026</h2>
-                    <h1>Let's build our <span className="gold-text">NEW RATH</span></h1>
+                    <h1>{"Let\'s"} build our <span className="gold-text">NEW RATH</span></h1>
                     <p>For Jagannath, Baladev & Subhadra Maharani</p>
                 </div>
             </section>
