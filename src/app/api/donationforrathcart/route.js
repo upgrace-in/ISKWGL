@@ -25,14 +25,21 @@ export async function GET() {
         const result = await Donation.aggregate([
             { 
                 $match: { 
-                    status: 'SUCCESS', 
+                    status: "SUCCESS", 
                     donatedFor: { $in: targetSevas } 
                 } 
             },
             { 
+                // Step 2: Convert the string 'amount' to a number
+                $addFields: {
+                    amountNumeric: { $toDouble: "$amount" }
+                }
+            },
+            { 
                 $group: { 
                     _id: null, 
-                    totalAmount: { $sum: "$amount" } 
+                    // Step 3: Sum the newly created numeric field
+                    totalAmount: { $sum: "$amountNumeric" } 
                 } 
             }
         ]);
