@@ -1,7 +1,7 @@
 import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation'
 
-export async function POST(request) {
+export async function GET() {
     try {
 
         // const { password } = await request.json();
@@ -21,14 +21,25 @@ export async function POST(request) {
             "Prasadam Seva (10 devotees)"
         ];
 
-        const donations = await Donation.find({
-            status: 'success',
-            donatedFor: { $in: targetSevas }
-        });
+        // Let the Database do the math (Faster)
+        const result = await Donation.aggregate([
+            { 
+                $match: { 
+                    status: 'success', 
+                    donatedFor: { $in: targetSevas } 
+                } 
+            },
+            { 
+                $group: { 
+                    _id: null, 
+                    totalAmount: { $sum: "$amount" } 
+                } 
+            }
+        ]);
 
-        const totalRaised = donations.reduce((sum, item) => sum + item.amount, 0);
+        const totalRaised = result.length > 0 ? result[0].totalAmount : 0;
 
-        return Response.json({ count: totalRaised }, { status: 200 })
+        return Response.json({ totalRaised: totalRaised }, { status: 200 });
 
     } catch (error) {
         console.log(error)
