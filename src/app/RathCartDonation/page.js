@@ -21,7 +21,7 @@ export default function RathDonation() {
         { title: "Baladev Seva", price: 50000, icon: "/Icons/Baladeva.png", featured: false },
         { title: "Subhadra Seva", price: 25000, icon: "/Icons/Subhadra.png", featured: false },
         { title: "Sudarshan Seva", price: 10000, icon: "/Icons/Sudarshan.png", featured: false },
-        { title: "Prabhupad Seva", price: 5000, icon: "/Icons/Prabhupada.png", featured: false },
+        { title: "Prabhupad Seva", price: 5000, icon: "/Icons/srilaprabhupada.png", featured: false },
     ];
     const fullSponsorship = { 
         title: "Full Rath Construction", 
@@ -48,24 +48,24 @@ export default function RathDonation() {
 
         router.push('/payment-page');
     };
-    // const [currentFunding, setCurrentFunding] = useState(0);
-    // useEffect(() => {
-    //     const fetchTotal = async () => {
-    //         try {
-    //             const response = await fetch('/api/donationforrathcart');
-    //             const data = await response.json();
-    //             setCurrentFunding(data.totalRaised);
-    //         } catch (error) {
-    //             console.error("Error fetching total:", error);
-    //         }
-    //     };
+    const [currentFunding, setCurrentFunding] = useState(0);
+    useEffect(() => {
+        const fetchTotal = async () => {
+            try {
+                const response = await fetch('/api/donationforrathcart');
+                const data = await response.json();
+                setCurrentFunding(data.totalRaised);
+            } catch (error) {
+                console.error("Error fetching total:", error);
+            }
+        };
 
-    //     fetchTotal();
-    // }, []);
+        fetchTotal();
+    }, []);
 
     
     // Mock current funding - in a real app, fetch this from your MongoDB
-    const currentFunding = 0; 
+    // const currentFunding = 0; 
     const goal = 1000000;
     const progressPercent = (currentFunding / goal) * 100;
 
