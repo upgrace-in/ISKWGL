@@ -48,24 +48,24 @@ export default function RathDonation() {
 
         router.push('/payment-page');
     };
-    const [currentFunding, setCurrentFunding] = useState(0);
-    useEffect(() => {
-        const fetchTotal = async () => {
-            try {
-                const response = await fetch('/api/donationforrathcart');
-                const data = await response.json();
-                setCurrentFunding(data.totalRaised);
-            } catch (error) {
-                console.error("Error fetching total:", error);
-            }
-        };
+    // const [currentFunding, setCurrentFunding] = useState(0);
+    // useEffect(() => {
+    //     const fetchTotal = async () => {
+    //         try {
+    //             const response = await fetch('/api/donationforrathcart');
+    //             const data = await response.json();
+    //             setCurrentFunding(data.totalRaised);
+    //         } catch (error) {
+    //             console.error("Error fetching total:", error);
+    //         }
+    //     };
 
-        fetchTotal();
-    }, []);
+    //     fetchTotal();
+    // }, []);
 
     
     // Mock current funding - in a real app, fetch this from your MongoDB
-    // const currentFunding = 0; 
+    const currentFunding = 0; 
     const goal = 1000000;
     const progressPercent = (currentFunding / goal) * 100;
 
@@ -75,13 +75,35 @@ export default function RathDonation() {
         <SideNav openNav={navOpen ? "open-nav" : ""} handleNav={() => setNavOpen(!navOpen)} />
         <div className="rath-page">
             {/* HERO SECTION */}
-            <section className="rath-hero" style={{ backgroundImage: `url('/rath-skeleton.jpg')` }}>
-                <div className="hero-overlay">
+            {/* <section className="rath-hero" style={{ '--hero-bg': `url('/images/rath-3.png')` }}>
+                <div className="hero-overlay-1">
                     <h2 className="year-tag">THIS YEAR 2026</h2>
                     <h1>{"Let\'s"} build our <span className="gold-text">NEW RATH</span></h1>
                     <p>For Jagannath, Baladev & Subhadra Maharani</p>
                 </div>
-            </section>
+            </section> */}
+
+            <section className="rath-hero-container">
+    <picture>
+        {/* MOBILE IMAGE: Shown when screen is 768px or less */}
+        <source 
+            media="(max-width: 768px)" 
+            srcSet="/images/rath-mobile.png" 
+        />
+        {/* DESKTOP IMAGE: Default shown for larger screens */}
+        <img 
+            src="/images/rath-4.png" 
+            alt="Rath Construction" 
+            className="hero-image" 
+        />
+    </picture>
+
+    <div className="hero-overlay-text">
+        <h2 className="year-tag">THIS YEAR 2026</h2>
+        <h1>{"Let\'s"} build our <span className="gold-text">NEW RATH</span></h1>
+        <p>For Jagannath, Baladev & Subhadra Maharani</p>
+    </div>
+</section>
 
             {/* PROGRESS TRACKER */}
             <section className="progress-container">
