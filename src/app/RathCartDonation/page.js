@@ -88,11 +88,11 @@ export default function RathDonation() {
         {/* MOBILE IMAGE: Shown when screen is 768px or less */}
         <source 
             media="(max-width: 768px)" 
-            srcSet="/images/rath-mobile.png" 
+            srcSet="/images/rath-mobile-2.png" 
         />
         {/* DESKTOP IMAGE: Default shown for larger screens */}
         <img 
-            src="/images/rath-4.png" 
+            src="/images/rath-6.png" 
             alt="Rath Construction" 
             className="hero-image" 
         />
