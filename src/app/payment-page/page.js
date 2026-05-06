@@ -130,13 +130,13 @@ export default function DonationCheckout() {
 
                         <div className="form-group-title">3. Detailed Address *</div>
                         <div className="form-row">
-                            <input type="text" name="flatNo" placeholder="Flat/Door No." onChange={handleChange} />
-                            <input type="text" name="street" placeholder="Building/Society" onChange={handleChange} />
+                            <input type="text" name="flatNo" placeholder="Flat/Door No." onChange={handleChange} required/>
+                            <input type="text" name="street" placeholder="Building/Society" onChange={handleChange} required/>
                         </div>
-                        <input type="text" name="landmark" placeholder="Road/Area/Landmark" onChange={handleChange} />
+                        <input type="text" name="landmark" placeholder="Road/Area/Landmark" onChange={handleChange} required/>
                         <div className="form-row">
-                            <input type="text" name="pin" placeholder="Pincode" onChange={handleChange} />
-                            <input type="text" name="city" placeholder="City/State" onChange={handleChange} />
+                            <input type="text" name="pin" placeholder="Pincode" onChange={handleChange} required />
+                            <input type="text" name="city" placeholder="City/State" onChange={handleChange} required />
                         </div>
 
                         <div>
@@ -149,7 +149,7 @@ export default function DonationCheckout() {
                             {
                                 memoryStatus
                                     ?
-                                    <input type="text" name="memoryOfSomeoneName" placeholder="Name" onChange={handleChange} />
+                                    <input type="text" name="memoryOfSomeoneName" placeholder="Name" onChange={handleChange} required/>
                                     : ""
                             }
                         </div>
