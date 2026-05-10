@@ -18,7 +18,7 @@ export default function DonationCheckout() {
     const [data, setData] = useState()
     const [navOpen, setNavOpen] = useState(false)
     const [formData, setFormData] = useState({
-        name: '', email: '', phone: '', pan: '',
+        name: '', email: '', phone: '', pan: '', dob: '',
         flatNo: '', street: '', landmark: '', pin: '', city: '', state: '',memoryOfSomeoneName:''
     });
     
@@ -62,6 +62,7 @@ export default function DonationCheckout() {
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
+            dob: formData.dob,
             pan: formData.pan,
             address: completeAddress, // The combined variable
             pin: formData.pin,
@@ -123,7 +124,10 @@ export default function DonationCheckout() {
                             <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
                             <input type="email" name="email" placeholder="Email Address" onChange={handleChange} required />
                         </div>
-                        <input type="tel" name="phone" placeholder="Mobile Number" onChange={handlePhoneChange} required />
+                        <div className="form-row">
+                            <input type="tel" name="phone" placeholder="Mobile Number" onChange={handlePhoneChange} required />
+                            <input type="date" name="dob" placeholder="Date of Birth" onChange={handleChange} required />
+                        </div>
 
                         <div className="form-group-title">2. Tax Benefits (80G)</div>
                         <input type="text" name="pan" placeholder="PAN Number" className="pan-input" onChange={handleChange} />
