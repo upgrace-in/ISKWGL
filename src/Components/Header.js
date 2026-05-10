@@ -100,7 +100,7 @@ export default function Header() {
                 {/* Right Nav */}
                 <nav className="d-none d-xl-block" style={{ flex: '1.5' }}>
                     <ul style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0, gap: '25px', justifyContent: 'center' }}>
-                        <li><a href="/FoodForLife" style={navLinkStyle}>Donation Options</a></li>
+                        <li><a href="/AnnaDaan" style={navLinkStyle}>Donation Options</a></li>
                         <li><a href="/#contact-us" style={navLinkStyle}>CONTACT</a></li>
                     </ul>
                 </nav>
