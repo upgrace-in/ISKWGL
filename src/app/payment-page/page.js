@@ -137,7 +137,7 @@ export default function DonationCheckout() {
                         </div>
                         <div className="form-row">
                             <input type="tel" name="phone" placeholder="Mobile Number" onChange={handlePhoneChange} required />
-                            <input type="date" name="dob" placeholder="Date of Birth" onChange={handleChange} required />
+                            <input type="date" name="dob" placeholder="Date of Birth" onChange={handleChange} required className="date-input"/>
                         </div>
 
                         <div className="form-group-title">2. Tax Benefits (80G)</div>
