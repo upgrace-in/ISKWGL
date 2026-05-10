@@ -156,7 +156,7 @@ export default function DonateCategories() {
                                         { title: "Balarama Jayanti" },
                                         { title: "Snana Yatra" },
                                         { title: "Ratha Yatra", src:"/rathyatra"},
-                                        { title: "ISKCON Peda Kakani's Anniversary" }
+                                        { title: "ISKCON Warangal's Anniversary" }
                                     ]
                                 }
                             />
