@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import Header from "@/Components/Header";
 import Mission from "@/Components/Mission";
 import Founder from "@/Components/Founder";
-import Footer from "@/Components/Footer";
+import Foooter from "@/Components/footter";
 import Floating from "@/Components/Floating";
 import DonateCategories from "@/Components/DonateCategories";
 import DirectDonation from "@/Components/DirectDonation";
@@ -36,7 +36,7 @@ function Home() {
     <DonateCategories />
     <NewsArticles />
     <Floating />
-    <Footer />
+    <Foooter />
   </>
 
 }
