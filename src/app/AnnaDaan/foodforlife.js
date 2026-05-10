@@ -12,7 +12,7 @@ import { FiCopy, FiCheck } from "react-icons/fi";
 import DirectDonation from "@/Components/Direct_donation_and_80G"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
-import { useDonation } from "@/Helpers/DonationContext";
+import { useDonate } from "@/Helpers/PaymentPageHandler";
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -26,6 +26,7 @@ import '@fontsource/open-sans/700.css'; // Bold weight
 
 export default function FoodForLife({ }) {
     const router = useRouter()
+    const { handleDonateClick } = useDonate();
     const [data, setData] = useState()
     const [navOpen, setNavOpen] = useState(false)
     
@@ -101,18 +102,18 @@ export default function FoodForLife({ }) {
     //         setStatus({ ...e, default: false })
     //     }
     // }
-    const { setDonationData } = useDonation();
-    const handleDonateClick = (price, reason) => {
-        // We encode the reason to handle spaces and special characters safely
-        // const encodedReason = encodeURIComponent(selectedPlan.title);
-        // const selectedAmount = selectedPlan.price; // This would be your dynamic state variable
-        setDonationData({
-            amount: price,
-            reason: reason
-        });
+    // const { setDonationData } = useDonation();
+    // const handleDonateClick = (price, reason) => {
+    //     // We encode the reason to handle spaces and special characters safely
+    //     // const encodedReason = encodeURIComponent(selectedPlan.title);
+    //     // const selectedAmount = selectedPlan.price; // This would be your dynamic state variable
+    //     setDonationData({
+    //         amount: price,
+    //         reason: reason
+    //     });
 
-        router.push('/payment-page');
-    };
+    //     router.push('/payment-page');
+    // };
 
     const buttonStyle = {
         background: 'linear-gradient(135deg, #d4a054 0%, #6b2d2d 100%)',

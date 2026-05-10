@@ -1,6 +1,8 @@
 import AccordionItem from "./AccordionItem"
+import { useDonate } from "@/Helpers/PaymentPageHandler";
 
 export default function DonateCategories() {
+    const { handleDonateClick } = useDonate();
 
     return (
         <>
@@ -20,51 +22,51 @@ export default function DonateCategories() {
                             <div class="donate-bars-wrap">
                                 <div class="donate-bar mt-0">
                                     <div class="first">
-                                        <h4>Feed 50 people</h4>
+                                        <h4>AnnaDaan for 50 people</h4>
                                     </div>
                                     <div class="mid"><span>₹1,500</span></div>
                                     <div class="last">
-                                        <a href={`/donate/Feed 50 People/1500`} class="custom-btn-cls box-hover w-100 h-100"><svg class="me-2" width="24"
+                                        <a onClick={() =>handleDonateClick(1500, "AnnaDaan for 50 People")} class="custom-btn-cls box-hover w-100 h-100"><svg class="me-2" width="24"
                                             height="24" viewBox="0 0 512 512"></svg>Donate</a>
                                     </div>
                                 </div>
                                 <div class="donate-bar mt-0">
                                     <div class="first">
-                                        <h4>Feed 100 people</h4>
+                                        <h4>AnnaDaan for 100 people</h4>
                                     </div>
                                     <div class="mid"><span>₹3,000</span></div>
                                     <div class="last">
-                                        <a href={`/donate/Feed 100 People/3000`} class="custom-btn-cls box-hover w-100 h-100"><svg class="me-2" width="24"
+                                        <a onClick={() =>handleDonateClick(3000, "AnnaDaan for 100 People")} class="custom-btn-cls box-hover w-100 h-100"><svg class="me-2" width="24"
                                             height="24" viewBox="0 0 512 512"></svg>Donate</a>
                                     </div>
                                 </div>
                                 <div class="donate-bar mt-0">
                                     <div class="first">
-                                        <h4>Feed 200 people</h4>
+                                        <h4>AnnaDaan for 200 people</h4>
                                     </div>
                                     <div class="mid"><span>₹6,000</span></div>
                                     <div class="last">
-                                        <a href={`/donate/Feed 200 People/6000`} class="custom-btn-cls box-hover w-100 h-100"><svg class="me-2" width="24"
+                                        <a onClick={() =>handleDonateClick(6000, "AnnaDaan for 200 People")} class="custom-btn-cls box-hover w-100 h-100"><svg class="me-2" width="24"
                                             height="24" viewBox="0 0 512 512"></svg>Donate</a>
                                     </div>
                                 </div>
                                 <div class="donate-bar mt-0">
                                     <div class="first">
-                                        <h4>Feed 500 people</h4>
+                                        <h4>AnnaDaan for 500 people</h4>
                                     </div>
                                     <div class="mid"><span>₹15,000</span></div>
                                     <div class="last">
-                                        <a href={`/donate/Feed 500 People/15000`} class="custom-btn-cls box-hover w-100 h-100"><svg
+                                        <a onClick={() =>handleDonateClick(15000, "AnnaDaan for 500 People")} class="custom-btn-cls box-hover w-100 h-100"><svg
                                             class="me-2" width="24" height="24" viewBox="0 0 512 512"></svg>Donate</a>
                                     </div>
                                 </div>
                                 <div class="donate-bar mt-0">
                                     <div class="first">
-                                        <h4>Feed 1000 people</h4>
+                                        <h4>AnnaDaan for 1000 people</h4>
                                     </div>
                                     <div class="mid"><span>₹30,000</span></div>
                                     <div class="last">
-                                        <a href={`/donate/Feed 1000 People/30000`} class="custom-btn-cls box-hover w-100 h-100"><svg
+                                        <a onClick={() =>handleDonateClick(30000, "AnnaDaan for 1000 People")} class="custom-btn-cls box-hover w-100 h-100"><svg
                                             class="me-2" width="24" height="24" viewBox="0 0 512 512"></svg>Donate</a>
                                     </div>
                                 </div>
