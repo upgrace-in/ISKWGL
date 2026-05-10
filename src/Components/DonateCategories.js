@@ -12,7 +12,7 @@ export default function DonateCategories() {
                         <div class="col-lg-10 mx-auto">
                             <div class="heading">
                                 <h2 class="head-1 text-uppercase">
-                                    JOIN US IN FOOD FOR LIFE
+                                    JOIN US IN ANNADAAN (FOOD FOR LIFE)
                                 </h2>
                             </div>
                         </div>
