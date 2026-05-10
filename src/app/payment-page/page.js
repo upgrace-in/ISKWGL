@@ -18,7 +18,7 @@ export default function DonationCheckout() {
     const [data, setData] = useState()
     const [navOpen, setNavOpen] = useState(false)
     const [formData, setFormData] = useState({
-        name: '', email: '', phone: '', pan: '',
+        name: '', email: '', phone: '', pan: '', dob: '',
         flatNo: '', street: '', landmark: '', pin: '', city: '', state: '',memoryOfSomeoneName:''
     });
     
@@ -44,6 +44,15 @@ export default function DonationCheckout() {
             }, 150)
         }, 150)
     }
+    const checkdob = async (dict, propertyName) => {
+        if (propertyName === 'dob') {
+            const selectedDate = new Date(dict[propertyName])
+            const currentDate = new Date()
+            console.log(selectedDate, currentDate)
+            if (selectedDate > currentDate)
+                throw { error: "Invalid DOB!" }
+        }
+    }
     const handleSubmit = async (e) => {
         e.preventDefault()
         let finalData = {}
@@ -62,6 +71,7 @@ export default function DonationCheckout() {
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
+            dob: formData.dob,
             pan: formData.pan,
             address: completeAddress, // The combined variable
             pin: formData.pin,
@@ -76,6 +86,8 @@ export default function DonationCheckout() {
 
         try {
             if (!parseFloat(finalData['amount']) > 0) throw { error: "Invalid Amount !!!" }
+            await checkdob(finalData, 'dob').catch(e => { throw e })
+
             // ALL INPUTS are correct... Start showing progress
             let intern = setInterval(() => {
                 increaseDots()
@@ -123,7 +135,10 @@ export default function DonationCheckout() {
                             <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
                             <input type="email" name="email" placeholder="Email Address" onChange={handleChange} required />
                         </div>
-                        <input type="tel" name="phone" placeholder="Mobile Number" onChange={handlePhoneChange} required />
+                        <div className="form-row">
+                            <input type="tel" name="phone" placeholder="Mobile Number" onChange={handlePhoneChange} required />
+                            <input type="date" name="dob" placeholder="Date of Birth" onChange={handleChange} required />
+                        </div>
 
                         <div className="form-group-title">2. Tax Benefits (80G)</div>
                         <input type="text" name="pan" placeholder="PAN Number" className="pan-input" onChange={handleChange} />
