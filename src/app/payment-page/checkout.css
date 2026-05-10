@@ -79,6 +79,16 @@ input {
 .pan-input{
     margin-top: -10px;
 }
+.date-input:before {
+  content: attr(placeholder);
+  color: #999;
+  margin-right: 10px;
+}
+
+.date-input:focus:before,
+.date-input:valid:before {
+  content: "";
+}
 .maemorystatus{
     gap: 5px;
     display: flex;
