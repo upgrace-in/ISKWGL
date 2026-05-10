@@ -44,6 +44,15 @@ export default function DonationCheckout() {
             }, 150)
         }, 150)
     }
+    const checkdob = async (dict, propertyName) => {
+        if (propertyName === 'dob') {
+            const selectedDate = new Date(dict[propertyName])
+            const currentDate = new Date()
+            console.log(selectedDate, currentDate)
+            if (selectedDate > currentDate)
+                throw { error: "Invalid DOB!" }
+        }
+    }
     const handleSubmit = async (e) => {
         e.preventDefault()
         let finalData = {}
@@ -77,6 +86,8 @@ export default function DonationCheckout() {
 
         try {
             if (!parseFloat(finalData['amount']) > 0) throw { error: "Invalid Amount !!!" }
+            await checkdob(finalData, 'dob').catch(e => { throw e })
+
             // ALL INPUTS are correct... Start showing progress
             let intern = setInterval(() => {
                 increaseDots()
