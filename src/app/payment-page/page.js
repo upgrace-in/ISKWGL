@@ -53,8 +53,12 @@ export default function DonationCheckout() {
                 throw { error: "Invalid DOB!" }
         }
     }
+
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setIsLoading(true);
         let finalData = {}
         // combining maultiple parts of address to make one final
         const addressParts = [
@@ -102,6 +106,8 @@ export default function DonationCheckout() {
 
         } catch (e) {
             setStatus({ ...e, default: false })
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -170,8 +176,17 @@ export default function DonationCheckout() {
                         </div>
 
 
-                        <button type="submit" className="final-donate-btn">
-                            COMPLETE DONATION & GET 80G RECEIPT
+                        <button type="submit" className="final-donate-btn" disabled={isLoading}>
+                            {isLoading ? (
+                                // 3. Render the rotating dots when loading
+                                <div className="dot-spinner">
+                                    <div className="dot dot-1"></div>
+                                    <div className="dot dot-2"></div>
+                                    <div className="dot dot-3"></div>
+                                </div>
+                            ) : (
+                                "COMPLETE DONATION & GET 80G RECEIPT"
+                            )}
                         </button>
                     </form>
                 </div>
