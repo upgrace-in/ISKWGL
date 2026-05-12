@@ -95,7 +95,7 @@ export default function Ekadasi() {
                 <p className="hero-description">
                     Apara Ekadasi is an axe that cuts down the fully matured forest full of trees of sinful deeds, 
                     it is a forest fire that burns sins as if they were kindling firewood, it is the sun blazing 
-                    before one's dark misdeeds, and it is a lion stalking the meek deer of impiety. Therefore 
+                    before {"one's"} dark misdeeds, and it is a lion stalking the meek deer of impiety. Therefore 
                     one must faithfully observe the sacred Apara Ekadasi and worship the Supreme Personality 
                     of Godhead, Sri Trivikrama. One who does so is freed of all his sins and promoted to the 
                     abode of Lord Vishnu.
