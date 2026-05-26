@@ -41,7 +41,7 @@
 
 .checkout-logo { width: 80px; }
 
-.summary-sub { color: #d4a054; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+.summary-sub { color: #a3db8f; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 .summary-main { color: white; font-size: 2.2rem; font-family: 'Playfair Display', serif; margin-top: 10px; }
 
 /* RIGHT SIDE */
@@ -186,7 +186,7 @@ input:focus { border-color: #d4a054; box-shadow: 0 0 0 2px rgba(212, 160, 84, 0.
 /* MOBILE RESPONSIVENESS */
 @media (max-width: 900px) {
     .checkout-container { flex-direction: column; }
-    .summary-section { min-height: 250px; background-position: top;}
+    .summary-section { min-height: 370px; background-position: top;}
     .form-row { flex-direction: column; gap: 15px; }
     .summary-main { font-size: 1.6rem; }
     .summary-overlay{ padding-bottom: 10px;}
