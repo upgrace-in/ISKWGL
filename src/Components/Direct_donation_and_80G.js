@@ -76,7 +76,7 @@ export default function DirectDonation() {
             <div className="donation-card-wrapper">
                 <h3 style={{color:"#d4a054", textAlign: "center"}}>Alternate Donation Methods</h3>
                 <div style={{ display: "flex", flexDirection: "row", gap: "20px", flexWrap: "wrap" }}>
-                    <div  className="donation-card-wrapper" style={{ flex: "1", minWidth: "300px", padding:"15px", margin:"10px"}}>
+                    <div  className="donation-card-wrapper" style={{ flex: "1", minWidth: "200px", padding:"15px", margin:"10px"}}>
                         <h4 style={{color:"#d4a054", textAlign: "center"}}>Donate Via NEFT / RTGS</h4>
                         <div style={{textAlign:"center"}} >
                             {bank_details.map((item, index) => (
@@ -95,12 +95,12 @@ export default function DirectDonation() {
                             ))}
                         </div>
                     </div>
-                    <div  className="donation-card-wrapper"style={{ flex: "1", minWidth: "300px", textAlign:"center", padding:"15px", margin:"10px"}}>
+                    <div  className="donation-card-wrapper"style={{ flex: "1", minWidth: "200px", textAlign:"center", padding:"15px", margin:"10px"}}>
                         <h4 style={{color:"#d4a054", textAlign: "center"}}>Donate Using UPI ID</h4>
                         <img 
                             src="/donateForIMGs/qrCode.jpg" /* REPLACE WITH YOUR IMAGE PATH */
                             alt="HHRNSM distributing prasadam to school children"
-                            style={{height:"250px", width:"auto"}}
+                            style={{height:"200px", width:"auto"}}
                         />
                         {upiid_details.map((item, index) => (
                             <div key={index} style={{margin:"10px"}}>
