@@ -28,7 +28,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Apara";
+    const ekadasi_name = "Padmini";
 
     const [amount, setAmount] = useState();
 
@@ -78,12 +78,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">13 May 2026</div>
+                <div className="date-badge">27 May 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadasi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 14 May 2026, 5:45 AM to 10:03 AM for Warangal.
+                        Fast breaking parana time: 28 May 2026, 5:42 AM to 08:02 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -93,15 +93,13 @@ export default function Ekadasi() {
             <div className="description-section">
                 {/* Spiritual Significance Paragraph */}
                 <p className="hero-description">
-                    Apara Ekadasi is an axe that cuts down the fully matured forest full of trees of sinful deeds, 
-                    it is a forest fire that burns sins as if they were kindling firewood, it is the sun blazing 
-                    before {"one's"} dark misdeeds, and it is a lion stalking the meek deer of impiety. Therefore 
-                    one must faithfully observe the sacred Apara Ekadasi and worship the Supreme Personality 
-                    of Godhead, Sri Trivikrama. One who does so is freed of all his sins and promoted to the 
-                    abode of Lord Vishnu.
+                    <b>Suta Goswami to Saunaka Risi</b> : Anyone who devotedly fasts on this Ekadasis that occur during the extra, 
+                    leap-year months, carefully following all the rules, becomes glorious and 
+                    happily goes back to Godhead. And one who merely hears or reads about these 
+                    Ekadasis will also obtain great merit and ultimately enter the abode of Lord Sri Hari.
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/apara-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/padmini-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}

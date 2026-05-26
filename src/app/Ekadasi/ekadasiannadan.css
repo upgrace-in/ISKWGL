@@ -148,7 +148,8 @@
   border-radius: 100px;
   font-weight: 600;
   cursor: pointer;
-  min-width: 160px;
+  min-width: auto;
+  width:auto;
   transition: all 0.2s ease;
 }
 
@@ -170,7 +171,7 @@
         height: 102vh;
     }
      .date-badge {
-        margin-top: -325px;
+        margin-top: -370px;
     }
     .donation-container {
         flex-direction: column;
@@ -180,8 +181,8 @@
     }
     /* Make the sidebar full width */
     .donation-sidebar {
-        width: 400px;
-        /* width: 100%; */
+        /* width: 400px; */
+        width: 100%;
     }
     /* Transform the list into a horizontal, scrollable row */
   .donation-sidebar ul {
