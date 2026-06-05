@@ -42,11 +42,16 @@ export const generatePDF = async (dict, donation) => {
         const watermarkDataUrl = loadAsset('watermark_pattern.png');
 
         // Date Formatting
-        const txDate = donation.webhookData?.txTime ? new Date(decodeURIComponent(donation.webhookData.txTime)) : new Date();
-        const formattedDate = txDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        // console.log("TX TIME:", donation.webhookData?.txTime);
+        const txDate = donation.webhookData?.txTime ? new Date(donation.webhookData.txTime) : new Date();
+        const formattedDate = isNaN(txDate)
+    ? new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+    : txDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
         // Amount in Words
-        const amountWords = numberToWords(dict.orderAmount);
+        // const amountWords = numberToWords(dict.orderAmount);
+        const amount = Math.floor(Number(dict.orderAmount) || 0);
+        const amountWords = numberToWords(amount);
 
         // Sidebar Year
         const currentYear = new Date().getFullYear();
@@ -99,6 +104,7 @@ export const generatePDF = async (dict, donation) => {
                 args: ['--no-sandbox', '--disable-setuid-sandbox'],
                 headless: true,
                 executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+                // executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
             });
         }
         const page = await browser.newPage();
