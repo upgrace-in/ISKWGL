@@ -28,7 +28,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Padmini";
+    const ekadasi_name = "Parama";
 
     const [amount, setAmount] = useState();
 
@@ -78,12 +78,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">27 May 2026</div>
+                <div className="date-badge">11 Jun 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadasi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 28 May 2026, 5:42 AM to 08:02 AM for Warangal.
+                        Fast breaking parana time: 12 Jun 2026, 5:42 AM to 10:05 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -93,13 +93,14 @@ export default function Ekadasi() {
             <div className="description-section">
                 {/* Spiritual Significance Paragraph */}
                 <p className="hero-description">
-                    <b>Suta Goswami to Saunaka Risi</b> : Anyone who devotedly fasts on this Ekadasis that occur during the extra, 
-                    leap-year months, carefully following all the rules, becomes glorious and 
-                    happily goes back to Godhead. And one who merely hears or reads about these 
-                    Ekadasis will also obtain great merit and ultimately enter the abode of Lord Sri Hari.
+                    <b>Parama Ekadasi: The Most Auspicious Ekadashi of Purushottam Maas</b>
+                    <br/><b style={{ color: '#d4a054', fontWeight: '600' }}>Unlike regular Ekadasis, Parama Ekadasi occurs only during Adhik Maas</b>, 
+                    also known as Purushottam Maas , the month especially dear to Lord Krishna. 
+                    Scriptures explain that <b style={{ color: '#d4a054', fontWeight: '600' }}>fasting, chanting, charity, and devotional service 
+                    performed on this day bring multiplied spiritual results.</b>
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/padmini-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/parama-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
@@ -134,7 +135,7 @@ export default function Ekadasi() {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        handleDonateClick(amount, "Apara Ekadasi Seva");
+                        handleDonateClick(amount, `${ekadasi_name} Ekadasi Seva`);
                     }}
                     className = "custom-dination-container"
                     >
