@@ -12,7 +12,7 @@ import confetti from 'canvas-confetti';
 import '../RathCartDonation/GiftBox.css';
 import './HeroSection.css';
 import ReactDOM from 'react-dom'; // NEW: Import this
-export default function rathyatra() {
+export default function Rathyatra() {
     const [data, setData] = useState()
     const [navOpen, setNavOpen] = useState(false)
     const { setDonationData } = useDonation();
