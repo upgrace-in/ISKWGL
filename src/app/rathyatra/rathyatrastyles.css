@@ -1,0 +1,243 @@
+/* HeroVideo.css */
+
+.hero-video-container {
+  width: 100%;
+  height: 100vh; /* Takes up 100% of the viewport height */
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+}
+
+.background-video {
+  width: 100%;
+  /* height: 100%; */
+  object-fit: cover; /* Ensures the video fills the container without stretching */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1; /* Keeps the video completely in the background */
+}
+.video-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  /* text-align: center; */
+  z-index: 1; /* Puts the text on top of the video */
+  
+  /* Optional: Add a subtle text shadow to make it readable over light videos */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+/* Add this to your existing HeroVideo.css */
+
+.mute-toggle-btn {
+    position: absolute;
+  top: 80px;
+  left: 20px;
+  z-index: 10;
+  margin-top: 20px;
+  padding: 10px 10px;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+  color: white;
+  border: 2px solid white;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mute-toggle-btn:hover {
+  background-color: white;
+  color: black;
+}
+/* Keep your existing .seva-grid unchanged */
+.seva-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 25px;
+    padding: 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+    z-index: 30;
+}
+
+/* 1. Base Card Restyling */
+.seva-card {
+    background: #fff8f0; /* Light peach/cream background */
+    padding: 12px; /* Thin padding to frame the image perfectly */
+    border-radius: 16px;
+    text-align: center;
+    border: 2px solid #eec48c; /* Soft gold border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.seva-card:hover {
+    transform: scale(1.03); 
+    box-shadow: 0 12px 25px rgba(107, 45, 45, 0.2); /* Maroon-tinted shadow on hover */
+    z-index: 20; 
+}
+
+/* 2. Main Image Container */
+.seva-image-container {
+    width: 100%;
+    border-radius: 10px; /* Rounds the image inside the card */
+    overflow: hidden;
+}
+
+.seva-main-img {
+    width: 100%;
+    height: 220px; /* Adjust height based on your layout needs */
+    object-fit: cover;
+    display: block;
+}
+
+/* 3. Content Area (Pulls up to overlap image) */
+.seva-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -20px; /* This negative margin pulls the title UP over the image */
+    position: relative;
+    z-index: 2; /* Ensures it sits on top of the image */
+}
+/* The Parent Container */
+.side-by-side-container {
+  display: flex;             /* This puts the children in a row */
+  align-items: center;       /* This vertically centers the text and the div */
+  gap: 2px;                 /* This adds space between them (adjust as needed) */
+}
+/* 4. Maroon Title Badge */
+.title-badge {
+    background: #5a0209; /* Deep traditional maroon */
+    border: 2px solid #d4a054; /* Gold border */
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.4); /* Strong shadow to separate from image */
+    margin-bottom: 10px;
+}
+
+.title-badge h3 {
+    margin: 0;
+    font-size: 20px;
+    font-family: serif; /* Gives that traditional/ethnic look */
+    letter-spacing: 0.5px;
+}
+
+.gold-star {
+    color: #d4a054;
+    font-size: 14px;
+}
+
+/* 5. Subtitle (Annadan for 250 members) */
+.seva-subtitle {
+    font-style: italic;
+    color: #4a4a4a;
+    font-family: serif;
+    font-size: 16px;
+    margin: 0 0 5px 0;
+}
+
+/* Specific styling for the first card to look golden */
+.premium-gold-card {
+  background: linear-gradient(135deg, #fffcf0, #eec48c, #fffcf0); /* Multi-tone golden gradient for depth */
+  border: 3px solid #d4a054; /* Bolder gold border */
+  box-shadow: 0 6px 15px rgba(212, 160, 84, 0.3); /* Subtle gold-tinted shadow */
+  
+  /* Ensuring consistency - image and content containers will look great
+     against this golden background without needing specific changes here */
+}
+
+/* 6. Price Badge / Button */
+.contribute-btn {
+    /* background: #5a0209; */
+    /* background: #7a040f;  */
+    /* background: #6b2d2d;  */
+    background: linear-gradient(135deg, #d4a054 0%, #6b2d2d 100%);
+    color: white;
+    border: 2px solid #d4a054;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    font-family: serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+    transform: translateZ(0);
+}
+/* 2. Create the "light beam" */
+.contribute-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* Start perfectly hidden on the left side */
+    width: 50%; /* Width of the glow ray */
+    height: 100%;
+    
+    /* A soft white/gold gradient that fades at the edges */
+    background: linear-gradient(
+        to right, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.4) 50%, 
+        rgba(255, 255, 255, 0) 100%
+    );
+    
+    /* Skew it slightly to make it look like a diagonal shine */
+    transform: skewX(-25deg);
+    
+    /* Apply the animation */
+    animation: shine-sweep 6s infinite; /* 4 seconds total cycle */
+    z-index: 1; /* Keep it above the button background but under text if possible */
+}
+
+/* 3. The Animation Keyframes */
+@keyframes shine-sweep {
+    /* 0% to 15%: The sweep happens fast (0.6 seconds) */
+    0% {
+        left: -100%;
+    }
+    25% {
+        left: 200%; /* Sweeps all the way off the right side */
+    }
+    /* 15% to 100%: It waits invisibly for the remaining 3.4 seconds */
+    100% {
+        left: 200%;
+    }
+}
+.contribute-btn:hover { 
+    background: #7a040f; /* Slightly lighter maroon on hover */
+    transform: translateY(-2px); /* Tiny lift effect when hovering */
+}
+
+/* First row (3 cards): Each takes 4 columns (4 x 3 = 12 total) */
+.row-item-4 {
+    grid-column: span 4;
+}
+
+/* Second row (4 cards): Each takes 3 columns (3 x 4 = 12 total) */
+.row-item-3 {
+    grid-column: span 3;
+}
+
+@media (max-width: 768px) {
+    .background-video {
+        margin-top: 70px;
+    }
+    .mute-toggle-btn{
+        left: 10px;
+    }
+}
