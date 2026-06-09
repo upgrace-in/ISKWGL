@@ -57,6 +57,7 @@
     grid-template-columns: repeat(12, 1fr);
     gap: 25px;
     padding: 20px;
+    width: 90%;
     max-width: 1300px;
     margin: 0 auto;
     z-index: 30;
