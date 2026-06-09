@@ -36,7 +36,7 @@
   z-index: 3;        /* Sits completely on top of both image and tint */
   
   width: 100%;
-  max-width: 500px;  /* Ensures the video stays a clean, smaller size */
+  max-width: 38%;  /* Ensures the video stays a clean, smaller size */
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Lift shadow effect */
