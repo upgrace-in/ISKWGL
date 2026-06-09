@@ -106,7 +106,7 @@ export default function Rathyatra() {
     // Removed the buggy global state that used to be here!
 
     const rathPlans = [
-        { title: "Jagannath Seva", count: 250, price: 25116, icon: "/Images/rathyatra/Jagannath.png", featured: true, badge: "Maha Patron" , 
+        { title: "Jagannath Seva", count: 250, price: 25116, icon: "/images/rathyatra/Jagannath.png", featured: true, badge: "Maha Patron" , 
             gifts: [
                 {title:"Special Puja for Lord Jagannath", picture:"/Icons/Jagannath.png"}, 
                 {title:"Puri Flag", picture:"/Icons/Jagannath.png"}, 
@@ -117,7 +117,7 @@ export default function Rathyatra() {
                 {title:"Jagannath Keychain", picture:"/Icons/Jagannath.png"},
             ]
         },
-        { title: "Baladev Seva", count: 150, price: 15116, icon: "/Images/rathyatra/Baladev.png", featured: false,
+        { title: "Baladev Seva", count: 150, price: 15116, icon: "/images/rathyatra/Baladev.png", featured: false,
             gifts: [
                 {title:"Puri Flag", picture:"/Icons/Jagannath.png"}, 
                 {title:"Acrylic Photo", picture:"/Icons/Jagannath.png"},
@@ -127,7 +127,7 @@ export default function Rathyatra() {
                 {title:"Jagannath Keychain", picture:"/Icons/Jagannath.png"},
             ]
         },
-        { title: "Subhadra Seva", count: 100, price: 10116, icon: "/Images/rathyatra/Subhadra.png", featured: false,
+        { title: "Subhadra Seva", count: 100, price: 10116, icon: "/images/rathyatra/Subhadra.png", featured: false,
             gifts: [
                 {title:"Puri Flag", picture:"/Icons/Jagannath.png"}, 
                 {title:"Acrylic Photo", picture:"/Icons/Jagannath.png"},
@@ -136,7 +136,7 @@ export default function Rathyatra() {
                 {title:"Jagannath Keychain", picture:"/Icons/Jagannath.png"},
             ]
         },
-        { title: "Sudarshan Seva", count: 50, price: 5116, icon: "/Images/rathyatra/Sudarshan.jpg", featured: false ,
+        { title: "Sudarshan Seva", count: 50, price: 5116, icon: "/images/rathyatra/Sudarshan.jpg", featured: false ,
             gifts: [
                 {title:"Small Jagannath deities", picture:"/Icons/Jagannath.png"}, 
                 {title:"Jagannath Agarbatti", picture:"/Icons/Jagannath.png"}, 
@@ -144,21 +144,21 @@ export default function Rathyatra() {
                 {title:"Jagannath Keychain", picture:"/Icons/Jagannath.png"},
             ]
         },
-        { title: "Hanuman Seva", count: 20, price: 2116, icon: "/Images/rathyatra/Hanuman.jpeg", featured: false ,
+        { title: "Hanuman Seva", count: 20, price: 2116, icon: "/images/rathyatra/Hanuman.jpeg", featured: false ,
             gifts: [
                 {title:"Jagannath Agarbatti", picture:"/Icons/Jagannath.png"}, 
                 {title:"Maha Prasadam Box", picture:"/Icons/Jagannath.png"},
                 {title:"Jagannath Keychain", picture:"/Icons/Jagannath.png"},
             ]
         },
-        { title: "Garuda Seva", count: 10, price: 1116, icon: "/Images/rathyatra/Garuda.jpg", featured: false ,
+        { title: "Garuda Seva", count: 10, price: 1116, icon: "/images/rathyatra/Garuda.jpg", featured: false ,
             gifts: [
                 {title:"Jagannath Agarbatti", picture:"/Icons/Jagannath.png"}, 
                 {title:"Maha Prasadam Box", picture:"/Icons/Jagannath.png"},
                 {title:"Jagannath Keychain", picture:"/Icons/Jagannath.png"},
             ]
         },
-        { title: "Rath Seva", count: 5, price: 516, icon: "/Images/rathyatra/rath.jpg", featured: false ,
+        { title: "Rath Seva", count: 5, price: 516, icon: "/images/rathyatra/rath.jpg", featured: false ,
             gifts: [
                 {title:"Maha Prasadam Box", picture:"/Icons/Jagannath.png"},
                 {title:"Jagannath Keychain", picture:"/Icons/Jagannath.png"},
@@ -178,7 +178,7 @@ export default function Rathyatra() {
             
             <div className="hero-page-container">
               <img 
-                src="/Images/rathyatra/hero-image.png" 
+                src="/images/rathyatra/hero-image.png" 
                 alt="Rath Yatra Festive Backdrop" 
                 className="hero-underlay-image"
               />
@@ -192,7 +192,7 @@ export default function Rathyatra() {
                   playsInline 
                   className="actual-overlay-video"
                 >
-                  <source src="Images/Ratha-Yatra-2025.mp4" type="video/mp4" />
+                  <source src="images/Ratha-Yatra-2025.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
                 <button className="sound-toggle-btn" onClick={toggleMute}>
