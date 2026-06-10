@@ -27,12 +27,14 @@ const Checkout = async (paymentSessionId) => {
             // This is an exceptional case only when the page is opened inside an inAppBrowser
             // In this case the customer will be redirected to return url once payment is completed
             console.log("Payment will be redirected");
+            window.location.href = "/rathyatra";
             return { success: "Payment Successful! Thanks for your generous donation..." }
         }
         if (result.paymentDetails) {
             // This will be called whenever the payment is completed irrespective of transaction status
             console.log("Payment has been completed, Check for Payment Status");
             console.log(result.paymentDetails.paymentMessage);
+            window.location.href = "/rathyatra";
             return { success: "Payment Successful! Thanks for your generous donation..." }
         }
     });
