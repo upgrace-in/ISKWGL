@@ -49,7 +49,7 @@ export async function POST(request) {
 
             "appId": clientID,
             "notifyUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/api/handleWebhook`,
-            "returnUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/#donate`
+            "returnUrl": `https://iskconwarangal.in/`
         }
 
         const signature = generateSignature(formData);
