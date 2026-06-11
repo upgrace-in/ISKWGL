@@ -37,14 +37,14 @@ export default function Ekadasi() {
     };
 
     const donationoptions = {
-        'Ekadasi Prasad Seva': [
-            { title: "Ekadasi Prasad (For 10 Devotees)", price: 1116},
-            { title: "Ekadasi Prasad (For 15 Devotees)", price: 1516},
-            { title: "Ekadasi Prasad (For 30 Devotees)", price: 3116},
-            { title: "Ekadasi Prasad (For 50 Devotees)", price: 5116},
-            { title: "Ekadasi Prasad (For 100 Devotees)", price: 10116},
+        'Ekadashi Prasad Seva': [
+            { title: "Ekadashi Prasad (For 10 Devotees)", price: 1116},
+            { title: "Ekadashi Prasad (For 15 Devotees)", price: 1516},
+            { title: "Ekadashi Prasad (For 30 Devotees)", price: 3116},
+            { title: "Ekadashi Prasad (For 50 Devotees)", price: 5116},
+            { title: "Ekadashi Prasad (For 100 Devotees)", price: 10116},
         ],
-        'Ekadasi Go Seva': [
+        'Ekadashi Go Seva': [
             { title: "Go Seva (Feed 1 Cow)", price: 116},
             { title: "Go Seva (Feed 2 Cows)", price: 216},
         ]
@@ -79,7 +79,7 @@ export default function Ekadasi() {
             <div className="hero-content-ekadasi">
                 
                 <div className="date-badge">11 Jun 2026</div>
-                <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadasi</p>
+                <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadashi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
@@ -93,8 +93,8 @@ export default function Ekadasi() {
             <div className="description-section">
                 {/* Spiritual Significance Paragraph */}
                 <p className="hero-description">
-                    <b>Parama Ekadasi: The Most Auspicious Ekadashi of Purushottam Maas</b>
-                    <br/><b style={{ color: '#d4a054', fontWeight: '600' }}>Unlike regular Ekadasis, Parama Ekadasi occurs only during Adhik Maas</b>, 
+                    <b>Parama Ekadashi: The Most Auspicious Ekadashi of Purushottam Maas</b>
+                    <br/><b style={{ color: '#d4a054', fontWeight: '600' }}>Unlike regular Ekadasis, Parama Ekadashi occurs only during Adhik Maas</b>, 
                     also known as Purushottam Maas , the month especially dear to Lord Krishna. 
                     Scriptures explain that <b style={{ color: '#d4a054', fontWeight: '600' }}>fasting, chanting, charity, and devotional service 
                     performed on this day bring multiplied spiritual results.</b>
@@ -135,7 +135,7 @@ export default function Ekadasi() {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        handleDonateClick(amount, `${ekadasi_name} Ekadasi Seva`);
+                        handleDonateClick(amount, `${ekadasi_name} Ekadashi Seva`);
                     }}
                     className = "custom-dination-container"
                     >
