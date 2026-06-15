@@ -482,7 +482,7 @@ export default function Rathyatra() {
         ],
         bhakta: [
             { title: "GARUDA SEVA", price: 1116, icon: "/images/rathyatra/Garuda.jpg" },
-            { title: "HANUMAN SEVA", price: 516, icon: "/images/rathyatra/Hanumana.jpg" }
+            { title: "HANUMAN SEVA", price: 516, icon: "/images/rathyatra/hanumana.jpg" }
         ]
     };
 
