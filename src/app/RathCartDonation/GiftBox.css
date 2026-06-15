@@ -55,21 +55,43 @@
 
 /* Modal Content Box */
 .popup-content {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  max-width: 400px;
-  width: 90%;
-  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy entrance */
+    position: relative; 
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    max-width: 400px;
+    width: 90%;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* --- THE NEW 'X' CLOSE ICON --- */
+.popup-close-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    color: #888888;
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+    transition: color 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+}
+
+.popup-close-icon:hover {
+    color: #ff4757; /* Turns bright red on hover */
+    transform: scale(1.1); /* Slight pop effect */
+}
+/* --- UPDATED GIFT ITEM LAYOUT --- */
 .gift-list {
   list-style: none;
   padding: 0;
   margin: 20px 0;
-  text-align: left;
 }
 
 .gift-list li {
@@ -77,7 +99,48 @@
   border-bottom: 1px solid #eee;
   font-size: 18px;
 }
+.gift-item {
+  display: flex;
+  align-items: center; /* Vertically centers the text with the image */
+  gap: 15px; /* Adds space between the image and the text */
+  padding: 12px 10px;
+  border-bottom: 1px solid #eee;
+}
+/* Removes the border from the last item so it looks cleaner */
+.gift-item:last-child {
+  border-bottom: none;
+}
+/* NEW: Styles for the gift image */
+.gift-item-img {
+  width: 50px; /* Fixed size for uniformity */
+  height: 50px;
+  object-fit: cover; /* Ensures images don't stretch weirdly */
+  border-radius: 8px; /* Soft, rounded corners */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  flex-shrink: 0; /* Prevents the image from shrinking if the text is long */
+}
+.gift-item-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  text-align: left;
+  line-height: 1.3;
+}
+/* --- POPUP BUTTON LAYOUT --- */
+.popup-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
 
+/* Let the Donate button take up the full width now that it's alone */
+.popup-actions .contribute-btn {
+    width: 100%;
+    margin: 0;
+    padding: 12px 15px;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
 .close-btn {
   background-color: #ff4757;
   color: white;
@@ -86,7 +149,8 @@
   font-size: 16px;
   border-radius: 6px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 0; /* Removes the old top margin */
+  flex-shrink: 0;
 }
 
 .close-btn:hover {

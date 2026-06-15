@@ -1,0 +1,464 @@
+/* --- MAIN WRAPPERS --- */
+.festival-info-section {
+    background-color: #FCF5EB; /* Matches your peach theme */
+    background-image: linear-gradient(
+        to bottom, 
+        #FEEBE8 0px,   /* Start with the PREVIOUS section's color at the very top edge */
+        #FCF5EB 50px  /* Blend completely into THIS section's color over 100 pixels */
+    );
+    padding: 40px 20px;
+    font-family: 'Times New Roman', Georgia, serif;
+}
+
+.festival-info-row {
+    display: flex;
+    flex-direction: row;
+    gap: 40px; /* Space between the two columns */
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: stretch; /* Makes both boxes equal height */
+}
+
+.info-column {
+    flex: 1; /* Both columns take up exactly 50% */
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- THE ORNATE BOX DESIGN --- */
+.info-box {
+    border: 2px solid #eec48c; /* Gold border */
+    border-radius: 12px;
+    position: relative;
+    padding: 50px 20px 30px 20px; /* Extra top padding for the badge */
+    background: transparent;
+    flex-grow: 1; /* Forces the box to stretch to the bottom */
+}
+
+/* The maroon badge overlapping the top border */
+.info-badge {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #5a0209;
+    color: white;
+    padding: 8px 30px;
+    border: 2px solid #d4a054;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    white-space: nowrap;
+}
+
+.info-badge h2 {
+    margin: 0;
+    font-size: 22px;
+    font-style: italic;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   LEFT COLUMN: TIMELINE SCHEDULE
+========================================= */
+.timeline-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.timeline-time {
+    width: 90px;
+    font-weight: bold;
+    color: #5a0209;
+    font-size: 18px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* The vertical line and circle */
+.timeline-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 20px;
+    position: relative;
+}
+
+/* This creates the continuous line connecting the dots */
+.timeline-divider::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    bottom: -40px; /* Stretches to the next item */
+    width: 2px;
+    background-color: #eec48c;
+    z-index: 0;
+}
+
+/* Removes the line from the last item so it doesn't hang off the edge */
+.timeline-item:last-child .timeline-divider::before {
+    display: none;
+}
+
+.timeline-dot {
+    width: 35px;
+    height: 35px;
+    background: white;
+    border: 2px solid #d4a054;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.timeline-content {
+    color: #333;
+    font-size: 17px;
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+/* =========================================
+   RIGHT COLUMN: BUDGET SNAPSHOT
+========================================= */
+.budget-grid {
+    display: flex;
+    flex-wrap: wrap; /* Allows cards to wrap into multiple rows if needed */
+    justify-content: center;
+    gap: 15px;
+}
+
+.budget-card {
+    background: #fff8f0;
+    border: 1px solid #eec48c;
+    border-radius: 8px;
+    padding: 15px 10px;
+    text-align: center;
+    width: 130px; /* Fixed width for uniformity */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.budget-icon-wrapper {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+.budget-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.budget-title {
+    font-size: 14px;
+    color: #5a0209;
+    font-weight: bold;
+    margin: 0 0 15px 0;
+    line-height: 1.2;
+    flex-grow: 1; /* Pushes the price tag to the bottom */
+}
+
+/* The distinctive red & white price badge */
+.budget-price-tag {
+    background: white;
+    color: #5a0209;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 4px 12px;
+    border: 1px solid #ff4d4d; /* Red border from image */
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    white-space: nowrap;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+========================================= */
+@media (max-width: 950px) {
+    /* Stacks the Schedule on top of the Budget */
+    .festival-info-row {
+        flex-direction: column;
+        flex-direction: column-reverse;
+        gap: 60px; /* Larger gap because of the overlapping badges */
+    }
+    .budget-grid {
+        gap: 10px;
+    }
+    
+    .budget-card {
+        width: 110px; /* Slightly smaller cards on phones to fit more */
+    }
+    
+    .info-badge h2 {
+        font-size: 18px;
+    }
+    
+    .timeline-time {
+        width: 75px;
+        font-size: 16px;
+    }
+    
+    .timeline-content {
+        font-size: 15px;
+    }
+}
+/* =========================================
+   ROUTE MAP STYLES
+========================================= */
+.route-map-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+
+/* The wrapping container for the circles */
+.route-flow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Base spacing for desktop */
+    margin-bottom: 30px;
+}
+/* Individual Stop Wrapper */
+.route-stop {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+/* DESKTOP ARROWS (Adds ➔ to the right of every item except the last) */
+.route-stop:not(:last-child)::after {
+    content: '➔';
+    position: absolute;
+    top: 50%;
+    right: -26px;
+    transform: translateY(-50%);
+    color: #5a0209;
+    font-size: 20px;
+    font-weight: bold;
+}
+/* The Map Stop Circles */
+.route-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 1.5px solid #d83a56; 
+    background-color: #feebe8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.route-circle span {
+    font-size: 13px;
+    font-weight: bold;
+    color: #5a0209;
+    line-height: 1.2;
+}
+/* The tiny arrows between circles */
+.route-arrow {
+    color: #5a0209;
+    font-size: 18px;
+    font-weight: bold;
+}
+/* --- THE ARROWS --- */
+.arrow-desktop {
+    display: block; /* Visible on laptops */
+    color: #5a0209;
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 15px; 
+}
+
+.arrow-mobile {
+    display: none; /* Hidden on laptops */
+    position: absolute;
+    color: #5a0209;
+    font-size: 28px;
+    font-weight: bold;
+    z-index: 5;
+}
+/* --- The Decorative Footer --- */
+.route-footer {
+    text-align: center;
+    width: 100%;
+}
+
+.route-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.route-dash-line {
+    flex-grow: 1;
+    height: 0;
+    border-bottom: 2px dashed #5a0209;
+    max-width: 150px;
+}
+
+.route-pin {
+    font-size: 20px;
+}
+
+.route-rath-icon {
+    width: 80px;
+    height: auto;
+    object-fit: contain;
+}
+
+.route-blessing {
+    color: #d83a56; 
+    font-style: italic;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.4;
+    margin: 0;
+}
+/* =========================================
+   MOBILE "U-SHAPE" LAYOUT 
+========================================= */
+@media (max-width: 768px) {
+    .route-flow {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Forces exactly 2 columns */
+        gap: 55px 60px; /* 55px vertical gap, 60px horizontal gap */
+        justify-items: center;
+    }
+
+    /* 1. Reorder the grid to create the U-Shape */
+    .stop-1 { order: 1; } /* Top Left */
+    .stop-6 { order: 2; } /* Top Right */
+    .stop-2 { order: 3; } /* Middle Left */
+    .stop-5 { order: 4; } /* Middle Right */
+    .stop-3 { order: 5; } /* Bottom Left */
+    .stop-4 { order: 6; } /* Bottom Right */
+
+    /* 2. CRITICAL FIX: Completely hide desktop arrows */
+    .arrow-desktop { 
+        display: none !important; 
+    }
+    .route-stop:not(:last-child)::after{
+        display: none; /* Hides the desktop arrows that are part of the HTML structure */
+    }
+
+    /* 3. Force mobile arrows to show */
+    .arrow-mobile { 
+        display: block !important; 
+    }
+
+    /* 4. Position the mobile arrows perfectly in the empty gaps */
+    .arrow-down {
+        bottom: -45px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .arrow-up {
+        top: -45px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .arrow-right {
+        top: 50%;
+        right: -45px; /* Pushes the arrow directly into the gap between the two columns */
+        transform: translateY(-50%);
+    }
+}
+/* =========================================
+   NEW WAVY ROUTE FOOTER
+========================================= */
+.route-footer-custom {
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.route-decoration-wavy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 15px auto;
+    color: #a31d3f; /* The specific deep pink/maroon from your image */
+}
+
+/* The Map Pins */
+.custom-pin {
+    width: 24px;
+    height: 35px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+/* Container allowing the wavy line to stretch */
+.wavy-line-container {
+    flex-grow: 1;
+    height: 30px;
+    margin: 0 15px;
+}
+
+.wavy-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+/* The central Rath */
+.custom-rath-monochrome {
+    width: 65px;
+    height: 65px;
+    fill: currentColor;
+    flex-shrink: 0;
+    margin: 0 10px;
+}
+
+/* The Blessing Text */
+.route-blessing-text {
+    color: #a31d3f; 
+    font-family: 'Times New Roman', Georgia, serif;
+    font-style: italic;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.4;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* --- Mobile Tweaks --- */
+@media (max-width: 600px) {
+    .route-decoration-wavy {
+        max-width: 95%;
+    }
+    .wavy-line-container {
+        margin: 0 5px;
+    }
+    .custom-rath-monochrome {
+        width: 50px;
+        height: 50px;
+    }
+    .route-blessing-text {
+        font-size: 18px;
+    }
+}

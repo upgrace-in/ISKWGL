@@ -1,8 +1,7 @@
-/* HeroVideo.css */
-
+/* rathstyle.css */
 .hero-video-container {
   width: 100%;
-  height: 100vh; /* Takes up 100% of the viewport height */
+  height: 100vh;
   height: 100dvh;
   position: relative;
   overflow: hidden;
@@ -10,36 +9,32 @@
 
 .background-video {
   width: 100%;
-  /* height: 100%; */
-  object-fit: cover; /* Ensures the video fills the container without stretching */
+  object-fit: cover; 
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1; /* Keeps the video completely in the background */
+  z-index: -1; 
 }
+
 .video-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
-  /* text-align: center; */
-  z-index: 1; /* Puts the text on top of the video */
-  
-  /* Optional: Add a subtle text shadow to make it readable over light videos */
+  z-index: 1; 
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
-/* Add this to your existing HeroVideo.css */
 
 .mute-toggle-btn {
-    position: absolute;
+  position: absolute;
   top: 80px;
   left: 20px;
   z-index: 10;
   margin-top: 20px;
   padding: 10px 10px;
   font-size: 16px;
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+  background-color: rgba(0, 0, 0, 0.6); 
   color: white;
   border: 2px solid white;
   border-radius: 25px;
@@ -51,194 +46,458 @@
   background-color: white;
   color: black;
 }
-/* Keep your existing .seva-grid unchanged */
-.seva-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 25px;
-    padding: 20px;
-    width: 90%;
-    max-width: 1300px;
-    margin: 0 auto;
-    z-index: 30;
+
+.middle-part-container{
+  /* background-color: #feebe8; */
+  background-color: #FFFDF8;
+    background-image: linear-gradient(
+        to bottom, 
+        #feebe8 0px,   /* Start with the PREVIOUS section's color at the very top edge */
+        #FFFDF8 100px  /* Blend completely into THIS section's color over 100 pixels */
+    );
+  padding-bottom: 0px;
+}
+html {
+    /* Makes the browser glide down the page instead of jumping instantly */
+    scroll-behavior: smooth;
+}
+/* SEVA GRIDS */
+.seva-grid-maha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  padding: 20px;
+  width: 70%;
+  height: auto;
+  max-width: 1300px;
+  margin: 0 auto;
+  z-index: 30;
+  background-color: #FFFDF8;
 }
 
-/* 1. Base Card Restyling */
+.seva-grid-pradhana {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  padding: 20px;
+  width: 85%;
+  height: auto;
+  max-width: 1300px;
+  margin: 0 auto;
+  z-index: 30;
+  background-color: #FFFDF8;
+}
+
+.lower-sections-heading{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
 .seva-card {
-    background: #fff8f0; /* Light peach/cream background */
-    padding: 12px; /* Thin padding to frame the image perfectly */
-    border-radius: 16px;
-    text-align: center;
-    border: 2px solid #eec48c; /* Soft gold border */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
+  background: #fff8f0; 
+  padding: 12px; 
+  border-radius: 16px;
+  text-align: center;
+  border: 2px solid #eec48c; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .seva-card:hover {
-    transform: scale(1.03); 
-    box-shadow: 0 12px 25px rgba(107, 45, 45, 0.2); /* Maroon-tinted shadow on hover */
-    z-index: 20; 
+  transform: scale(1.03); 
+  box-shadow: 0 12px 25px rgba(107, 45, 45, 0.2); 
+  z-index: 20; 
 }
 
-/* 2. Main Image Container */
+.bottom-seva-row {
+  display: flex;
+  flex-direction: row;
+  gap: 40px; 
+  align-items: flex-start; 
+  width: 95%;
+  margin:auto;
+}
+
+.seva-column {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+}
+
+.seva-grid-half {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 20px;
+  background-color: #FFFDF8;
+}
+
+/* IMAGE CONTAINERS */
 .seva-image-container {
-    width: 100%;
-    border-radius: 10px; /* Rounds the image inside the card */
-    overflow: hidden;
+  width: 100%;
+  border-radius: 10px; 
+  overflow: hidden;
 }
 
-.seva-main-img {
-    width: 100%;
-    height: 220px; /* Adjust height based on your layout needs */
-    object-fit: cover;
-    display: block;
+.seva-main-img-maha {
+  width: 100%;
+  height: 400px; 
+  object-fit: cover;
+  display: block;
 }
 
-/* 3. Content Area (Pulls up to overlap image) */
+.seva-main-img-pradhana, .seva-main-img {
+  width: 100%;
+  height: 220px; 
+  object-fit: cover;
+  display: block;
+}
+
+/* CONTENT & BADGES */
 .seva-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: -20px; /* This negative margin pulls the title UP over the image */
-    position: relative;
-    z-index: 2; /* Ensures it sits on top of the image */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -20px; 
+  position: relative;
+  z-index: 2; 
 }
-/* The Parent Container */
+
 .side-by-side-container {
-  display: flex;             /* This puts the children in a row */
-  align-items: center;       /* This vertically centers the text and the div */
-  gap: 2px;                 /* This adds space between them (adjust as needed) */
+  display: flex;             
+  align-items: center;       
+  justify-content: center;
+  flex-direction: row;
+  text-align: center;
+  gap: 8px;                
+  /* margin: 15px 0; */
 }
-/* 4. Maroon Title Badge */
+
 .title-badge {
-    background: #5a0209; /* Deep traditional maroon */
-    border: 2px solid #d4a054; /* Gold border */
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 8px 24px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.4); /* Strong shadow to separate from image */
-    margin-bottom: 10px;
+  background: #5a0209; 
+  border: 2px solid #d4a054; 
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.4); 
+  margin-bottom: 10px;
 }
 
 .title-badge h3 {
-    margin: 0;
-    font-size: 20px;
-    font-family: serif; /* Gives that traditional/ethnic look */
-    letter-spacing: 0.5px;
+  margin: 0;
+  font-size: 20px;
+  font-family: serif; 
+  letter-spacing: 0.5px;
 }
 
 .gold-star {
-    color: #d4a054;
-    font-size: 14px;
+  color: #d4a054;
+  font-size: 14px;
 }
 
-/* 5. Subtitle (Annadan for 250 members) */
 .seva-subtitle {
-    font-style: italic;
-    color: #4a4a4a;
-    font-family: serif;
-    font-size: 16px;
-    margin: 0 0 5px 0;
+  font-style: italic;
+  color: #4a4a4a;
+  font-family: serif;
+  font-size: 16px;
+  margin: 0 0 5px 0;
 }
 
-/* Specific styling for the first card to look golden */
 .premium-gold-card {
-  background: linear-gradient(135deg, #fffcf0, #eec48c, #fffcf0); /* Multi-tone golden gradient for depth */
-  border: 3px solid #d4a054; /* Bolder gold border */
-  box-shadow: 0 6px 15px rgba(212, 160, 84, 0.3); /* Subtle gold-tinted shadow */
-  
-  /* Ensuring consistency - image and content containers will look great
-     against this golden background without needing specific changes here */
+  background: linear-gradient(135deg, #fffcf0, #eec48c, #fffcf0); 
+  border: 3px solid #d4a054; 
+  box-shadow: 0 6px 15px rgba(212, 160, 84, 0.3); 
 }
 
-/* 6. Price Badge / Button */
+/* BUTTON */
 .contribute-btn {
-    /* background: #5a0209; */
-    /* background: #7a040f;  */
-    /* background: #6b2d2d;  */
-    background: linear-gradient(135deg, #d4a054 0%, #6b2d2d 100%);
-    color: white;
-    border: 2px solid #d4a054;
-    padding: 10px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 18px;
-    font-family: serif;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    transition: all 0.2s ease;
-    transform: translateZ(0);
+  background: linear-gradient(135deg, #d4a054 0%, #6b2d2d 100%);
+  color: white;
+  border: 2px solid #d4a054;
+  padding: 10px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  font-family: serif;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+  transform: translateZ(0);
+  position: relative; 
+  overflow: hidden;
 }
-/* 2. Create the "light beam" */
+
 .contribute-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%; /* Start perfectly hidden on the left side */
-    width: 50%; /* Width of the glow ray */
-    height: 100%;
-    
-    /* A soft white/gold gradient that fades at the edges */
-    background: linear-gradient(
-        to right, 
-        rgba(255, 255, 255, 0) 0%, 
-        rgba(255, 255, 255, 0.4) 50%, 
-        rgba(255, 255, 255, 0) 100%
-    );
-    
-    /* Skew it slightly to make it look like a diagonal shine */
-    transform: skewX(-25deg);
-    
-    /* Apply the animation */
-    animation: shine-sweep 6s infinite; /* 4 seconds total cycle */
-    z-index: 1; /* Keep it above the button background but under text if possible */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%; 
+  width: 50%; 
+  height: 100%;
+  background: linear-gradient(
+      to right, 
+      rgba(255, 255, 255, 0) 0%, 
+      rgba(255, 255, 255, 0.4) 50%, 
+      rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  animation: shine-sweep 6s infinite; 
+  z-index: 1; 
 }
 
-/* 3. The Animation Keyframes */
 @keyframes shine-sweep {
-    /* 0% to 15%: The sweep happens fast (0.6 seconds) */
-    0% {
-        left: -100%;
-    }
-    25% {
-        left: 200%; /* Sweeps all the way off the right side */
-    }
-    /* 15% to 100%: It waits invisibly for the remaining 3.4 seconds */
-    100% {
-        left: 200%;
-    }
+  0% { left: -100%; }
+  25% { left: 200%; }
+  100% { left: 200%; }
 }
+
 .contribute-btn:hover { 
-    background: #7a040f; /* Slightly lighter maroon on hover */
-    transform: translateY(-2px); /* Tiny lift effect when hovering */
+  background: #7a040f; 
+  transform: translateY(-2px); 
 }
 
-/* First row (3 cards): Each takes 4 columns (4 x 3 = 12 total) */
-.row-item-4 {
-    grid-column: span 4;
+/* =========================================================
+   MOBILE RESPONSIVENESS - THIS FIXES THE PAGE ON PHONES
+========================================================= */
+@media (max-width: 950px) {
+  .bottom-seva-row {
+      flex-direction: column; 
+      align-items: center; /* Centers the columns */
+      width: 100%; /* Prevents double-shrinking */
+      gap: 0px;
+  }
+  
+  .seva-column {
+      width: 100%; /* Ensures the Leafy Divider can perfectly center itself */
+  }
+
+  .seva-grid-maha, .seva-grid-pradhana {
+      width: 95%; 
+  }
 }
 
-/* Second row (4 cards): Each takes 3 columns (3 x 4 = 12 total) */
-.row-item-3 {
-    grid-column: span 3;
+@media (max-width: 600px) {
+  /* This rule perfectly centers all 3 of your grids uniformly */
+  .seva-grid-maha, 
+  .seva-grid-pradhana, 
+  .seva-grid-half {
+      grid-template-columns: 1fr; 
+      width: 95%; /* Standardizes the width */
+      margin: 0 auto; /* Forces perfect centering */
+      padding: 10px 0; /* Removes the side-padding that was pushing cards left */
+  }
+  
+  .seva-main-img-maha {
+      height: 250px; 
+  }
+  
+  .seva-main-img-pradhana, .seva-main-img {
+      height: 180px; 
+  }
+  
+  .title-badge {
+      padding: 6px 16px;
+  }
+  
+  .title-badge h3 {
+      font-size: 16px; 
+  }
+  
+  .side-by-side-container {
+      flex-direction: row; 
+      text-align: center;
+      gap: 5px;
+  }
+  
+  .contribute-btn {
+      width: 100%; 
+      font-size: 16px;
+      padding: 12px 10px;
+  }
 }
-
-@media (max-width: 768px) {
-    .background-video {
-        margin-top: 70px;
+.mobile-collapsed-header{
+    display: none; /* Hidden on desktop, only shows on mobile */
+}
+.mobile-collapse-btn{
+    display: none; /* Hidden on desktop, only shows on mobile */
+}
+/* =========================================================
+   EXPANDABLE CARD CSS (Mobile vs Desktop)
+========================================================= */
+/* 2. Mobile View adjustments */
+@media (max-width: 600px) {
+    
+    /* --- COLLAPSED STATE (Default on mobile) --- */
+    .mobile-collapsed-header {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        text-align: left;
     }
-    .mute-toggle-btn{
-        left: 10px;
+
+    /* Hide the full desktop card initially */
+    .seva-card-expanded-content {
+        display: none; 
     }
+
+
+    /* --- EXPANDED STATE (When tapped) --- */
+    /* 1. Hide the mini header completely */
+    .seva-card.expanded .mobile-collapsed-header {
+        display: none; 
+    }
+
+    /* 2. Show the beautiful original desktop card */
+    .seva-card.expanded .seva-card-expanded-content {
+        display: block; 
+        animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    /* 3. Show the little hint at the bottom */
+    .mobile-collapse-hint {
+        display: block;
+        text-align: center;
+        color: #d4a054;
+        font-size: 14px;
+        margin-top: 20px;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+    }
+
+
+    /* --- MOBILE HEADER STYLING --- */
+    .m-row-1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px dashed #eec48c;
+        padding-bottom: 8px;
+    }
+
+    .m-title {
+        margin: 0;
+        color: #5a0209;
+        font-size: 17px;
+        font-weight: bold;
+        font-family: serif;
+    }
+
+    .m-arrow {
+        font-size: 20px;
+        color: #d4a054;
+        transition: transform 0.3s ease;
+    }
+
+    /* Shaking animation for the arrow when collapsed */
+    .m-arrow.shaking {
+        animation: horizontal-shake 1.5s infinite;
+    }
+
+    @keyframes horizontal-shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-4px); }
+        50% { transform: translateX(4px); }
+        75% { transform: translateX(-4px); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .m-row-2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center; /* Centers the button with the gift section */
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .m-gift-sec {
+        display: flex;
+        flex-direction: row; /* MAGIC: Changes it from stacked to side-by-side */
+        align-items: center; /* Vertically aligns the text and the gift icon */
+        gap: 6px; /* Adds a small space between the text and the icon */
+    }
+
+    .m-gift-text {
+        font-size: 12px;
+        font-weight: bold;
+        color: #5a0209;
+        white-space: nowrap; /* Prevents the text from breaking into two lines */
+    }
+
+    .m-donate-btn {
+        background: linear-gradient(135deg, #d4a054 0%, #6b2d2d 100%);
+        color: white;
+        border: 2px solid #d4a054;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        cursor: pointer;
+        
+        /* NEW: Required for the animation to stay inside the button */
+        position: relative;
+        overflow: hidden;
+        transform: translateZ(0);
+    }
+
+    /* NEW: The light beam sweep animation for mobile */
+    .m-donate-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+            to right, 
+            rgba(255, 255, 255, 0) 0%, 
+            rgba(255, 255, 255, 0.4) 50%, 
+            rgba(255, 255, 255, 0) 100%
+        );
+        transform: skewX(-25deg);
+        animation: shine-sweep 6s infinite;
+        z-index: 1;
+    }
+    /* 3. The specific Close Button */
+  .mobile-collapse-btn {
+      display: block;
+      text-align: center;
+      color: #d4a054;
+      background: rgba(212, 160, 84, 0.1); /* Soft gold background to make it look clickable */
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+      margin-top: 20px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.2s;
+  }
+
+  .mobile-collapse-btn:active {
+      background: rgba(212, 160, 84, 0.2);
+  }
+
+  /* Make sure the collapsed header shows a pointer finger so users know they can click it */
+  .mobile-collapsed-header {
+      cursor: pointer;
+  }
 }

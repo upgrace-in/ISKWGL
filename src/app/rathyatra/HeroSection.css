@@ -2,44 +2,111 @@
 .hero-page-container {
   position: relative;
   width: 100%;
-  height: 100vh; /* Fallback */
-  height: 100dvh; /* Dynamic height to handle mobile bars perfectly */
+  height: 100vh; 
+  height: 100dvh; 
   overflow: hidden;
 }
 
-/* --- THE IMAGE LAYER (Bottom) --- */
 .hero-underlay-image {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image fills the screen without stretching */
-  z-index: 1;        /* Places it at the lowest layer */
+  object-fit: cover; 
+  z-index: 1;        
+}
+/* --- NEW BUTTON CSS --- */
+.hero-button-group {
+    position: absolute;
+    bottom: 30px;  /* Distance from the top edge */
+    left: 30px; /* Distance from the left edge */
+    z-index: 10; /* Ensures it sits ABOVE the image */
+    
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Creates exactly two equal columns */
+    gap: 15px; /* Space between buttons (both up/down and left/right) */
+    
+    /* Ensures the grid doesn't stretch across the whole screen */
+    width: max-content;
 }
 
-/* --- THE TINT LAYER (Middle) --- */
-.hero-tint-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;        /* Sits cleanly on top of the image */
+
+/* Basic styling for the buttons to match your Rath Yatra theme */
+.hero-btn {
+    position: relative;
+    padding: 12px 24px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none; /* We remove the standard border because we are drawing a custom one */
+    background: transparent; 
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    overflow: hidden; /* This keeps the spinning light inside the button shape */
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+/* --- THE SPINNING GOLD LINE (The Magic) --- */
+.hero-btn::before {
+    content: "";
+    position: absolute;
+    width: 250%; /* Large enough to cover the whole button while spinning */
+    height: 250%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Creates a gradient that is 75% transparent, leaving only a 25% "beam" of gold */
+    background: conic-gradient(transparent 0%, transparent 75%, #ed930c 100%);
+    animation: spin-border 2s linear infinite; /* Rotates it continuously */
+    z-index: -2;
+}
+/* --- THE SOLID MAROON BACKGROUND --- */
+/* This sits on top of the spinning light, but is 2px smaller, leaving a "border" exposed */
+.hero-btn::after {
+    content: "";
+    position: absolute;
+    inset: 5px; /* MAGIC: This creates the 2px border thickness! */
+    background: #5a0209; /* Maroon inner background */
+    border-radius: 30px; /* Slightly sharper than the 8px parent to fit perfectly inside */
+    z-index: -1;
+    transition: background 0.3s ease;
 }
 
-/* --- THE VIDEO LAYER (Top Left) --- */
+/* --- THE ANIMATION KEYFRAMES --- */
+@keyframes spin-border {
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* --- HOVER EFFECTS --- */
+.hero-btn:hover {
+    color: #5a0209; /* Text flips to maroon */
+}
+
+.hero-btn:hover::after {
+    background: #d4a054; /* Background fills with gold on hover */
+}
+
+/* Optional: Make the spinning line bright white on hover to stand out against the gold! */
+.hero-btn:hover::before {
+    background: conic-gradient(transparent 0%, transparent 75%, #ffffff 100%);
+}
 .hero-video-top-layer {
   position: absolute;
-  top: 120px;         /* Distance from the top edge */
-  left: 40px;        /* Distance from the left edge */
-  z-index: 3;        /* Sits completely on top of both image and tint */
-  
+  top: 120px;         
+  left: 40px;        
+  z-index: 3;        
   width: 100%;
-  max-width: 38%;  /* Ensures the video stays a clean, smaller size */
+  max-width: 38%;  
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Lift shadow effect */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
 }
 
 .actual-overlay-video {
@@ -50,7 +117,6 @@
   object-fit: cover;
 }
 
-/* --- SOUND BUTTON STYLING --- */
 .sound-toggle-btn {
   position: absolute;
   top: 15px;
@@ -70,13 +136,250 @@
   background-color: white;
   color: black;
 }
+/* Hide the mobile date badge on desktop */
+.mobile-hero-date {
+    display: none;
+}
+/* --- HERO GROUP HEADER (Desktop Base) --- */
+.hero-group-header {
+    grid-column: 1 / -1; /* Spans across both columns of the button grid */
+    display: flex;
+    justify-content: center; /* Keeps the title perfectly centered on laptops */
+    align-items: center;
+}
+.hero-group-title {
+    color: #ffffff; 
+    font-size: 26px;
+    font-family: 'Times New Roman', Georgia, serif;
+    font-style: italic;
+    margin: 0 0 10px 0; 
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8); 
+}
+/* =========================================
+   DESKTOP HERO INVITATION BADGE
+========================================= */
+/* --- THE GRAND ARRIVAL TYPOGRAPHY --- */
+.grand-arrival-text {
+    text-align: center;
+    margin-bottom: -5px; /* Pulls the subtitle up slightly for a tight, cohesive look */
+}
+.text-he-is {
+    display: block;
+    font-family: 'Times New Roman', Georgia, serif;
+    font-style: italic;
+    /* Fluid font size */
+    font-size: clamp(22px, 2.5vw, 32px);
+    color: #d4a054; 
+    margin-bottom: clamp(-10px, -1vw, -15px); /* Keeps the overlap tight */
+    position: relative;
+    z-index: 2;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
 
-/* --- RESPONSIVE ADJUSTMENTS --- */
+.text-coming {
+    display: block;
+    font-family: 'Times New Roman', Georgia, serif;
+    /* Scales smoothly between 40px on small screens and 65px on big ones */
+    font-size: clamp(40px, 5vw, 65px);
+    font-weight: 900;
+    color: #5a0209; 
+    letter-spacing: clamp(2px, 0.4vw, 5px);
+    text-transform: uppercase;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+    text-shadow: 
+        2px 2px 0px #eec48c, 
+        4px 4px 15px rgba(90, 2, 9, 0.2);
+}
+.desktop-hero-info {
+    position: absolute;
+    /* MAGIC: Scales top & left positioning smoothly based on screen width */
+    top: clamp(40px, 6vw, 80px); 
+    left: clamp(20px, 5vw, 60px); 
+    z-index: 10;
+    
+    background: rgba(255, 255, 255, 0.6); 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    
+    /* Padding and gap shrink automatically on smaller laptops */
+    padding: clamp(20px, 3vw, 35px) clamp(25px, 4vw, 45px);
+    border-radius: 20px;
+    border: 2px solid #eec48c; 
+    box-shadow: 0 15px 35px rgba(90, 2, 9, 0.15); 
+    
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(10px, 1.5vw, 20px);
+}
+/* --- SUBTITLE & LOCATION --- */
+.info-subtitle {
+    color: #5a0209;
+    font-family: 'Times New Roman', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(18px, 2vw, 26px);
+    margin: 0;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+}
+
+/* The Maroon Pill holding the Date */
+.info-date-wrapper {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 1.5vw, 15px);
+    background: #5a0209;
+    color: #d4a054;
+    padding: clamp(8px, 1vw, 12px) clamp(20px, 3vw, 40px);
+    border-radius: 50px;
+    border: 2px solid #d4a054;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.info-day {
+    font-size: clamp(35px, 4vw, 55px);
+    font-weight: bold;
+    line-height: 1;
+    font-family: 'Times New Roman', Georgia, serif;
+}
+
+.info-month-year {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.info-month {
+    font-size: clamp(14px, 1.5vw, 20px);
+    font-weight: bold;
+    letter-spacing: clamp(1px, 0.3vw, 3px);
+    line-height: 1.1;
+}
+
+.info-year {
+    font-size: clamp(12px, 1.2vw, 16px);
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+.info-location {
+    color: #5a0209;
+    font-size: clamp(14px, 1.5vw, 20px);
+    font-weight: bold;
+    margin: 0;
+}
+/* =========================================
+   SCALE DOWN ON SMALLER DESKTOPS / TABLETS
+========================================= */
+/* When the screen gets smaller than a large desktop (1250px) */
+
+
+/* (Your existing HIDE ON MOBILE @media (max-width: 950px) should be right below here) */
+/* =========================================
+   HIDE ON MOBILE
+========================================= */
+@media (max-width: 950px) {
+    .desktop-hero-info {
+        display: none; /* Completely removes it on smaller screens */
+    }
+}
+/* =========================================================
+   HERO MOBILE RESPONSIVENESS
+========================================================= */
+/* =========================================================
+   HERO MOBILE RESPONSIVENESS
+========================================================= */
 @media (max-width: 768px) {
-  .hero-video-top-layer {
-    top: 20px;
-    left: 20px;
-    /* On mobile, allows the video container to fit smaller screen widths nicely */
-    max-width: calc(100% - 40px); 
-  }
+    /* 1. Allow the parent container to resize naturally instead of forcing 100vh */
+    .hero-page-container {
+        height: auto; 
+        display: flex;
+        flex-direction: column;
+        background-color: #feebe8; /* A soft pink background for the buttons area */
+        margin-top:80px;
+    }
+
+    /* 2. Show the FULL image by removing absolute positioning */
+    .hero-underlay-image {
+        position: relative;
+        width: 100%;
+        height: auto; /* Allows height to adjust naturally to the image's width */
+        object-fit: contain; 
+    }
+
+    /* 3. Push the buttons below the image */
+    .hero-button-group {
+        position: relative;
+        bottom: auto; /* Removes the bottom lock */
+        left: auto;   /* Removes the left lock */
+        margin: auto; /* Centers the grid */
+        width: 95%; /* Fits perfectly on the mobile screen */
+        justify-content: center;
+    }
+    /* --- MOBILE HERO HEADER ROW --- */
+    .hero-group-header {
+        justify-content: space-between; /* MAGIC: Pushes Title left, Date right! */
+        margin-bottom: 10px;
+        padding: 0 5px; /* Tiny buffer on the edges */
+    }
+    /* 4. Adjust the title text color since it is no longer on top of the dark image */
+    .hero-group-title {
+        color: #5a0209; /* Maroon */
+        text-shadow: none; 
+        margin: 0;
+        font-size: 22px; /* Slightly smaller to sit flush with the date */
+        text-align: left;
+    }
+    /* --- FLOATING DATE BADGE --- */
+    /* COMPACT DATE BADGE FOR SIDE-BY-SIDE LAYOUT */
+    .mobile-hero-date {
+        display: flex; /* Makes it visible on mobile */
+        align-items: center;
+        gap: 6px;
+        background-color: #5a0209;
+        color: #d4a054;
+        padding: 4px 14px; /* Reduced padding to save space */
+        border-radius: 30px;
+        border: 2px solid #d4a054;
+        margin: -25px 0 10px 0; /* Removes the old floating margin */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .date-icon {
+        font-size: 24px;
+    }
+
+    .date-text {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .date-month-year {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        line-height: 1.1;
+    }
+    .date-day {
+        font-size: 22px; /* Scaled down slightly */
+        font-weight: bold;
+        line-height: 1;
+        font-family: 'Times New Roman', Georgia, serif;
+    }
+
+    .date-month {
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        line-height: 1;
+    }
+
+    .date-details {
+        font-size: 13px;
+        color: #ffffff; /* White text for contrast against the maroon */
+        font-style: italic;
+    }
 }
