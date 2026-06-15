@@ -357,7 +357,7 @@ const FestivalInfo = () => {
 
                                 </div>
                                 <p className="route-blessing-text">
-                                    Come, Pull the Rath & be blessed with<br/>Lord Jagannath's infinite mercy !!!
+                                    Come, Pull the Rath & be blessed with<br/>Lord {"Jagannath's"} infinite mercy {"!!!"}
                                 </p>
                             </div>
                         </div>
