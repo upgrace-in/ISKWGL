@@ -46,17 +46,17 @@ import { load } from "@cashfreepayments/cashfree-js";
 
 function Checkout({ paymentSessionId }) {
   const doPayment = async () => {
-    const cashfree = await load({
-      mode: process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? "sandbox" : "production"
+    const { Cashfree } = await import("https://sdk.cashfree.com/js/v3/cashfree.js"); // use script tag instead
+    
+    const cashfree = Cashfree({
+        mode: process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? "sandbox" : "production"
     });
 
-    let checkoutOptions = {
-      paymentSessionId: paymentSessionId,
-      redirectTarget: "_self",
+    cashfree.checkout({
+        paymentSessionId: paymentSessionId,
+        redirectTarget: "_top", // try _top instead of _self
+    });
     };
-
-    cashfree.checkout(checkoutOptions);
-  };
 
   return (
     <div className="row">
