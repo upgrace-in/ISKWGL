@@ -13,7 +13,7 @@ function Checkout({ paymentSessionId }) {
 
     // Listen for postMessage from Cashfree thank-you page
     const handleMessage = (event) => {
-      if (event.data && event.data.order && event.data.order.status === "PAID") {
+      if (event.data && event.data.order && event.data.order.status === "SUCCESS") {
         console.log("Payment successful:", event.data);
         window.location.href = "/rathyatra";
       }
