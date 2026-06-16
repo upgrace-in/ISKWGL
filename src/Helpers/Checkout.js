@@ -44,30 +44,33 @@
 
 import { load } from "@cashfreepayments/cashfree-js";
 
-function Checkout(paymentSessionId) {
-    let cashfree;
-    var initializeSDK = async function () {
-        cashfree = await load({
-            mode: process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? "sandbox" : "production"
-        });
-    }
-    initializeSDK();
+function Checkout({ paymentSessionId }) {
+  const doPayment = async () => {
+    const cashfree = await load({
+      mode: process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? "sandbox" : "production"
+    });
 
-    const doPayment = async () => {
-        let checkoutOptions = {
-        paymentSessionId: paymentSessionId,
-        redirectTarget: "_self",
-        };
-        cashfree.checkout(checkoutOptions);
+    let checkoutOptions = {
+      paymentSessionId: paymentSessionId,
+      redirectTarget: "_self",
     };
 
-    return (
-        <div class="row">
-        <p>Click below to open the checkout page in the current tab</p>
-        <button type="submit" class="btn btn-primary" id="renderBtn" onClick={doPayment}>
-            Pay Now
-        </button>
-        </div>
-    );
+    cashfree.checkout(checkoutOptions);
+  };
+
+  return (
+    <div className="row">
+      <p>Click below to open the checkout page in the current tab</p>
+      <button
+        type="submit"
+        className="btn btn-primary"
+        id="renderBtn"
+        onClick={doPayment}
+      >
+        Pay Now
+      </button>
+    </div>
+  );
 }
+
 export default Checkout;
