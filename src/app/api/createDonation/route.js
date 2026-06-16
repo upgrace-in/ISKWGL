@@ -38,14 +38,14 @@ export async function POST(request) {
             "orderAmount": parseFloat(amount),
             "orderNote": "Pay to ISKCON",
             "orderCurrency": "INR",
-            "orderTags": {
-                "address": address,
-                "pin": pin,
-                "pan": pan,
-                "dob": dob,
-                "memoryOfSomeoneName": memoryOfSomeoneName,
-                "abhishekTimeSlot": abhishekamTimeSlot,
-            },
+            // "orderTags": {
+            //     "address": address,
+            //     "pin": pin,
+            //     "pan": pan,
+            //     "dob": dob,
+            //     "memoryOfSomeoneName": memoryOfSomeoneName,
+            //     "abhishekTimeSlot": abhishekamTimeSlot,
+            // },
 
             "appId": clientID,
             "notifyUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/api/handleWebhook`,
