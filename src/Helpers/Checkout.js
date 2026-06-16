@@ -52,7 +52,7 @@ function Checkout({ paymentSessionId }) {
 
     let checkoutOptions = {
       paymentSessionId: paymentSessionId,
-      redirectTarget: "_self",
+      redirectTarget: "_top",
     };
 
     cashfree.checkout(checkoutOptions);
