@@ -26,56 +26,55 @@ export async function POST(req) {
         const donation = await Donation.findOne({ orderId: dict?.orderId });
         if (!donation) throw "No Records Exists";
 
-        console.log('Transaction Status:', dict?.txStatus);
-
+        // Update status immediately
         donation.amount = dict?.orderAmount;
         donation.status = dict?.txStatus;
         donation.webhookData = dict;
-        //console.log('Webhook data', donation.webhookData);
         await donation.save();
 
+        // IMPORTANT: Return 200 OK to Cashfree immediately
+        // This tells Cashfree the webhook was received
+        const responsePromise = Response.json({ msg: true }, { status: 200 });
+
+        // Process PDF, S3, and WhatsApp in the background (don't await)
         if (dict?.txStatus === 'SUCCESS') {
-            const alreadySent = await Donation.findOne({ orderId: dict?.orderId, messageSent: true });
-            if (alreadySent) {
-                console.log('Message already sent, skipping...');
-                return Response.json({ msg: 'Already sent' }, { status: 200 });
-            }
-
-            const pdfBuffer = await generatePDF(dict, donation);
-            console.log('PDF generated successfully');
-
-            const orderId = dict.orderId.replace('order_', '');
-            const pdfFileName = `donation_receipt_${orderId}.pdf`;
-
-            const pdfUrl = await uploadToS3(pdfBuffer, `TempleReceipts/${pdfFileName}`, "application/pdf");
-            console.log('PDF uploaded to S3:', pdfUrl);
-
-            //return Response.json({ msg: true }, { status: 200 });
-            // Send WhatsApp message before responding to the user
-            try {
-                const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
-
-                if (messageResult?.success) {
-                    // Update the database only after the message is sent successfully
-                    await Donation.findOneAndUpdate(
-                        { orderId: dict?.orderId },
-                        { $set: { messageSent: true } },
-                        { new: true }
-                    );
-                } else {
-                    console.warn('Message not sent. Keeping messageSent as false.');
-                }
-            } catch (error) {
-                console.error('Error sending WhatsApp message:', error);
-            }
-
-            // Send the response to the user after completing WhatsApp message sending
-            return Response.json({ msg: true }, { status: 200 });
+            processSuccessPayment(dict, donation).catch(err => 
+                console.error('Background processing failed:', err)
+            );
         }
 
-        return Response.json({ msg: true }, { status: 200 });
+        return responsePromise;
+
     } catch (error) {
         console.log(error);
         return Response.json({ msg: error }, { status: 404 });
+    }
+}
+
+// Process expensive operations in background
+async function processSuccessPayment(dict, donation) {
+    try {
+        const alreadySent = await Donation.findOne({ orderId: dict?.orderId, messageSent: true });
+        if (alreadySent) {
+            console.log('Message already sent, skipping...');
+            return;
+        }
+
+        const pdfBuffer = await generatePDF(dict, donation);
+        const orderId = dict.orderId.replace('order_', '');
+        const pdfFileName = `donation_receipt_${orderId}.pdf`;
+        const pdfUrl = await uploadToS3(pdfBuffer, `TempleReceipts/${pdfFileName}`, "application/pdf");
+
+        const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
+
+        if (messageResult?.success) {
+            await Donation.findOneAndUpdate(
+                { orderId: dict?.orderId },
+                { $set: { messageSent: true } },
+                { new: true }
+            );
+        }
+    } catch (error) {
+        console.error('Error in processSuccessPayment:', error);
     }
 }
