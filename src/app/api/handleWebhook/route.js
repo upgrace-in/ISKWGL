@@ -35,7 +35,7 @@ export async function POST(req) {
 
         // IMPORTANT: Return 200 OK to Cashfree immediately
         // This tells Cashfree the webhook was received
-        const responsePromise = Response.json({ msg: true }, { status: 200 });
+        const response = Response.json({ msg: true }, { status: 200 });
 
         // Optionally trigger the processor (best-effort — still add scheduled job)
         // Use absolute URL to ensure proper invocation
