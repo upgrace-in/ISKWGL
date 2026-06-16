@@ -5,6 +5,10 @@ import { generatePDF } from './pdfHelper';
 import { uploadToS3 } from '../../../Helpers/awsHelper';
 import { sendWhatsAppMessage } from './whatsappHelper';
 
+export async function GET(req) {
+    return Response.json({ status: 'Webhook endpoint is active' }, { status: 200 });
+}
+
 export async function POST(req) {
     try {
         await dbConnect();
