@@ -41,21 +41,27 @@
 // };
 
 // export default Checkout;
-
 import { load } from "@cashfreepayments/cashfree-js";
+import { useEffect, useRef } from "react";
 
 function Checkout({ paymentSessionId }) {
-  const doPayment = async () => {
-    const cashfree = await load({
+  const cashfreeRef = useRef(null);
+
+  useEffect(() => {
+    // Initialize SDK once on mount, not inside click handler
+    load({
       mode: process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? "sandbox" : "production"
+    }).then((cf) => {
+      cashfreeRef.current = cf;
     });
+  }, []);
 
-    let checkoutOptions = {
+  const doPayment = () => {
+    // No await here — direct user gesture → no popup blocking
+    cashfreeRef.current.checkout({
       paymentSessionId: paymentSessionId,
-      redirectTarget: "_top",
-    };
-
-    cashfree.checkout(checkoutOptions);
+      redirectTarget: "_self",
+    });
   };
 
   return (
