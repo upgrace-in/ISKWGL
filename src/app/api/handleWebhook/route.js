@@ -30,20 +30,27 @@ export async function POST(req) {
         donation.amount = dict?.orderAmount;
         donation.status = dict?.txStatus;
         donation.webhookData = dict;
+        donation.needsProcessing = dict?.txStatus === 'SUCCESS' ? true : false;
         await donation.save();
 
         // IMPORTANT: Return 200 OK to Cashfree immediately
         // This tells Cashfree the webhook was received
         const responsePromise = Response.json({ msg: true }, { status: 200 });
 
-        // Process PDF, S3, and WhatsApp in the background (don't await)
-        if (dict?.txStatus === 'SUCCESS') {
-            processSuccessPayment(dict, donation).catch(err => 
-                console.error('Background processing failed:', err)
-            );
+        // Optionally trigger the processor (best-effort — still add scheduled job)
+        // Use absolute URL to ensure proper invocation
+        try {
+        fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/processSuccess`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: dict?.orderId }),
+            // don't await; it's best-effort; you can await if you want synchronous processing
+        }).catch(err => console.warn('processor trigger failed', err));
+        } catch (e) {
+        console.warn('processor trigger exception', e);
         }
 
-        return responsePromise;
+        return response;
 
     } catch (error) {
         console.log(error);
@@ -52,29 +59,29 @@ export async function POST(req) {
 }
 
 // Process expensive operations in background
-async function processSuccessPayment(dict, donation) {
-    try {
-        const alreadySent = await Donation.findOne({ orderId: dict?.orderId, messageSent: true });
-        if (alreadySent) {
-            console.log('Message already sent, skipping...');
-            return;
-        }
+// async function processSuccessPayment(dict, donation) {
+//     try {
+//         const alreadySent = await Donation.findOne({ orderId: dict?.orderId, messageSent: true });
+//         if (alreadySent) {
+//             console.log('Message already sent, skipping...');
+//             return;
+//         }
 
-        const pdfBuffer = await generatePDF(dict, donation);
-        const orderId = dict.orderId.replace('order_', '');
-        const pdfFileName = `donation_receipt_${orderId}.pdf`;
-        const pdfUrl = await uploadToS3(pdfBuffer, `TempleReceipts/${pdfFileName}`, "application/pdf");
+//         const pdfBuffer = await generatePDF(dict, donation);
+//         const orderId = dict.orderId.replace('order_', '');
+//         const pdfFileName = `donation_receipt_${orderId}.pdf`;
+//         const pdfUrl = await uploadToS3(pdfBuffer, `TempleReceipts/${pdfFileName}`, "application/pdf");
 
-        const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
+//         const messageResult = await sendWhatsAppMessage('91' + donation.phone, pdfUrl, donation.name, orderId, donation.amount);
 
-        if (messageResult?.success) {
-            await Donation.findOneAndUpdate(
-                { orderId: dict?.orderId },
-                { $set: { messageSent: true } },
-                { new: true }
-            );
-        }
-    } catch (error) {
-        console.error('Error in processSuccessPayment:', error);
-    }
-}
+//         if (messageResult?.success) {
+//             await Donation.findOneAndUpdate(
+//                 { orderId: dict?.orderId },
+//                 { $set: { messageSent: true } },
+//                 { new: true }
+//             );
+//         }
+//     } catch (error) {
+//         console.error('Error in processSuccessPayment:', error);
+//     }
+// }
