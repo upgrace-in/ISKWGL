@@ -49,7 +49,7 @@ export async function POST(request) {
 
             "appId": clientID,
             "notifyUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/api/handleWebhook`,
-            "returnUrl": `https://iskconwarangal.in`
+            "returnUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/rathyatra`
         }
 
         const signature = generateSignature(formData);
