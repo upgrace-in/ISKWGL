@@ -97,7 +97,7 @@ export default function DonationCheckout() {
                 increaseDots()
             }, 500)
             // save the data with an orderID
-            const response = await axios.post(`/api/createDonation/`, finalData)
+            const response = await axios.post(`/api/createOrder/`, finalData)
             clearInterval(intern)
             if (response?.status !== 200) throw { error: "Unable to save data, please try again later !!!" }
 
