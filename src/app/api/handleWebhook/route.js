@@ -1,5 +1,6 @@
 import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation';
+import axios from "axios";
 
 import { generatePDF } from './pdfHelper';
 import { uploadToS3 } from '../../../Helpers/awsHelper';
@@ -40,14 +41,11 @@ export async function POST(req) {
         // Optionally trigger the processor (best-effort — still add scheduled job)
         // Use absolute URL to ensure proper invocation
         try {
-        fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/processSuccess`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ orderId: dict?.orderId }),
-            // don't await; it's best-effort; you can await if you want synchronous processing
-        }).catch(err => console.warn('processor trigger failed', err));
+            axios.post(`/api/processSuccess`, {
+                orderId: dict?.orderId
+            }).catch(err => console.warn('processor trigger failed', err));
         } catch (e) {
-        console.warn('processor trigger exception', e);
+            console.warn('processor trigger exception', e);
         }
 
         return response;
