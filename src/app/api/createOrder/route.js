@@ -22,7 +22,7 @@ export async function POST(request) {
             },
             "order_meta": {
                 "return_url": `${process.env.NEXT_PUBLIC_DOMAIN}`,
-                "notify_url": `${process.env.NEXT_PUBLIC_DOMAIN}/api/handleWebhook`
+                "notify_url": `${process.env.NEXT_PUBLIC_DOMAIN}/api/handleWebhook/`
             },
             "order_tags": {
                 "address": address,
