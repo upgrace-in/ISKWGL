@@ -8,12 +8,12 @@ export async function POST(request) {
 
     try {
 
-        let { name, email, phone, address, pin, amount, pan } = await request.json()
+        let { name, email, phone, address, pin, amount, pan, orderId } = await request.json()
 
         var rst = {
             "order_amount": parseFloat(amount),
             "order_currency": "INR",
-            "order_id": `order_${Math.floor(Math.random() * 1000000)}`,
+            "order_id": orderId,
             "customer_details": {
                 "customer_id": phone,
                 "customer_phone": phone,
