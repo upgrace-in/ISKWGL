@@ -1,34 +1,24 @@
-import { useEffect } from 'react';
+import { load } from "@cashfreepayments/cashfree-js";
+import { useEffect } from "react";
 
-function SubmitForm({ data }) {
-
+function HandlePayment({ data }) {
     useEffect(() => {
+        if (!data) return;
 
-        if (!data) return
+        const handlePayment = async () => {
+            const cashfree = await load({
+                mode: process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? "sandbox" : "production"
+            });
+            cashfree.checkout({
+                paymentSessionId: data.payment_session_id,
+                redirectTarget: "_self",
+            });
+        };
 
-        const formHTML = `<html>
-                            <head><title>Redirecting...</title></head>
-                            <body>
-                                <form id="redirectForm" method="post" action="https://www.cashfree.com/checkout/post/submit">
-                                    ${Object.entries(data)
-                .map(([key, value]) => `<input type="hidden" name="${key}" value="${value}">`)
-                .join('')}
-                                </form>
-                            </body>
-                            </html>
-                        `
-
-        document.body.innerHTML = formHTML;
-
-        document.forms[0].submit();
-
-        return () => {
-            document.body.innerHTML = '';
-        }
-
-    }, [data])
+        handlePayment();
+    }, [data]);
 
     return null;
 }
 
-export default SubmitForm;
+export default HandlePayment;

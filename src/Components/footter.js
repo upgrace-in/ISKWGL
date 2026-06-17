@@ -27,7 +27,7 @@ function FooterLink({ href, children }) {
 export default function Foooter() {
     const [isHovered, setIsHovered] = React.useState(false);
     return (
-      <footer className="w-full font-sans text-gray-800 border-t border-gray-200">
+      <footer className="w-full font-sans text-gray-800 border-t border-gray-200" id="contact-us">
         {/* Main Footer Content */}
         <div className="bg-[#f8f9fa] py-10 px-6 md:px-16" >
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start" style={{display:"flex", flexDirection:"row", gap: "20px", flexWrap: "wrap", maxWidth: "1200px", margin: "20px auto", padding: "0 40px"}}>
