@@ -10,7 +10,7 @@ function HandlePayment({ data }) {
                 mode: process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? "sandbox" : "production"
             });
             cashfree.checkout({
-                paymentSessionId: data.payment_session_id,
+                paymentSessionId: data.response.payment_session_id,
                 redirectTarget: "_self",
             });
         };
