@@ -163,9 +163,11 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -20px; 
   position: relative;
   z-index: 2; 
+}
+.seva-content.pradhana{
+  margin-top:-15px;
 }
 
 .side-by-side-container {
@@ -500,4 +502,244 @@ html {
   .mobile-collapsed-header {
       cursor: pointer;
   }
+}
+
+
+/* =========================================
+   DONATION SUCCESS MODAL
+========================================= */
+.success-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.success-modal-content {
+    background: #fffdf8; 
+    padding: 30px;
+    border-radius: 16px;
+    border: 3px solid #d4a054; 
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    animation: slideUpPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* NEW MAGIC: Forces the modal to never exceed 90% of the screen height */
+    max-height: 90vh; 
+    display: flex;
+    flex-direction: column;
+}
+
+.success-header h2 {
+    color: #5a0209; /* Maroon */
+    font-family: 'Times New Roman', Georgia, serif;
+    font-size: 26px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.success-header p {
+    color: #444;
+    font-size: 15px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+/* Gift List Styling */
+.success-gift-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    
+    /* NEW MAGIC: Makes the list scrollable if there are too many items */
+    overflow-y: auto; 
+    /* Ensures the list doesn't take up the whole screen, leaving room for header & button */
+    max-height: 35vh; 
+}
+
+/* Optional: Make the scrollbar look elegant and golden! */
+.success-gift-list::-webkit-scrollbar {
+    width: 6px;
+}
+.success-gift-list::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 8px;
+}
+.success-gift-list::-webkit-scrollbar-thumb {
+    background: #d4a054; 
+    border-radius: 8px;
+}
+
+.success-gift-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.success-gift-item:last-child {
+    border-bottom: none;
+}
+
+.success-gift-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #d4a054;
+}
+
+.success-gift-text {
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+}
+
+/* The Important Instruction Box */
+.success-instruction-box {
+    background: #fff8e7; /* Very light yellow/gold */
+    border-left: 4px solid #5a0209;
+    padding: 15px;
+    border-radius: 4px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.success-instruction-box strong {
+    color: #5a0209;
+    font-size: 15px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.success-instruction-box p {
+    color: #333;
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Close Button */
+.success-close-btn {
+    background: linear-gradient(135deg, #d4a054, #eec48c);
+    color: #5a0209;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(212, 160, 84, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+
+.success-close-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(212, 160, 84, 0.6);
+}
+
+@keyframes slideUpPop {
+    from { transform: translateY(30px) scale(0.9); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+@media (max-width: 600px) {
+    .success-modal-content {
+        padding: 20px 15px; /* Shrinks the thick border padding to give more room for text */
+        max-height: 95vh; /* Uses almost the full screen on tiny phones */
+    }
+
+    .success-header h2 {
+        /* font-size: 20px; Slightly smaller title */
+        font-size: clamp(18px, 5.5vw, 26px); 
+        
+        /* Forces the text container to be exactly 95% of the modal's width */
+        width: 95%;
+    }
+
+    .success-gift-list {
+        max-height: 40vh; /* Gives the list slightly more room to scroll on phones */
+    }
+
+    .success-instruction-box {
+        padding: 10px; /* Tighter padding */
+        margin-bottom: 15px;
+    }
+
+    .success-instruction-box p {
+        font-size: 13px; /* Slightly smaller text so it fits perfectly */
+    }
+}
+
+.custom-donation{
+  width: 90%;
+  margin:auto;
+}
+
+.custom-dination-container {
+    display: flex;           /* This puts items side-by-side */
+    flex-direction: row;      /* Ensures horizontal alignment */
+    align-items: center;      /* Vertically centers the items */
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    gap: 6px                /* Adds space between input and button */
+}
+
+.inputWrapper {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;               /* Makes the input take up remaining space */
+    background-color: #F7F8F9;
+    border-radius: 8px;
+    padding: 0 12px;
+    height: 48px
+}
+
+.inputField {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    color: #374151
+} 
+
+.button {
+background: linear-gradient(135deg, #d4a054 0%, #6b2d2d 100%);
+padding: 0 24px;
+height: 48px;
+background-color: #f3f4f6;
+border: 1px solid #9ca3af;
+border-radius: 9999px;     /*Creates the pill shape*/
+font-weight: bold;
+color: #111827;
+cursor: pointer;
+white-space: nowrap       /* Keeps text on one line*/
+}
+
+
+@media (max-width: 768px) {
+    .button {padding:  0 12px;}
+    .custom-dination-container {padding-right: 10px; padding-left: 10px;}
+    .custom-donation{
+      margin-top: 0px;
+    }
 }

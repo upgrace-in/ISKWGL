@@ -95,10 +95,15 @@
     content: '';
     position: absolute;
     top: 30px;
-    bottom: -40px; /* Stretches to the next item */
+    bottom: -70px; /* Stretches to the next item */
     width: 2px;
     background-color: #eec48c;
     z-index: 0;
+}
+@media (max-width: 768px) {
+    .timeline-divider::before {
+        bottom: -100px;
+    }
 }
 
 /* Removes the line from the last item so it doesn't hang off the edge */
