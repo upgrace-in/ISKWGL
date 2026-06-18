@@ -1,9 +1,9 @@
 'use client'
 import './rathyatrastyles.css'
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useDonation } from '@/Helpers/DonationContext';
-import { useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Header from "../../Components/Header"
 import SideNav from "../../Components/SideNav"
 import Floating from "@/Components/Floating";
@@ -16,7 +16,97 @@ import './LeafyDivider.css';
 import './FestivalInfo.css';
 import './LotusHighlights.css';
 import { useDonate } from "@/Helpers/PaymentPageHandler";
+import dbConnect from "@/app/lib/dbConnect";
+import Donation from '@/models/Donation';
 
+
+const DonationSuccessModal = ({ gifts, onClose }) => {
+    // Fire confetti as soon as the success modal opens!
+    useEffect(() => {
+        const duration = 3000;
+        const end = Date.now() + duration;
+
+        const frame = () => {
+            confetti({
+                particleCount: 5,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#d4a054', '#5a0209']
+            });
+            confetti({
+                particleCount: 5,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#d4a054', '#5a0209']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        };
+        frame();
+    }, []);
+
+    if (!gifts || gifts.length === 0){
+        return ReactDOM.createPortal(
+            <div className="success-modal-overlay">
+                <div className="success-modal-content">
+                    
+                    <div className="success-header">
+                        <h2>🎊 Thank You for Your Seva! 🎊</h2>
+                        <p>May the grace of Lord Jagannath be always upon you and your family.</p>
+                    </div>
+                    {/* THE IMPORTANT INSTRUCTION BOX */}
+                    <div className="success-instruction-box">
+                        <strong>📍 Important Note:</strong>
+                        <p>Please come for Jagannath Rath Yatra on 20 July, Monday</p>
+                    </div>
+
+                    <button className="success-close-btn" onClick={onClose}>
+                        Hare Krishna 🙏
+                    </button>
+                </div>
+            </div>,
+            document.body
+        );
+    }
+
+    return ReactDOM.createPortal(
+        <div className="success-modal-overlay">
+            <div className="success-modal-content">
+                
+                <div className="success-header">
+                    <h2>🎊 Thank You for Your Seva! 🎊</h2>
+                    <p>May the grace of Lord Jagannath be always upon you and your family. Here are your Gifts:</p>
+                </div>
+
+                <ul className="success-gift-list">
+                    {gifts.map((gift, index) => (
+                        <li key={index} className="success-gift-item">
+                            {gift.img && (
+                                <img src={gift.img} alt={gift.title} className="success-gift-img" />
+                            )}
+                            <span className="success-gift-text">{gift.title}</span>
+                        </li>
+                    ))}
+                </ul>
+
+                {/* THE IMPORTANT INSTRUCTION BOX */}
+                <div className="success-instruction-box">
+                    <strong>📍 Important Note:</strong>
+                    <p>Please bring your donation receipt received on WhatsApp to <b>Venkateshwara Garden</b> on Rath Yatra day to receive your gifts.</p>
+                </div>
+
+                <button className="success-close-btn" onClick={onClose}>
+                    Hare Krishna 🙏
+                </button>
+            </div>
+        </div>,
+        document.body
+    );
+};
 // 1. EXTRACTED GIFTBOX COMPONENT
 const GiftBox = ({ gifts, plan, onDonate }) => {
     const [isShaking, setIsShaking] = useState(false);
@@ -226,10 +316,9 @@ const LotusHighlights = () => {
 const FestivalInfo = () => {
     // Data for the Schedule Timeline
     const scheduleData = [
-        { time: "2:00 PM", event: "Guest Speeches @ Public Garden, Jagannath Arati", icon: "🎤" },
-        { time: "3:00 PM", event: "Rath Yatra Starts", icon: "🚩" },
-        { time: "6:00 PM", event: "Rath reaches Venkateshwara Garden", icon: "🏛️" },
-        { time: "6:30 PM", event: "Kirtans, Guest Speeches, Maha-Arati, Prasadam for All", icon: "🪔" }
+        { time: "1:00 PM", event: "Guest Speeches @ Public Garden, Jagannath Arati", icon: "🎤" },
+        { time: "2:00 PM", event: "Rath Yatra Starts", icon: "🚩" },
+        { time: "6:00 PM", event: "Rath reaches Venkateshwara Garden Folloed by Kirtans, Guest Speeches, Cultural Activities, Maha-Arati, Prasadam for All", icon: "🏛️" }
     ];
 
     // Data for the Budget Snapshot
@@ -238,7 +327,7 @@ const FestivalInfo = () => {
         { title: "Annadanam", amount: "₹5 Lakhs", img: "/images/rathyatra/Highlights/annadanam.png" },
         { title: "Prasadam Distribution", amount: "₹1.5 Lakh", img: "/images/rathyatra/Highlights/sweets.png" },
         { title: "Decorations", amount: "₹1 Lakh", img: "/images/rathyatra/Highlights/decotation.jpg" },
-        { title: "Other Arrangements", amount: "₹1 Lakh", img: "/images/rathyatra/Highlights/misslenious.png" }
+        { title: "Other Arrangements", amount: "₹2 Lakh", img: "/images/rathyatra/Highlights/misslenious.png" }
     ];
 
     return (
@@ -299,7 +388,7 @@ const FestivalInfo = () => {
                         
                         <div className="route-map-content">
                             <div className="route-flow">
-                                {['Public Gardens', 'Hanmakonda Chowrasta', 'MGMH', 'Pocham Maidan', 'MGMH', 'Venkateshwara Gardens'].map((stop, idx) => (
+                                {['Public Gardens', 'Hanmakonda Chowrasta', 'MGM Hospital', 'Pocham Maidan', 'MGM Hospital', 'Venkateshwara Gardens'].map((stop, idx) => (
                                     <div key={idx} className={`route-stop stop-${idx + 1}`}>
                                         <div className="route-circle"><span>{stop}</span></div>
                                         
@@ -416,7 +505,7 @@ const SevaCard = ({ plan, onDonate, cardType, gifts, isPremium,initiallyExpanded
                     <img src={plan.icon} alt={plan.title} className={imageClass} />
                 </div>
 
-                <div className="seva-content">
+                <div className={`seva-content ${cardType}`}>
                     <div className="title-badge">
                         <span className="gold-star">✦</span>
                         <h3>{plan.title}</h3>
@@ -449,20 +538,12 @@ export default function Rathyatra() {
     const router = useRouter();
     const { handleDonateClick } = useDonate();
     const [navOpen, setNavOpen] = useState(false)
-    const [isMuted, setIsMuted] = useState(true);
-    const videoRef = useRef(null);
+    const [earnedGifts, setEarnedGifts] = useState(null);
+    const [isVerifying, setIsVerifying] = useState(false); // Optional: to show a loading spinner if DB is slow
     
     const donationRef = useRef(null);
     const scrollToDonation = () => {
         donationRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-
-    const toggleMute = () => {
-        if (videoRef.current) {
-            videoRef.current.muted = !isMuted;
-            setIsMuted(!isMuted);
-        }
     };
 
     // Data Objects
@@ -532,13 +613,97 @@ export default function Rathyatra() {
             {title: "Mahaprasadam Packet", img: "/images/rathyatra/Gifts/mahaprasadam-packet.jpeg"}, 
         ]
     };
+    const SevaNameToPlanKey = {
+        "Rath Yatra MAHASEVAK": "maha_1",
+        "Rath Yatra SEVAK": "maha_2",
+        "JAGANNATH SEVA": "pradhana",
+        "BALADEVA SEVA": "pradhana",
+        "SUBHADRA SEVA": "pradhana",
+        "SUDARSHAN SEVA": "visesa",
+        "SANKIRTAN SEVA": "visesa",
+        "GARUDA SEVA": "bhakta",
+        "HANUMAN SEVA": "bhakta"
+    }
 
+    const searchParams = useSearchParams();
+    useEffect(() => {
+        const checkDonation = async () => {
+            const status = searchParams.get('status');
+            const orderId = searchParams.get('order_id');
+
+            // 1. If it's a successful payment with an order ID, check the DB!
+            if (status === 'success' && orderId) {
+                setIsVerifying(true);
+
+                try {
+                    // 2. Call your backend API to get the order details from the database
+                    await dbConnect();
+                    const donation = await Donation.findOne({ orderId: orderId });
+                    if (!donation) throw "No Records Exists";
+                    dbSevaName = donation.donatedFor;
+
+                    if (dbSevaName == 'Rath Yatra') {
+                        donationamount = donation.amount;
+                        if(donationamount >= 108000){
+                            setEarnedGifts(Gifts.maha_1);
+                        }
+                        else if(donationamount >= 51000){
+                            setEarnedGifts(Gifts.maha_2);
+                        }
+                        else if(donationamount >= 10116){
+                            setEarnedGifts(Gifts.pradhana);
+                        }
+                        else if(donationamount >= 2116){
+                            setEarnedGifts(Gifts.visesa);
+                        }
+                        else if(donationamount >= 516){
+                            setEarnedGifts(Gifts.bhakta);
+                        }
+                        else{
+                            setEarnedGifts(null);
+                        }
+                    }
+                    // const dbSevaName="kjsdnfk"
+
+                    // 3. MAGIC CHECK: Pass the DB name into our translation map
+                    const matchedPlanKey = SevaNameToPlanKey[dbSevaName];
+                    if (matchedPlanKey) {
+                        setEarnedGifts(Gifts[matchedPlanKey]);
+                    }
+                    else{
+                        setEarnedGifts([]);
+                    }
+                } catch (error) {
+                    console.error("Failed to verify donation:", error);
+                } finally {
+                    setIsVerifying(false);
+                }
+            }
+        };
+
+        checkDonation();
+    }, [searchParams]);
+
+    const handleCloseSuccessModal = () => {
+        setEarnedGifts(null);
+        
+        // Clean up the URL so the popup doesn't appear again if they refresh the page
+        // (Removes ?status=success&order_id=... from the address bar)
+        router.replace(window.location.pathname, { scroll: false });
+    };
 
     return (
         <>
             <Header handleNav={() => setNavOpen(!navOpen)} />
             <SideNav openNav={navOpen ? "open-nav" : ""} handleNav={() => setNavOpen(!navOpen)} />
             
+            {/* Optional: Show a tiny verifying message while waiting for the DB */}
+            {isVerifying && (
+                <div className="verifying-payment">
+                    Verifying your payment... ⏳
+                </div>
+            )}
+
             <div className="hero-page-container">
                 {/* THE NEW PICTURE ELEMENT FOR ART DIRECTION */}
                 <picture>
@@ -550,7 +715,7 @@ export default function Rathyatra() {
                     
                     {/* 2. Desktop Image: The default fallback that loads on larger screens */}
                     <img 
-                        src="/images/rathyatra/hero-image-new.jpg" 
+                        src="/images/rathyatra/hero-image-new.png" 
                         alt="Rath Yatra Festive Backdrop" 
                         className="hero-underlay-image" 
                     />
@@ -664,10 +829,56 @@ export default function Rathyatra() {
                     </div>
                 </div>
             </div>
+            <LeafyDivider text="Custom Donation" svgWidth="100px" />
+            <div className='custom-donation'>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        handleDonateClick(amount, "Rath Yatra");
+                    }}
+                    className = "custom-dination-container"
+                    >
+                    {/* Input Section */}
+                    <span style={{ color: '#4b5563', fontWeight: '600' }}>
+                        <b>₹</b>
+                    </span>
+
+                    <div className="inputWrapper">
+                        <input
+                        type="number"
+                        placeholder="Amount"
+                        required
+                        min="1"
+                        onChange={(e) => setAmount(e.target.value)}
+                        onWheel={(e) => e.target.blur()}
+                        className="inputField"
+                        />
+                    </div>
+
+                    {/* Button */}
+                    <button
+                        className="button"
+                        type="submit"
+                        onMouseOver={(e) => e.target.style.backgroundColor = '#f3f4f6'}
+                        onMouseOut={(e) => e.target.style.backgroundColor = '#e8e8e8'}
+                    >
+                        Donate Now
+                    </button>
+                </form>     
+            </div>
             {/* <Highlights /> */}
             <LotusHighlights />
             <FestivalInfo />
             
+            
+            {/* 5. Render the success modal ONLY if the DB confirmed it and set the gifts */}
+            {earnedGifts && (
+                <DonationSuccessModal 
+                    gifts={earnedGifts} 
+                    onClose={handleCloseSuccessModal} 
+                />
+            )}
+
             <div style={{margin:"auto auto auto auto", maxWidth:"1300px"}}>
                 <DirectDonation />
             </div>
