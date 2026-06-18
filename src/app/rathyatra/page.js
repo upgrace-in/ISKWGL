@@ -16,8 +16,6 @@ import './LeafyDivider.css';
 import './FestivalInfo.css';
 import './LotusHighlights.css';
 import { useDonate } from "@/Helpers/PaymentPageHandler";
-import dbConnect from "@/app/lib/dbConnect";
-import Donation from '@/models/Donation';
 
 
 const DonationSuccessModal = ({ gifts, onClose }) => {
@@ -637,8 +635,7 @@ export default function Rathyatra() {
 
                 try {
                     // 2. Call your backend API to get the order details from the database
-                    await dbConnect();
-                    const donation = await Donation.findOne({ orderId: orderId });
+                    donation = {}
                     if (!donation) throw "No Records Exists";
                     dbSevaName = donation.donatedFor;
 
