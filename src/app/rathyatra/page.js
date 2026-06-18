@@ -539,6 +539,8 @@ export default function Rathyatra() {
     const [earnedGifts, setEarnedGifts] = useState(null);
     const [isVerifying, setIsVerifying] = useState(false); // Optional: to show a loading spinner if DB is slow
     
+    const [amount, setAmount] = useState();
+    
     const donationRef = useRef(null);
     const scrollToDonation = () => {
         donationRef.current?.scrollIntoView({ behavior: 'smooth' });
