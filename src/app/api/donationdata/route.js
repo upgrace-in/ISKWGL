@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
-import mongoose from 'mongoose';
 import Donation from '@/models/Donation'; 
 // Make sure to also import whatever file connects to your database!
-import dbConnect from '@/lib/dbConnect'; // (Update this path to your actual DB connection file)
+import dbConnect from "@/app/lib/dbConnect"; // (Update this path to your actual DB connection file)
 
 export async function GET(request) {
     try {
