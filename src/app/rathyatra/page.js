@@ -635,8 +635,9 @@ export default function Rathyatra() {
 
                 try {
                     // 2. Call your backend API to get the order details from the database
-                    donation = {}
-                    if (!donation) throw "No Records Exists";
+                    const response = await fetch(`/api/donationdata?order_id=${orderId}`);
+                    const donation = await response.json();
+
                     dbSevaName = donation.donatedFor;
 
                     if (dbSevaName == 'Rath Yatra') {
