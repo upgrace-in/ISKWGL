@@ -632,11 +632,9 @@ export default function Rathyatra() {
             // 2. Call your backend API to get the order details from the database
             const response = await fetch(`/api/donationdata?order_id=${orderId}`);
             const donation = await response.json();
-            console.log(donation)
 
             // 1. If it's a successful payment with an order ID, check the DB!
             if (donation.status === 'SUCCESS' && orderId) {
-                console.log("yes")
                 setIsVerifying(true);
 
                 try {
@@ -644,8 +642,7 @@ export default function Rathyatra() {
                     const dbSevaName = donation.seva_name;
 
                     if (dbSevaName == 'Rath Yatra') {
-                        console.log("here")
-                        donationamount = donation.amount;
+                        const donationamount = donation.amount;
                         if(donationamount >= 108000){
                             setEarnedGifts(Gifts.maha_1);
                         }
