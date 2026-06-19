@@ -641,7 +641,7 @@ export default function Rathyatra() {
 
                 try {
 
-                    dbSevaName = donation.seva_name;
+                    const dbSevaName = donation.seva_name;
 
                     if (dbSevaName == 'Rath Yatra') {
                         console.log("here")
