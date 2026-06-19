@@ -59,7 +59,7 @@ const DonationSuccessModal = ({ gifts, onClose }) => {
                     {/* THE IMPORTANT INSTRUCTION BOX */}
                     <div className="success-instruction-box">
                         <strong>📍 Important Note:</strong>
-                        <p>Please come for Jagannath Rath Yatra on 20 July, Monday</p>
+                        <p>Please come for Jagannath Rath Yatra on <b>20 July, Monday</b></p>
                     </div>
 
                     <button className="success-close-btn" onClick={onClose}>
@@ -94,7 +94,8 @@ const DonationSuccessModal = ({ gifts, onClose }) => {
                 {/* THE IMPORTANT INSTRUCTION BOX */}
                 <div className="success-instruction-box">
                     <strong>📍 Important Note:</strong>
-                    <p>Please bring your donation receipt received on WhatsApp to <b>Venkateshwara Garden</b> on Rath Yatra day to receive your gifts.</p>
+                    <p>Please come for Jagannath Rath Yatra on <b>20 July, Monday</b>. </p>
+                    <p>Also Please bring your donation receipt received on WhatsApp to <b>Venkateshwara Garden</b> to receive your gifts.</p>
                 </div>
 
                 <button className="success-close-btn" onClick={onClose}>
@@ -674,7 +675,7 @@ export default function Rathyatra() {
             setIsVerifying(true);
             
             // await new Promise(resolve => setTimeout(resolve, 3000));
-            // const donation = {'status':'SUCCESS','seva_name':'Rath Yatra','amount':'517.00'}
+            // const donation = {'status':'SUCCESS','seva_name':'Rath Yatra','amount':'51000.00'}
 
             // 1. If it's a successful payment with an order ID, check the DB!
             try {
