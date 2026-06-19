@@ -628,17 +628,16 @@ export default function Rathyatra() {
     const searchParams = useSearchParams();
     useEffect(() => {
         const checkDonation = async () => {
-            const status = searchParams.get('status');
             const orderId = searchParams.get('order_id');
+            // 2. Call your backend API to get the order details from the database
+            const response = await fetch(`/api/donationdata?order_id=${orderId}`);
+            const donation = await response.json();
 
             // 1. If it's a successful payment with an order ID, check the DB!
-            if (status === 'success' && orderId) {
+            if (donation.status === 'SUCCESS' && orderId) {
                 setIsVerifying(true);
 
                 try {
-                    // 2. Call your backend API to get the order details from the database
-                    const response = await fetch(`/api/donationdata?order_id=${orderId}`);
-                    const donation = await response.json();
 
                     dbSevaName = donation.donatedFor;
 

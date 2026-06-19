@@ -21,7 +21,7 @@ export async function POST(request) {
                 "customer_email": email
             },
             "order_meta": {
-                "return_url": `${process.env.NEXT_PUBLIC_DOMAIN}`,
+                "return_url": `${process.env.NEXT_PUBLIC_DOMAIN}/rathyatra?order_id={order_id}`,
                 "notify_url": `${process.env.NEXT_PUBLIC_DOMAIN}/api/handleWebhook`
             },
             "order_tags": {
