@@ -222,33 +222,33 @@ const GiftBox = ({ gifts, plan, onDonate }) => {
 const LeafyDivider = ({ text, svgWidth = "180px" }) => {
     return (
         <div className="leafy-divider-container">
-        <div className="leafy-branch">
-            <svg viewBox="0 0 150 30" className="leafy-svg left-svg" style={{ '--custom-width': svgWidth }}>
-            <g stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round">
-                <line x1="15" y1="15" x2="150" y2="15" />
-                <path d="M 15,15 C 5,15 2,5 8,3 C 12,1 16,6 12,9 C 9,11 6,8 8,6" />
-                <path d="M 15,15 C 5,15 2,25 8,27 C 12,29 16,24 12,21 C 9,19 6,22 8,24" />
-                <path d="M 35,15 Q 40,3 50,4 Q 47,12 35,15" />
-                <path d="M 65,15 Q 70,27 80,26 Q 77,18 65,15" />
-                <path d="M 95,15 Q 100,3 110,4 Q 107,12 95,15" />
-                <path d="M 125,15 Q 130,27 140,26 Q 137,18 125,15" />
-            </g>
-            </svg>
-        </div>
-        <span className="leafy-divider-text">{text}</span>
-        <div className="leafy-branch">
-            <svg viewBox="0 0 150 30" className="leafy-svg right-svg" style={{ '--custom-width': svgWidth }}>
-            <g stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round">
-                <line x1="15" y1="15" x2="150" y2="15" />
-                <path d="M 15,15 C 5,15 2,5 8,3 C 12,1 16,6 12,9 C 9,11 6,8 8,6" />
-                <path d="M 15,15 C 5,15 2,25 8,27 C 12,29 16,24 12,21 C 9,19 6,22 8,24" />
-                <path d="M 35,15 Q 40,3 50,4 Q 47,12 35,15" />
-                <path d="M 65,15 Q 70,27 80,26 Q 77,18 65,15" />
-                <path d="M 95,15 Q 100,3 110,4 Q 107,12 95,15" />
-                <path d="M 125,15 Q 130,27 140,26 Q 137,18 125,15" />
-            </g>
-            </svg>
-        </div>
+            <div className="leafy-branch">
+                <svg viewBox="0 0 150 30" className="leafy-svg left-svg" style={{ '--custom-width': svgWidth }}>
+                <g stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round">
+                    <line x1="15" y1="15" x2="150" y2="15" />
+                    <path d="M 15,15 C 5,15 2,5 8,3 C 12,1 16,6 12,9 C 9,11 6,8 8,6" />
+                    <path d="M 15,15 C 5,15 2,25 8,27 C 12,29 16,24 12,21 C 9,19 6,22 8,24" />
+                    <path d="M 35,15 Q 40,3 50,4 Q 47,12 35,15" />
+                    <path d="M 65,15 Q 70,27 80,26 Q 77,18 65,15" />
+                    <path d="M 95,15 Q 100,3 110,4 Q 107,12 95,15" />
+                    <path d="M 125,15 Q 130,27 140,26 Q 137,18 125,15" />
+                </g>
+                </svg>
+            </div>
+            <span className="leafy-divider-text">{text}</span>
+            <div className="leafy-branch">
+                <svg viewBox="0 0 150 30" className="leafy-svg right-svg" style={{ '--custom-width': svgWidth }}>
+                <g stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round">
+                    <line x1="15" y1="15" x2="150" y2="15" />
+                    <path d="M 15,15 C 5,15 2,5 8,3 C 12,1 16,6 12,9 C 9,11 6,8 8,6" />
+                    <path d="M 15,15 C 5,15 2,25 8,27 C 12,29 16,24 12,21 C 9,19 6,22 8,24" />
+                    <path d="M 35,15 Q 40,3 50,4 Q 47,12 35,15" />
+                    <path d="M 65,15 Q 70,27 80,26 Q 77,18 65,15" />
+                    <path d="M 95,15 Q 100,3 110,4 Q 107,12 95,15" />
+                    <path d="M 125,15 Q 130,27 140,26 Q 137,18 125,15" />
+                </g>
+                </svg>
+            </div>
         </div>
     );
 };
