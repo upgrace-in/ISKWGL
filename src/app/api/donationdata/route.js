@@ -26,7 +26,8 @@ export async function GET(request) {
         // 4. Send the data safely back to the frontend
         return NextResponse.json({
             seva_name: donation.donatedFor, // Send back whatever your frontend translation map needs!
-            amount: donation.amount
+            amount: donation.amount,
+            status: donation.status
         }, { status: 200 });
 
     } catch (error) {
