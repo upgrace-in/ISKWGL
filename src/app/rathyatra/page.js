@@ -126,7 +126,7 @@ const DonationFailureModal = ({ onClose }) => {
                 </div>
 
                 <div className="failure-instruction-box">
-                    <strong>Don't worry!</strong>
+                    <strong>{"Don't worry!"}</strong>
                     <p>If any money was deducted from your account, it will be automatically refunded by your bank within 3-5 business days.</p>
                 </div>
 
@@ -673,7 +673,7 @@ export default function Rathyatra() {
             const response = await fetch(`/api/donationdata?order_id=${orderId}`);
             const donation = await response.json();
             // await new Promise(resolve => setTimeout(resolve, 3000));
-            // const donation = {'status':'PENDING','seva_name':'Rath Yatra','amount':'1.00'}
+            // const donation = {'status':'SUCCESS','seva_name':'Rath Yatra','amount':'517.00'}
 
             // 1. If it's a successful payment with an order ID, check the DB!
             if (donation.status === 'SUCCESS' && orderId) {
