@@ -678,11 +678,11 @@ export default function Rathyatra() {
 
             // 1. If it's a successful payment with an order ID, check the DB!
             try {
+                // 2. Call your backend API to get the order details from the database
+                const response = await fetch(`/api/donationdata?order_id=${orderId}`);
+                const donation = await response.json();
                 if (donation.status === 'SUCCESS' && orderId) {
                 
-                    // 2. Call your backend API to get the order details from the database
-                    const response = await fetch(`/api/donationdata?order_id=${orderId}`);
-                    const donation = await response.json();
                     const dbSevaName = donation.seva_name;
 
                     if (dbSevaName == 'Rath Yatra') {
