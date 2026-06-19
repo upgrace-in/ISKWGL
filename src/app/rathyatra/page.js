@@ -668,17 +668,21 @@ export default function Rathyatra() {
     useEffect(() => {
         const checkDonation = async () => {
             const orderId = searchParams.get('order_id');
+            if (!orderId) {
+                return; 
+            }
             setIsVerifying(true);
-            // 2. Call your backend API to get the order details from the database
-            const response = await fetch(`/api/donationdata?order_id=${orderId}`);
-            const donation = await response.json();
+            
             // await new Promise(resolve => setTimeout(resolve, 3000));
             // const donation = {'status':'SUCCESS','seva_name':'Rath Yatra','amount':'517.00'}
 
             // 1. If it's a successful payment with an order ID, check the DB!
-            if (donation.status === 'SUCCESS' && orderId) {
-                try {
-
+            try {
+                if (donation.status === 'SUCCESS' && orderId) {
+                
+                    // 2. Call your backend API to get the order details from the database
+                    const response = await fetch(`/api/donationdata?order_id=${orderId}`);
+                    const donation = await response.json();
                     const dbSevaName = donation.seva_name;
 
                     if (dbSevaName == 'Rath Yatra') {
@@ -716,23 +720,24 @@ export default function Rathyatra() {
                             setEarnedGifts([]);
                         }
                     }
-                } catch (error) {
-                    console.error("Failed to verify donation:", error);
-                } finally {
-                    setIsVerifying(false);
+                } 
+                else if (donation.status === 'PENDING' || donation.status === 'FAILED') {
+                    // Just instantly show the failure modal. No need to call the database!
+                    setShowFailure(true);
                 }
             }
-            else if (donation.status === 'PENDING' || donation.status === 'FAILED') {
-                // Just instantly show the failure modal. No need to call the database!
-                setShowFailure(true);
-            }
+            catch (error) {
+                console.error("Failed to verify donation:", error);
+            } finally {
+                setIsVerifying(false);
+            }            
         };
 
         checkDonation();
     }, [searchParams]);
 
     const handleCloseSuccessModal = () => {
-        setEarnedGifts(null);
+        setEarnedGifts([]);
         
         // Clean up the URL so the popup doesn't appear again if they refresh the page
         // (Removes ?status=success&order_id=... from the address bar)
@@ -740,7 +745,6 @@ export default function Rathyatra() {
     };
 
     const handleCloseFailureModal = () => {
-        setIsVerifying(false);
         setShowFailure(false);
         // Cleans ?status=failed from the URL so they can try again cleanly
         router.replace(window.location.pathname, { scroll: false }); 
