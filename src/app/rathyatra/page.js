@@ -639,7 +639,7 @@ export default function Rathyatra() {
 
                 try {
 
-                    dbSevaName = donation.donatedFor;
+                    dbSevaName = donation.seva_name;
 
                     if (dbSevaName == 'Rath Yatra') {
                         donationamount = donation.amount;
@@ -659,7 +659,7 @@ export default function Rathyatra() {
                             setEarnedGifts(Gifts.bhakta);
                         }
                         else{
-                            setEarnedGifts(null);
+                            setEarnedGifts([]);
                         }
                     }
                     // const dbSevaName="kjsdnfk"
