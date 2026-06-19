@@ -743,3 +743,168 @@ white-space: nowrap       /* Keeps text on one line*/
       margin-top: 0px;
     }
 }
+
+/* =========================================
+   VERIFYING DONATION LOADER
+========================================= */
+.verifying-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.85); /* Slightly transparent white */
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Keeps it above everything, even the navbar! */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.verifying-box {
+    background: #fffdf8;
+    padding: 30px 40px;
+    border-radius: 16px;
+    border: 2px solid #eec48c;
+    box-shadow: 0 15px 35px rgba(90, 2, 9, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* The Spinning Golden Ring */
+.verifying-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3e5d0; /* Light gold background */
+    border-top: 4px solid #d4a054; /* Dark gold spinning part */
+    border-radius: 50%;
+    animation: spin-gold 1s linear infinite;
+}
+
+.verifying-box h3 {
+    color: #5a0209;
+    font-family: 'Times New Roman', Georgia, serif;
+    font-style: italic;
+    font-size: 22px;
+    margin: 0;
+}
+
+.verifying-box p {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+    font-weight: 500;
+}
+
+@keyframes spin-gold {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* =========================================
+   DONATION FAILURE MODAL
+========================================= */
+.failure-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.failure-modal-content {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    border-top: 6px solid #5a0209; /* Maroon top border indicating stop/error */
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    animation: slideUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.failure-icon {
+    margin-bottom: 15px;
+}
+
+.failure-header h2 {
+    color: #333;
+    font-size: clamp(20px, 6vw, 24px);
+    margin: 0 0 10px 0;
+}
+
+.failure-header p {
+    color: #666;
+    font-size: 15px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.failure-instruction-box {
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.failure-instruction-box strong {
+    color: #5a0209;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.failure-instruction-box p {
+    color: #555;
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.failure-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.failure-retry-btn {
+    background: #5a0209;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+}
+
+.failure-retry-btn:hover {
+    background: #7a040d;
+}
+
+.failure-support-link {
+    color: #d4a054;
+    font-size: 14px;
+    text-decoration: underline;
+    font-weight: bold;
+}
