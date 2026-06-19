@@ -105,6 +105,44 @@ const DonationSuccessModal = ({ gifts, onClose }) => {
         document.body
     );
 };
+
+const DonationFailureModal = ({ onClose }) => {
+    return ReactDOM.createPortal(
+        <div className="failure-modal-overlay">
+            <div className="failure-modal-content">
+                
+                <div className="failure-icon">
+                    {/* A gentle warning/exclamation icon */}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#d4a054" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                </div>
+
+                <div className="failure-header">
+                    <h2>Payment Incomplete</h2>
+                    <p>It looks like your Seva transaction could not be completed.</p>
+                </div>
+
+                <div className="failure-instruction-box">
+                    <strong>{"Don't worry!"}</strong>
+                    <p>If any money was deducted from your account, it will be automatically refunded by your bank within 3-5 business days.</p>
+                </div>
+
+                <div className="failure-actions">
+                    {/* Update this link to your actual WhatsApp or Contact page */}
+                    <a href="/#contact-us" className="failure-support-link" onClick={onClose}>
+                        Contact Support
+                    </a>
+                </div>
+                
+            </div>
+        </div>,
+        document.body
+    );
+};
+
 // 1. EXTRACTED GIFTBOX COMPONENT
 const GiftBox = ({ gifts, plan, onDonate }) => {
     const [isShaking, setIsShaking] = useState(false);
@@ -538,6 +576,7 @@ export default function Rathyatra() {
     const [navOpen, setNavOpen] = useState(false)
     const [earnedGifts, setEarnedGifts] = useState(null);
     const [isVerifying, setIsVerifying] = useState(false); // Optional: to show a loading spinner if DB is slow
+    const [showFailure, setShowFailure] = useState(false);
     
     const [amount, setAmount] = useState();
     
@@ -629,14 +668,15 @@ export default function Rathyatra() {
     useEffect(() => {
         const checkDonation = async () => {
             const orderId = searchParams.get('order_id');
+            setIsVerifying(true);
             // 2. Call your backend API to get the order details from the database
             const response = await fetch(`/api/donationdata?order_id=${orderId}`);
             const donation = await response.json();
+            // await new Promise(resolve => setTimeout(resolve, 3000));
+            // const donation = {'status':'SUCCESS','seva_name':'Rath Yatra','amount':'517.00'}
 
             // 1. If it's a successful payment with an order ID, check the DB!
             if (donation.status === 'SUCCESS' && orderId) {
-                setIsVerifying(true);
-
                 try {
 
                     const dbSevaName = donation.seva_name;
@@ -682,6 +722,10 @@ export default function Rathyatra() {
                     setIsVerifying(false);
                 }
             }
+            else if (donation.status === 'PENDING' || donation.status === 'FAILED') {
+                // Just instantly show the failure modal. No need to call the database!
+                setShowFailure(true);
+            }
         };
 
         checkDonation();
@@ -695,6 +739,13 @@ export default function Rathyatra() {
         router.replace(window.location.pathname, { scroll: false });
     };
 
+    const handleCloseFailureModal = () => {
+        setIsVerifying(false);
+        setShowFailure(false);
+        // Cleans ?status=failed from the URL so they can try again cleanly
+        router.replace(window.location.pathname, { scroll: false }); 
+    };
+
     return (
         <>
             <Header handleNav={() => setNavOpen(!navOpen)} />
@@ -702,9 +753,25 @@ export default function Rathyatra() {
             
             {/* Optional: Show a tiny verifying message while waiting for the DB */}
             {isVerifying && (
-                <div className="verifying-payment">
-                    Verifying your payment... ⏳
+                <div className="verifying-overlay">
+                    <div className="verifying-box">
+                        <div className="verifying-spinner"></div>
+                        <h3>Verifying your Seva...</h3>
+                        <p>Please wait a moment 🙏</p>
+                    </div>
                 </div>
+            )}
+            {/* 5. Render the success modal ONLY if the DB confirmed it and set the gifts */}
+            {earnedGifts && (
+                <DonationSuccessModal 
+                    gifts={earnedGifts} 
+                    onClose={handleCloseSuccessModal} 
+                />
+            )}
+
+            {/* 4. RENDER THE FAILURE MODAL */}
+            {showFailure && (
+                <DonationFailureModal onClose={handleCloseFailureModal} />
             )}
 
             <div className="hero-page-container">
@@ -872,15 +939,6 @@ export default function Rathyatra() {
             {/* <Highlights /> */}
             <LotusHighlights />
             <FestivalInfo />
-            
-            
-            {/* 5. Render the success modal ONLY if the DB confirmed it and set the gifts */}
-            {earnedGifts && (
-                <DonationSuccessModal 
-                    gifts={earnedGifts} 
-                    onClose={handleCloseSuccessModal} 
-                />
-            )}
 
             <div style={{margin:"auto auto auto auto", maxWidth:"1300px"}}>
                 <DirectDonation />
