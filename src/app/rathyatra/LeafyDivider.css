@@ -41,12 +41,14 @@
 @media (max-width: 600px) {
   .leafy-divider-container {
     gap: 5px; /* Brings leaves closer to text */
+    width: 90%;
+    margin: auto;
   }
   .leafy-divider-text {
     font-size: 18px; /* Scales down title */
     padding: 0 5px;
   }
   .leafy-svg {
-    width: 70px; /* Shrinks the branches so it never overflows the screen */
+    width: 60px; /* Shrinks the branches so it never overflows the screen */
   }
 }
