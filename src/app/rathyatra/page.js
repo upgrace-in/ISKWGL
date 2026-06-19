@@ -632,9 +632,11 @@ export default function Rathyatra() {
             // 2. Call your backend API to get the order details from the database
             const response = await fetch(`/api/donationdata?order_id=${orderId}`);
             const donation = await response.json();
+            console.log(donation)
 
             // 1. If it's a successful payment with an order ID, check the DB!
             if (donation.status === 'SUCCESS' && orderId) {
+                console.log("yes")
                 setIsVerifying(true);
 
                 try {
@@ -642,6 +644,7 @@ export default function Rathyatra() {
                     dbSevaName = donation.seva_name;
 
                     if (dbSevaName == 'Rath Yatra') {
+                        console.log("here")
                         donationamount = donation.amount;
                         if(donationamount >= 108000){
                             setEarnedGifts(Gifts.maha_1);
@@ -659,18 +662,22 @@ export default function Rathyatra() {
                             setEarnedGifts(Gifts.bhakta);
                         }
                         else{
+                            console.log("till here")
                             setEarnedGifts([]);
                         }
                     }
                     // const dbSevaName="kjsdnfk"
 
                     // 3. MAGIC CHECK: Pass the DB name into our translation map
-                    const matchedPlanKey = SevaNameToPlanKey[dbSevaName];
-                    if (matchedPlanKey) {
-                        setEarnedGifts(Gifts[matchedPlanKey]);
-                    }
                     else{
-                        setEarnedGifts([]);
+                        console.log("herehere")
+                        const matchedPlanKey = SevaNameToPlanKey[dbSevaName];
+                        if (matchedPlanKey) {
+                            setEarnedGifts(Gifts[matchedPlanKey]);
+                        }
+                        else{
+                            setEarnedGifts([]);
+                        }
                     }
                 } catch (error) {
                     console.error("Failed to verify donation:", error);
