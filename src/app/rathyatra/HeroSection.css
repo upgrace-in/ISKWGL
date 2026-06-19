@@ -19,42 +19,38 @@
 /* --- NEW BUTTON CSS --- */
 .hero-button-group {
     position: absolute;
-    /* Uses clamp to smoothly push the buttons closer to the edge on smaller laptops */
-    bottom: clamp(15px, 3vw, 30px); 
-    left: clamp(15px, 3vw, 30px); 
-    z-index: 10; 
+    bottom: 30px;  /* Distance from the top edge */
+    left: 30px; /* Distance from the left edge */
+    z-index: 10; /* Ensures it sits ABOVE the image */
     
     display: grid;
-    grid-template-columns: 1fr 1fr; 
-    gap: clamp(8px, 1.5vw, 15px); /* Gap shrinks as the screen narrows */
+    grid-template-columns: 1fr 1fr; /* Creates exactly two equal columns */
+    gap: 15px; /* Space between buttons (both up/down and left/right) */
     
+    /* Ensures the grid doesn't stretch across the whole screen */
     width: max-content;
-    max-width: 90vw; /* MAGIC: Prevents the group from ever blowing past the screen edge */
 }
 
 
-/* Basic styling for the buttons */
+/* Basic styling for the buttons to match your Rath Yatra theme */
 .hero-btn {
     position: relative;
-    /* MAGIC: Padding and font size smoothly shrink as laptop window gets smaller */
-    padding: clamp(8px, 1vw, 12px) clamp(10px, 2vw, 24px);
-    font-size: clamp(12px, 1.2vw, 16px);
+    padding: 12px 24px;
     color: #ffffff;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    border: none; 
+    border: none; /* We remove the standard border because we are drawing a custom one */
     background: transparent; 
     border-radius: 30px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    overflow: hidden; 
+    overflow: hidden; /* This keeps the spinning light inside the button shape */
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: color 0.3s ease;
-    white-space: nowrap; /* Ensures button text stays on one line */
 }
-
 /* --- THE SPINNING GOLD LINE (The Magic) --- */
 .hero-btn::before {
     content: "";
@@ -146,19 +142,17 @@
 }
 /* --- HERO GROUP HEADER (Desktop Base) --- */
 .hero-group-header {
-    grid-column: 1 / -1; 
+    grid-column: 1 / -1; /* Spans across both columns of the button grid */
     display: flex;
-    justify-content: center; 
+    justify-content: center; /* Keeps the title perfectly centered on laptops */
     align-items: center;
 }
-
 .hero-group-title {
     color: #ffffff; 
-    /* MAGIC: Title scales down perfectly from 26px to 18px on smaller desktop windows */
-    font-size: clamp(18px, 2vw, 26px);
+    font-size: 26px;
     font-family: 'Times New Roman', Georgia, serif;
     font-style: italic;
-    margin: 0 0 clamp(5px, 1vw, 10px) 0; 
+    margin: 0 0 10px 0; 
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8); 
 }
 /* =========================================
@@ -304,7 +298,7 @@
         display: flex;
         flex-direction: column;
         background-color: #feebe8; /* A soft pink background for the buttons area */
-        margin-top:65px;
+        margin-top:80px;
     }
 
     /* 2. Show the FULL image by removing absolute positioning */
@@ -323,7 +317,6 @@
         margin: auto; /* Centers the grid */
         width: 95%; /* Fits perfectly on the mobile screen */
         justify-content: center;
-        margin-bottom: 5px;
     }
     /* --- MOBILE HERO HEADER ROW --- */
     .hero-group-header {
