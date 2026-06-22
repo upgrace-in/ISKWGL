@@ -360,11 +360,12 @@ const FestivalInfo = () => {
 
     // Data for the Budget Snapshot
     const budgetData = [
-        { title: "New Rath Construction", amount: "₹14 Lakhs", img: "/images/rathyatra/Highlights/new-rath.png" },
+        { title: "New Rath & Shed Construction", amount: "₹14 Lakhs", img: "/images/rathyatra/Highlights/new-rath.png" },
         { title: "Annadanam", amount: "₹5 Lakhs", img: "/images/rathyatra/Highlights/annadanam.png" },
-        { title: "Prasadam Distribution", amount: "₹1.5 Lakh", img: "/images/rathyatra/Highlights/sweets.png" },
-        { title: "Decorations", amount: "₹1 Lakh", img: "/images/rathyatra/Highlights/decotation.jpg" },
-        { title: "Other Arrangements", amount: "₹2 Lakh", img: "/images/rathyatra/Highlights/misslenious.png" }
+        { title: "Prasadam Distribution from Rath", amount: "₹1.5 Lakh", img: "/images/rathyatra/Highlights/sweets.png" },
+        { title: "Jagannath New clothes & Decoration (2 sets)", amount: "₹1 Lakh", img: "/images/rathyatra/Highlights/JBS_new_cloths.png" },
+        { title: "Pandal, Rath & Temple Decorations", amount: "₹1 Lakh", img: "/images/rathyatra/Highlights/decotation.jpg" },
+        { title: "Lighting, Sound System & Function Hall Charges", amount: "₹1 Lakh", img: "/images/rathyatra/Highlights/misslenious.png" }
     ];
 
     return (
