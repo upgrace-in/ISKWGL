@@ -28,7 +28,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Parama";
+    const ekadasi_name = "Pandava Nirjala";
 
     const [amount, setAmount] = useState();
 
@@ -47,6 +47,7 @@ export default function Ekadasi() {
         'Ekadashi Go Seva': [
             { title: "Go Seva (Feed 1 Cow)", price: 116},
             { title: "Go Seva (Feed 2 Cows)", price: 216},
+            { title: "Complete Go Seva for the Day", price: 516},
         ]
     }
 
@@ -65,10 +66,10 @@ export default function Ekadasi() {
             <section className="image-hero-container">
             <picture>
                 {/* MOBILE IMAGE: Shown when screen is 768px or less */}
-                {/* <source 
+                <source 
                     media="(max-width: 768px)" 
-                    srcSet="/images/rath-mobile-2.png" 
-                /> */}
+                    srcSet="/images/Ekadasi/pandava-nirjala-ekadasi.jpeg" 
+                />
                 {/* DESKTOP IMAGE: Default shown for larger screens */}
                 <img 
                     src="/images/full-alter.jpeg" 
@@ -78,12 +79,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">11 Jun 2026</div>
+                <div className="date-badge">25 Jun 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadashi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 12 Jun 2026, 5:36 AM to 10:00 AM for Warangal.
+                        Fast breaking parana time: 26 Jun 2026, 5:38 AM to 10:02 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -93,14 +94,13 @@ export default function Ekadasi() {
             <div className="description-section">
                 {/* Spiritual Significance Paragraph */}
                 <p className="hero-description">
-                    <b>Parama Ekadashi: The Most Auspicious Ekadashi of Purushottam Maas</b>
-                    <br/><b style={{ color: '#d4a054', fontWeight: '600' }}>Unlike regular Ekadasis, Parama Ekadashi occurs only during Adhik Maas</b>, 
-                    also known as Purushottam Maas , the month especially dear to Lord Krishna. 
-                    Scriptures explain that <b style={{ color: '#d4a054', fontWeight: '600' }}>fasting, chanting, charity, and devotional service 
-                    performed on this day bring multiplied spiritual results.</b>
+                    {/* <br/> */}
+                    Bhima found it difficult to observe every Ekadasi fast. Bhima approached Srila Vyasadeva, who instructed him to observe one strict fast each year on Nirjala Ekadasi. <b style={{ color: '#d4a054'}}>By sincerely observing this fast, Bhima would receive the benefits of all Ekadasis.</b> Bhima accepted the challenge, and since then this sacred day has become famous as Pandava Nirjala Ekadasi or Bhima Ekadasi .
+                    <br/>
+                    <b style={{ color: '#d4a054'}}>On this sacred day, devotees can deepen their spiritual journey through chanting, hearing Krishna-katha, serving devotees, and supporting temple activities through Donation .</b>
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/parama-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/pandava-nirjala-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
