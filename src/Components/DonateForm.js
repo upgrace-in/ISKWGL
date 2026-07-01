@@ -5,10 +5,12 @@ import axios from 'axios'
 import { useRouter } from "next/navigation"
 import HandlePayment from "@/Helpers/HandlePayment"
 import Image from "next/image"
+import { useDonate } from "@/Helpers/PaymentPageHandler";
 
 export default function DonateForm(props) {
 
     const router = useRouter()
+    const { handleDonateClick } = useDonate();
 
     const [data, setData] = useState()
 
@@ -96,7 +98,10 @@ export default function DonateForm(props) {
                     </div>
                 </div>
                 <div class="form-wrap my-5 fw-form">
-                    <form id="donateForm" onSubmit={(e) => handleSubmit(e)}>
+                    <form id="donateForm" onSubmit={(e) => {
+                            e.preventDefault();
+                            handleDonateClick(e.target.amount.value, e.target.donationType.value);
+                        }}>
                         <div class="row align-items-start">
                             <div class="col-lg-4 pe-xl-4">
                                 <div class="donate-img">
@@ -130,51 +135,7 @@ export default function DonateForm(props) {
                                         <div class="form-part"><label for="">Amount*</label><input type="text"
                                             name="amount" defaultValue={amount} placeholder="Enter Amount" /></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Mobile Number*</label><input type="tel"
-                                            placeholder="Phone Number" maxlength="10" name="phone" /></div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Email*</label><input type="text"
-                                            name="email" placeholder="Email" /></div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Name*</label><input maxlength="50"
-                                            type="text" name="name" placeholder="Name" /></div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">PAN (Optional)</label><input type="text"
-                                            name="pan" id="" maxlength="10" placeholder="PAN"
-                                            aria-label="For 80G reciept" class=""
-                                            style={{ textTransform: "uppercase" }} /></div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Address*</label><textarea
-                                            type="text" name="address" placeholder="Address"
-                                            aria-label="For Prasadam please provide this" class=""></textarea></div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">PIN Code*</label><input
-                                            type="text" minlength="6" maxlength="6" name="pin"
-                                            placeholder="PIN Code" /></div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="type_checkbox mt-3">
-                                            <input type="checkbox" onChange={() => setMemoryStatus(old => !old ? true : false)} id="memoryOfSomeone" />
-                                            <label for="memoryOfSomeone">This Donation in the
-                                                memory/honor of someone or performed on a specific occasion</label>
-                                        </div>
-
-                                        {
-                                            memoryStatus
-                                                ?
-                                                <div class="col-md-6 mt-2">
-                                                    <div class="form-part"><label for="">Name*</label><input maxlength="50"
-                                                        type="text" name="memoryOfSomeoneName" placeholder="Name" /></div>
-                                                </div>
-                                                : ""
-                                        }
-                                    </div>
+                                    
                                     {
                                         status?.message ?
                                             <span className="mt-2" style={{ color: 'red' }}>
