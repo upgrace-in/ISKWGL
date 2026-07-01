@@ -100,7 +100,7 @@ export default function DonateForm(props) {
                 <div class="form-wrap my-5 fw-form">
                     <form id="donateForm" onSubmit={(e) => {
                             e.preventDefault();
-                            handleDonateClick(e.target.amount.value, "General Donation");
+                            handleDonateClick(e.target.amount.value, e.target.donationType.value);
                         }}>
                         <div class="row align-items-start">
                             <div class="col-lg-4 pe-xl-4">
