@@ -15,6 +15,15 @@ const nextConfig = {
         missingSuspenseWithCSRBailout: false,
         serverComponentsExternalPackages: ['@sparticuz/chromium'],
     },
+    async redirects() {
+        return [
+        {
+            source: '/annadanam',
+            destination: '/AnnaDaan',
+            permanent: true, // Use true for 308 (permanent), false for 307 (temporary)
+        },
+        ];
+    },
 }
 
 export default nextConfig;
