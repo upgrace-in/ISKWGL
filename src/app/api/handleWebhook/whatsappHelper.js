@@ -72,6 +72,9 @@ export const sendWhatsAppMessage = async (to, pdfUrl, name, transactionId, amoun
 export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
 
     try {
+        const AnnaDaanLink = 'https://www.iskconwarangal.in/AnnaDaan';
+        const TulaDaanLink = 'https://www.iskconwarangal.in/TulaDanSeva';
+        const RathyatraLink = 'https://www.iskconwarangal.in/rathyatra';
         const whatsappResponse = await axios.post('https://api.dovesoft.io/REST/directApi/message', {
             messaging_product:"whatsapp",
             to:to,
@@ -81,16 +84,15 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
                     policy: 'deterministic',
                     code: 'en'
                 },
-                name: 'webdonationrec1',
+                name: 'birthdaywishes2026',
                 components: [
                     {
                         type: 'header',
                         parameters: [
                             {
-                                type: 'document',
+                                type: 'image',
                                 document: {
-                                    link: 'https://myawswarangalbucket.s3.ap-southeast-2.amazonaws.com/TempleReceipts/donation_receipt_808139.pdf',
-                                    filename: `donation_receipt_order_808139.pdf`
+                                    link: 'https://drive.google.com/file/d/1ab9-Vb4fDt84lUCl_ib-LzKEiCM37uOl/view?usp=sharing',
                                 }
                             }
                         ]
@@ -100,15 +102,15 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
                         parameters: [
                             {
                                 type: 'text',
-                                text: name
+                                text: AnnaDaanLink
                             },
                             {
                                 type: 'text',
-                                text: 'order_808139'
+                                text: TulaDaanLink
                             },
                             {
                                 type: 'text',
-                                text: 'Rs 100'
+                                text: RathyatraLink
                             }
                         ]
                     }
