@@ -53,6 +53,7 @@ export async function POST(request) {
         }
 
         const signature = generateSignature(formData);
+        console.log("fulladdress : ",fulladdress);
 
         let dod = new Donation({
             orderId,
