@@ -91,8 +91,8 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
                         parameters: [
                             {
                                 type: 'image',
-                                document: {
-                                    link: 'https://drive.google.com/file/d/1ab9-Vb4fDt84lUCl_ib-LzKEiCM37uOl/view?usp=sharing',
+                                image: {
+                                    link: 'https://drive.google.com/uc?export=view&id=1ab9-Vb4fDt84lUCl_ib-LzKEiCM37uOl',
                                 }
                             }
                         ]
