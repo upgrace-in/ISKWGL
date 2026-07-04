@@ -144,6 +144,7 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
 };
 
 export const sendWhatsAppMessageforBirthdayInfotoTemple = async (birthdayList) => {
+    const formattedList = birthdayList.map(p => `${p.name} (${p.phone})`).join(', ');
     try {
         
         const whatsappResponse = await axios.post('https://api.dovesoft.io/REST/directApi/message', {
@@ -162,7 +163,7 @@ export const sendWhatsAppMessageforBirthdayInfotoTemple = async (birthdayList) =
                         parameters: [
                             {
                                 type: 'text',
-                                text: birthdayList
+                                text: formattedList
                             }
                         ]
                     }
