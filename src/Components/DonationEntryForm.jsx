@@ -28,7 +28,7 @@ export default function DonationEntryForm() {
     const [message, setMessage] = useState({ text: '', type: '' });
 
     const sevaOptions = [
-        "Annadaan", "Go Seva", "Rath Yatra", "Ekadasi", "Tula Daan", "Nithya Seva", "General Donation"
+        "AnnaDaan", "Go Seva", "Rath Yatra", "Ekadasi", "Tula Daan", "Nithya Seva", "General Donation"
     ];
 
     // Initialize "Donation Date" to today's date on component mount
