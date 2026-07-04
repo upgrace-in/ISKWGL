@@ -141,7 +141,7 @@ export default function DonationCheckout() {
 
         const address_split = {
             "addressLine1" : formData.flatNo,
-            "addressLine2" : formData.street + formData.landmark,
+            "addressLine2" : formData.street + " , " + formData.landmark,
             "pinCode" : formData.pin,
             "city" : formData.city,
             "district" : formData.district,

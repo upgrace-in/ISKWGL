@@ -55,6 +55,10 @@ export default function DonorProfile() {
                         <p className="text-xs font-semibold text-gray-500 uppercase">Address</p>
                         <p className="text-gray-900">{profile.address.addressLine1}, {profile.address.addressLine2}, {profile.address.city}, {profile.address.district}, {profile.address.state} ({profile.address.pinCode})</p>
                     </div>
+                    <div className="md:col-span-2">
+                        <p className="text-xs font-semibold text-gray-500 uppercase">DOB</p>
+                        <p className="text-gray-900">{profile.dob}</p>
+                    </div>
                 </div>
             </div>
 
