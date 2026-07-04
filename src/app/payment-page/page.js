@@ -139,6 +139,15 @@ export default function DonationCheckout() {
         ].filter(part => part && part.trim() !== "");
         const completeAddress = `${addressParts.join(', ')}`
 
+        const address_split = {
+            "addressLine1" : formData.flatNo,
+            "addressLine2" : formData.street + formData.landmark,
+            "pinCode" : formData.pin,
+            "city" : formData.city,
+            "district" : formData.district,
+            "state": formData.state
+        }
+
         // making final data to be parsed to server
         const submissionData = {
             name: formData.name,
@@ -152,7 +161,7 @@ export default function DonationCheckout() {
             donationType: donationData.reason,
             seva: donationData.seva,
             memoryOfSomeoneName: formData.memoryOfSomeoneName,
-            fulladdress: addressParts
+            fulladdress: address_split
         };
         console.log("Passing this to the final function:", submissionData);
         Object.entries(submissionData).forEach(([property, value]) => {
