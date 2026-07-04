@@ -32,7 +32,7 @@ export default function SideNav({ openNav = "", handleNav = () => {} }) {
       whiteSpace: 'nowrap',
   };
   return (
-    <div class={`side-nav ${openNav}`}>
+    <div className={`side-nav ${openNav}`}>
       <style>{`
                 .nav-rath-yatra-highlight {
                     background: linear-gradient(135deg, #d4a054, #eec48c);
@@ -67,66 +67,66 @@ export default function SideNav({ openNav = "", handleNav = () => {} }) {
                     100% { box-shadow: 0 0 0 0 rgba(212, 160, 84, 0); }
                 }
       `}</style>
-      <div class="side-nav-heading">
-        <figure class="mb-0">
+      <div className="side-nav-heading">
+        <figure className="mb-0">
           <img src="/assets/iskcon_logo.png" alt="" />
         </figure>
-        <div class="side-nav-left-header">
+        <div className="side-nav-left-header">
           <Link 
               href="/rathyatra" 
               className={"nav-rath-yatra-highlight mobile-rath-btn" }
           >
               <FaHeart style={{ marginRight: '6px' }}/> Rath Yatra
           </Link>
-          <button class="side-menu-close" onClick={() => handleNav()}>
+          <button className="side-menu-close" onClick={() => handleNav()}>
             <X size={24} />
           </button>
         </div>
       </div>
-      <div class="side-nav-body">
-        <div class="menu-scroll-wrap">
-          <ul class="list-unstyled" style={{ textAlign : "center", fontWeight: "600", fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}>
-            <li class="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }} >
-              <a aria-current="page" class="main-anc" href="/">
+      <div className="side-nav-body">
+        <div className="menu-scroll-wrap">
+          <ul className="list-unstyled" style={{ textAlign : "center", fontWeight: "600", fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}>
+            <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }} >
+              <a aria-current="page" className="main-anc" href="/">
                 Home
               </a>
             </li>
-            <li class="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }} >
-              <a class="main-anc" href="/#gallery">
+            <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }} >
+              <a className="main-anc" href="/#gallery">
                 Gallery
               </a>
             </li>
-            <li class="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }} >
-              <a class="main-anc" href="/#about-us">
+            <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }} >
+              <a className="main-anc" href="/#about-us">
                 About us
               </a>
             </li>
-            <li class="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }}  >
-              <a class="main-anc" href="/#founder">
+            <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }}  >
+              <a className="main-anc" href="/#founder">
                 Founder
               </a>
             </li>
-            <li class="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }}>
-              <a class="main-anc" href="/AnnaDaan">
+            <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }}>
+              <a className="main-anc" href="/AnnaDaan">
                 Donation Options
               </a>
             </li>
-            <li class="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }}  >
-              <a class="main-anc" href="/#contact-us">
+            <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }}  >
+              <a className="main-anc" href="/#contact-us">
                 Contact
               </a>
             </li>
-            <li class="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px"  }}>
-              <a class="main-anc" href="/#quick-donate">
+            <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px"  }}>
+              <a className="main-anc" href="/#quick-donate">
                 Quick Donate
               </a>
             </li>
-            <li class="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px"  }}>
-              <a class="main-anc" href="/templerenovation" style={buttonStyle}>
+            <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px"  }}>
+              <a className="main-anc" href="/templerenovation" style={buttonStyle}>
                 <FaHandsHelping size={18}/> Help Temple Renovate
               </a>
             </li>
-            <li class="side-nav-social-links">
+            <li className="side-nav-social-links">
               <a target="_blank" href="https://facebook.com/warangaliskcon">
                 <FaFacebookF size={20} />
               </a>
@@ -143,7 +143,7 @@ export default function SideNav({ openNav = "", handleNav = () => {} }) {
           </ul>
         </div>
       </div>
-      <div class="side-nav-footer"></div>
+      <div className="side-nav-footer"></div>
     </div>
   );
 }

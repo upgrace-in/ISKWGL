@@ -83,42 +83,42 @@ export default function DonateForm(props) {
     }
 
     return (
-        <section class="donation-form-sec">
+        <section className="donation-form-sec">
             <HandlePayment data={data} />
-            <div class="container">
-                <div class="row d-flex justify-content-center mb-5">
-                    <div class="col-md-10">
-                        <div id="scrollToDonationForm" class="heading">
-                            <h2 class="head-1">QUICK DONATE</h2>
-                            <p class="b-line">If you would like to make a donation towards a particular area of
+            <div className="container">
+                <div className="row d-flex justify-content-center mb-5">
+                    <div className="col-md-10">
+                        <div id="scrollToDonationForm" className="heading">
+                            <h2 className="head-1">QUICK DONATE</h2>
+                            <p className="b-line">If you would like to make a donation towards a particular area of
                                 activity, please select an option from below. ISKCON relies entirely on voluntary
                                 donations and so every donation counts. Please note that donation is processed on a
                                 secure site.</p>
                         </div>
                     </div>
                 </div>
-                <div class="form-wrap my-5 fw-form">
+                <div className="form-wrap my-5 fw-form">
                     <form id="donateForm" onSubmit={(e) => {
                             e.preventDefault();
-                            handleDonateClick(e.target.amount.value, e.target.donationType.value);
+                            handleDonateClick(e.target.amount.value, e.target.donationType.value, "General Donation");
                         }}>
-                        <div class="row align-items-start">
-                            <div class="col-lg-4 pe-xl-4">
-                                <div class="donate-img">
-                                    <figure class="up-right">
+                        <div className="row align-items-start">
+                            <div className="col-lg-4 pe-xl-4">
+                                <div className="donate-img">
+                                    <figure className="up-right">
                                         <Image width={100} height={100} src={`/donateForIMGs/${donateFor === "Akshay Tritiya" ? "akshaytritiya.jpg" : "krishna.webp"}`} alt=""></Image></figure>
                                 </div>
-                                <div class="form-part mt-4 me-lg-2">
-                                    <div class="notes-wrap mt-0">
-                                        <p class="text-center"><span> Please Note:</span> Complete Address with PIN-Code
+                                <div className="form-part mt-4 me-lg-2">
+                                    <div className="notes-wrap mt-0">
+                                        <p className="text-center"><span> Please Note:</span> Complete Address with PIN-Code
                                             and PAN is mandatory for an 80G Receipt.</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 mt-lg-0 mt-4 ">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Donation For</label><select
+                            <div className="col-lg-8 mt-lg-0 mt-4 ">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-part"><label for="">Donation For</label><select
                                             name="donationType" onChange={(e) => setDonateFor(e.target.value)}>
                                             {
                                                 payForData.map((d, i) => {
@@ -127,12 +127,12 @@ export default function DonateForm(props) {
                                                         : <option value={d.title} key={i}>{d.title}</option>
                                                 })
                                             }
-                                        </select><a class="donation-link"
+                                        </select><a className="donation-link"
                                             href="/#donate">view more
                                                 donation options</a></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Amount*</label><input type="text"
+                                    <div className="col-md-6">
+                                        <div className="form-part"><label for="">Amount*</label><input type="text"
                                             name="amount" defaultValue={amount} placeholder="Enter Amount" /></div>
                                     </div>
                                     
@@ -157,16 +157,16 @@ export default function DonateForm(props) {
                                             </span>
                                             : ""
                                     }
-                                    <div class="col-12 mt-2">
+                                    <div className="col-12 mt-2">
                                         <button type="submit" disabled={status?.disabled}
-                                            class="box-hover custom-btn-cls donation_btn ms-0 donate-now-clicked-form">DONATE
+                                            className="box-hover custom-btn-cls donation_btn ms-0 donate-now-clicked-form">DONATE
                                             NOW </button></div>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="donate-note my-5">
+                <div className="donate-note my-5">
                     <p>Note: Avail 80G Benefits On All Donations Made To ISKCON Warangal.
                     </p>
                     <p>&quot;Exemption order ref no. AAATI0017PF2021901 dated 24/09/2021 valid up-to 31/03/2026.&quot;</p>

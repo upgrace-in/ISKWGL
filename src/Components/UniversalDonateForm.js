@@ -7,9 +7,11 @@ import HandlePayment from "@/Helpers/HandlePayment"
 import GetSearchParams from '@/Components/GetSearchParams'
 import Image from "next/image"
 import Slideshow from "@/Components/Slideshow"
+import { useDonate } from "@/Helpers/PaymentPageHandler";
 
 export default function UniversalDonateForm(props) {
 
+    const { handleDonateClick } = useDonate();
 
     const value = GetSearchParams()
     const [redirectedFrom, setRedirectedFrom] = useState(props?.defaultReferral)
@@ -106,8 +108,8 @@ export default function UniversalDonateForm(props) {
             switch (i) {
                 case 'pan':
                     finalJSX.push(
-                        <div class="col-md-6">
-                            <div class="form-part" key="pan">
+                        <div className="col-md-6">
+                            <div className="form-part" key="pan">
                                 <label for="">PAN (Optional)</label>
                                 <input type="text"
                                     name="pan"
@@ -115,7 +117,7 @@ export default function UniversalDonateForm(props) {
                                     maxlength="10"
                                     placeholder="PAN"
                                     aria-label="For 80G reciept"
-                                    class=""
+                                    className=""
                                     style={{ textTransform: "uppercase" }} />
                             </div>
                         </div>
@@ -215,8 +217,8 @@ export default function UniversalDonateForm(props) {
                     break;
                 case 'dob':
                     finalJSX.push(
-                        <div class="col-md-6">
-                            <div class="form-part">
+                        <div className="col-md-6">
+                            <div className="form-part">
                                 <label for="">DOB*</label>
                                 <input
                                     type="date" name="dob" />
@@ -239,26 +241,26 @@ export default function UniversalDonateForm(props) {
 
 
     return (
-        <section class="donation-form-sec">
+        <section className="donation-form-sec">
             <HandlePayment data={data} />
-            <div class="container">
-                <div class="row d-flex justify-content-center mb-5">
-                    <div class="col-md-10">
-                        <div id="scrollToDonationForm" class="heading">
-                            <h2 class="head-1">{props?.heading}</h2>
-                            <p class="b-line">If you would like to make a donation towards a particular area of
+            <div className="container">
+                <div className="row d-flex justify-content-center mb-5">
+                    <div className="col-md-10">
+                        <div id="scrollToDonationForm" className="heading">
+                            <h2 className="head-1">{props?.heading}</h2>
+                            <p className="b-line">If you would like to make a donation towards a particular area of
                                 activity, please select an option from below. ISKCON relies entirely on voluntary
                                 donations and so every donation counts. Please note that donation is processed on a
                                 secure site.</p>
                         </div>
                     </div>
                 </div>
-                <div class="form-wrap my-5 fw-form">
+                <div className="form-wrap my-5 fw-form">
                     <form id="donateForm" onSubmit={(e) => handleSubmit(e)}>
-                        <div class="row align-items-start">
-                            <div class="col-lg-4 pe-xl-4">
-                                <div class="donate-img">
-                                    <figure class="up-right">
+                        <div className="row align-items-start">
+                            <div className="col-lg-4 pe-xl-4">
+                                <div className="donate-img">
+                                    <figure className="up-right">
                                         {
                                             Array.isArray(donateFor?.imagePath) && donateFor.imagePath.length > 1 ? (
                                                 <Slideshow images={donateFor.imagePath} />
@@ -273,18 +275,18 @@ export default function UniversalDonateForm(props) {
                                         }
                                     </figure>
                                 </div>
-                                <div class="form-part mt-4 me-lg-2">
-                                    <div class="notes-wrap mt-0">
-                                        <p class="text-center"><span> Please Note:</span> Complete Address with PIN-Code
+                                <div className="form-part mt-4 me-lg-2">
+                                    <div className="notes-wrap mt-0">
+                                        <p className="text-center"><span> Please Note:</span> Complete Address with PIN-Code
                                             and PAN is mandatory for an 80G Receipt.</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 mt-lg-0 mt-4 ">
-                                <div class="row">
+                            <div className="col-lg-8 mt-lg-0 mt-4 ">
+                                <div className="row">
 
-                                    <div class="col-md-6">
-                                        <div class="form-part">
+                                    <div className="col-md-6">
+                                        <div className="form-part">
                                             <label for="">Donation For</label>
 
                                             <select
@@ -300,14 +302,14 @@ export default function UniversalDonateForm(props) {
                                                 }
                                             </select>
 
-                                            <a class="donation-link" href="/#donate">view more donation options</a>
+                                            <a className="donation-link" href="/#donate">view more donation options</a>
                                         </div>
                                     </div>
 
                                     {fields ?? ''}
 
-                                    <div class="col-12">
-                                        <div class="type_checkbox mt-3">
+                                    <div className="col-12">
+                                        <div className="type_checkbox mt-3">
                                             <input type="checkbox" onChange={() => setMemoryStatus(old => !old ? true : false)} id="memoryOfSomeone" />
                                             <label for="memoryOfSomeone">This Donation in the
                                                 memory/honor of someone or performed on a specific occasion</label>
@@ -316,8 +318,8 @@ export default function UniversalDonateForm(props) {
                                         {
                                             memoryStatus
                                                 ?
-                                                <div class="col-md-6 mt-2">
-                                                    <div class="form-part"><label for="">Name*</label><input maxlength="50"
+                                                <div className="col-md-6 mt-2">
+                                                    <div className="form-part"><label for="">Name*</label><input maxlength="50"
                                                         type="text" name="memoryOfSomeoneName" placeholder="Name" /></div>
                                                 </div>
                                                 : ""
@@ -348,16 +350,16 @@ export default function UniversalDonateForm(props) {
                                             : ""
                                     }
 
-                                    <div class="col-12 mt-2">
+                                    <div className="col-12 mt-2">
                                         <button type="submit" disabled={status?.disabled}
-                                            class="box-hover custom-btn-cls donation_btn ms-0 donate-now-clicked-form">DONATE
+                                            className="box-hover custom-btn-cls donation_btn ms-0 donate-now-clicked-form">DONATE
                                             NOW </button></div>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="donate-note my-5">
+                <div className="donate-note my-5">
                     <p>Note: Avail 80G Benefits On All Donations Made To ISKCON Warangal.
                     </p>
                     <p>&quot;Exemption order ref no. AAATI0017PF2021901 dated 24/09/2021 valid up-to 31/03/2026.&quot;</p>

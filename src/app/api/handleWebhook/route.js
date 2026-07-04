@@ -1,5 +1,6 @@
 import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation';
+import TotalDonations from '@/models/TotalDonations';
 
 import { generatePDF } from './pdfHelper';
 import { uploadToS3 } from '../../../Helpers/awsHelper';
@@ -32,6 +33,21 @@ export async function POST(req) {
         donation.webhookData = dict;
         donation.needsProcessing = dict?.txStatus === 'SUCCESS' ? true : false;
         await donation.save();
+
+        let new_donation = new TotalDonations({
+            orderId: donation.orderId,
+            phone: donation.phone,
+            name: donation.name,
+            amount: donation.amount,
+            donationDate: new Date(),
+            seva: donation.seva,
+            pan: donation.pan,
+            address: donation.fulladdress,
+            messageSent: false,
+            dob: donation.dob
+        })
+
+        await new_donation.save()
 
         // IMPORTANT: Return 200 OK to Cashfree immediately
         // This tells Cashfree the webhook was received

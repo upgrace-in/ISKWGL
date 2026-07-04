@@ -1,7 +1,7 @@
 
 export default function Floating() {
     return (
-        <div class="fixed-link">
+        <div className="fixed-link">
             <a target="_blank" href="https://wa.me/9121630614"><svg stroke="currentColor" fill="currentColor" strokeWidth="0"
                 viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                 <path

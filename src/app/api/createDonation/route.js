@@ -20,7 +20,7 @@ export async function POST(request) {
 
         await dbConnect()
 
-        let { name, email, donationType, phone, address, pin, amount, pan, memoryOfSomeoneName, abhishekamTimeSlot, dob, redirectedFrom } = await request.json()
+        let { name, email, donationType,seva, phone, address,fulladdress, pin, amount, pan, memoryOfSomeoneName, abhishekamTimeSlot, dob, redirectedFrom } = await request.json()
 
         if(dob){
             dob = Number(new Date(dob))
@@ -49,7 +49,7 @@ export async function POST(request) {
 
             "appId": clientID,
             "notifyUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/api/handleWebhook`,
-            "returnUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/rathyatra`
+            "returnUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/rathyatra?order_id={order_id}`
         }
 
         const signature = generateSignature(formData);
@@ -66,6 +66,8 @@ export async function POST(request) {
             address,
             phone,
             donatedFor: donationType,
+            seva,
+            fulladdress,
             redirectedFrom,
             memoryOfSomeoneName,
             abhishekamTimeSlot,

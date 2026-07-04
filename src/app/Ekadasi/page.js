@@ -123,7 +123,7 @@ export default function Ekadasi() {
                     {currentDonationOptions.map((tier, index) => (
                         <div key={index} className="donation-row">
                             <span className="meal-count">{tier.title}</span>
-                            <button className="donate-action-btn" onClick={() =>handleDonateClick(tier.price, tier.title)}>
+                            <button className="donate-action-btn" onClick={() =>handleDonateClick(tier.price, tier.title, "Ekadasi")}>
                             Donate ₹{tier.price.toLocaleString('en-IN')}
                             </button>
                         </div>
@@ -135,7 +135,7 @@ export default function Ekadasi() {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        handleDonateClick(amount, `${ekadasi_name} Ekadashi Seva`);
+                        handleDonateClick(amount, `${ekadasi_name} Ekadashi Seva`, "Ekadasi");
                     }}
                     className = "custom-dination-container"
                     >

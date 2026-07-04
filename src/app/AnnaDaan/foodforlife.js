@@ -34,6 +34,7 @@ export default function FoodForLife({ }) {
     const donationRef = useRef(null);
 
     const photos = [
+        { src: '/donateForIMGs/images_for_ffl_card/ffl-6.jpeg', alt: 'Annadanam Event 6' },
         { src: '/donateForIMGs/images_for_ffl_card/ffl-1.jpeg', alt: 'Annadanam Event 1' },
         { src: '/donateForIMGs/images_for_ffl_card/ffl-2.jpeg', alt: 'Annadanam Event 2' },
         { src: '/donateForIMGs/images_for_ffl_card/ffl-3.jpeg', alt: 'Annadanam Event 3' },
@@ -263,7 +264,7 @@ export default function FoodForLife({ }) {
                                                     {plan.isSpecial && <p className="special-label">Make a Lasting Impact</p>}
                                                 </div>
                                             </div>
-                                            <button type="button" className="action-btn" onClick={() =>handleDonateClick(plan.price, plan.title)}><b>
+                                            <button type="button" className="action-btn" onClick={() =>handleDonateClick(plan.price, plan.title, "AnnaDaan")}><b>
                                                 Donate ₹{plan.price}</b>
                                             </button>
                                         </div>
@@ -276,7 +277,7 @@ export default function FoodForLife({ }) {
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            handleDonateClick(amount, "AnnaDaan");
+                            handleDonateClick(amount, "AnnaDaan", "AnnaDaan");
                         }}
                         className = "custom-dination-container"
                         >

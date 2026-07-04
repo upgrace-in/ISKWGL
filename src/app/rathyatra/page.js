@@ -202,7 +202,7 @@ const GiftBox = ({ gifts, plan, onDonate }) => {
                             {plan && onDonate && (
                                 <button 
                                     className="contribute-btn" 
-                                    onClick={() =>onDonate(plan.price, plan.title)}
+                                    onClick={() =>onDonate(plan.price, plan.title, "Rath Yatra")}
                                 >
                                     <span className="gold-star">✦</span>
                                     Donate ₹{plan.price.toLocaleString()}/-
@@ -529,7 +529,7 @@ const SevaCard = ({ plan, onDonate, cardType, gifts, isPremium,initiallyExpanded
                         <span className="m-gift-text">Donor will get ➔</span>
                         <GiftBox gifts={gifts} plan={plan} onDonate={onDonate} />
                     </div>
-                    <button className="m-donate-btn" onClick={() =>onDonate(plan.price, plan.title)}>
+                    <button className="m-donate-btn" onClick={() =>onDonate(plan.price, plan.title, "Rath Yatra")}>
                         Donate ₹{plan.price.toLocaleString()}/-
                     </button>
                 </div>
@@ -555,7 +555,7 @@ const SevaCard = ({ plan, onDonate, cardType, gifts, isPremium,initiallyExpanded
                         <GiftBox gifts={gifts} plan={plan} onDonate={onDonate} />
                     </div>
                     
-                    <button onClick={() =>onDonate(plan.price, plan.title)} className="contribute-btn">
+                    <button onClick={() =>onDonate(plan.price, plan.title, "Rath Yatra")} className="contribute-btn">
                         <span className="gold-star">✦</span>
                         Donate {plan.price.toLocaleString()}/-
                         <span className="gold-star">✦</span>
@@ -739,7 +739,7 @@ export default function Rathyatra() {
     }, [searchParams]);
 
     const handleCloseSuccessModal = () => {
-        setEarnedGifts([]);
+        setEarnedGifts(null);
         
         // Clean up the URL so the popup doesn't appear again if they refresh the page
         // (Removes ?status=success&order_id=... from the address bar)
@@ -910,7 +910,7 @@ export default function Rathyatra() {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        handleDonateClick(amount, "Rath Yatra");
+                        handleDonateClick(amount, "Rath Yatra", "Rath Yatra");
                     }}
                     className = "custom-dination-container"
                     >

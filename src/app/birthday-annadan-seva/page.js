@@ -91,40 +91,40 @@ export default function Page({ }) {
     }
 
     return (
-        <section class="donation-form-sec">
+        <section className="donation-form-sec">
             <HandlePayment data={data} />
-            <div class="container">
-                <div class="row d-flex justify-content-center mb-5">
-                    <div class="col-md-10">
-                        <div id="scrollToDonationForm" class="heading">
-                            <h2 class="head-1">CELEBRATE BIRTHDAY WITH US</h2>
+            <div className="container">
+                <div className="row d-flex justify-content-center mb-5">
+                    <div className="col-md-10">
+                        <div id="scrollToDonationForm" className="heading">
+                            <h2 className="head-1">CELEBRATE BIRTHDAY WITH US</h2>
 
-                            {/* <p class="b-line">If you would like to make a donation towards a particular area of
+                            {/* <p className="b-line">If you would like to make a donation towards a particular area of
                                 activity, please select an option from below. ISKCON relies entirely on voluntary
                                 donations and so every donation counts. Please note that donation is processed on a
                                 secure site.</p> */}
                         </div>
                     </div>
                 </div>
-                <div class="form-wrap my-5 fw-form">
+                <div className="form-wrap my-5 fw-form">
                     <form id="donateForm" onSubmit={(e) => handleSubmit(e)}>
-                        <div class="row align-items-start">
-                            <div class="col-lg-4 pe-xl-4">
-                                <div class="donate-img">
-                                    <figure class="up-right">
+                        <div className="row align-items-start">
+                            <div className="col-lg-4 pe-xl-4">
+                                <div className="donate-img">
+                                    <figure className="up-right">
                                         <img src={`/donateForIMGs/Happy_Birthday.png`} alt="" /></figure>
                                 </div>
-                                <div class="form-part mt-4 me-lg-2">
-                                    <div class="notes-wrap mt-0">
-                                        <p class="text-center"><span> Please Note:</span> Complete Address with PIN-Code
+                                <div className="form-part mt-4 me-lg-2">
+                                    <div className="notes-wrap mt-0">
+                                        <p className="text-center"><span> Please Note:</span> Complete Address with PIN-Code
                                             and PAN is mandatory for an 80G Receipt.</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 mt-lg-0 mt-4 ">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Feed</label><select
+                            <div className="col-lg-8 mt-lg-0 mt-4 ">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-part"><label for="">Feed</label><select
                                             name="donationType" onChange={(e) => setDonateFor(e.target.value)}>
                                             {
                                                 payForData.map((d, i) => {
@@ -136,44 +136,44 @@ export default function Page({ }) {
                                         </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Amount*</label><input type="text"
+                                    <div className="col-md-6">
+                                        <div className="form-part"><label for="">Amount*</label><input type="text"
                                             name="amount" onChange={(e) => setAmount(e.target.value)} value={amount} defaultValue={amount} placeholder="Enter Amount" /></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Mobile Number*</label><input type="tel"
+                                    <div className="col-md-6">
+                                        <div className="form-part"><label for="">Mobile Number*</label><input type="tel"
                                             placeholder="Phone Number" maxlength="10" name="phone" /></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Email*</label><input type="text"
+                                    <div className="col-md-6">
+                                        <div className="form-part"><label for="">Email*</label><input type="text"
                                             name="email" placeholder="Email" /></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">Name*</label><input maxlength="50"
+                                    <div className="col-md-6">
+                                        <div className="form-part"><label for="">Name*</label><input maxlength="50"
                                             type="text" name="name" placeholder="Name" /></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">DOB*</label><input
+                                    <div className="col-md-6">
+                                        <div className="form-part"><label for="">DOB*</label><input
                                             type="date" name="dob" /></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">PIN Code*</label><input
+                                    <div className="col-md-6">
+                                        <div className="form-part"><label for="">PIN Code*</label><input
                                             type="text" minlength="6" maxlength="6" name="pin"
                                             placeholder="PIN Code" /></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-part"><label for="">PAN (Optional)</label><input type="text"
+                                    <div className="col-md-6">
+                                        <div className="form-part"><label for="">PAN (Optional)</label><input type="text"
                                             name="pan" id="" maxlength="10" placeholder="PAN"
-                                            aria-label="For 80G reciept" class=""
+                                            aria-label="For 80G reciept" className=""
                                             style={{ textTransform: "uppercase" }} /></div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="form-part"><label for="">Address*</label><textarea
+                                    <div className="col-md-12">
+                                        <div className="form-part"><label for="">Address*</label><textarea
                                             type="text" name="address" placeholder="Address"
-                                            aria-label="For Prasadam please provide this" class=""></textarea></div>
+                                            aria-label="For Prasadam please provide this" className=""></textarea></div>
                                     </div>
-                                    {/* <div class="col-12">
-                                        <div class="type_checkbox mt-3">
+                                    {/* <div className="col-12">
+                                        <div className="type_checkbox mt-3">
                                             <input type="checkbox" onChange={() => setMemoryStatus(old => !old ? true : false)} id="memoryOfSomeone" />
                                             <label for="memoryOfSomeone">Wanna make someone's birthday brighter by donating on their behalf!</label>
                                         </div>
@@ -181,8 +181,8 @@ export default function Page({ }) {
                                         {
                                             memoryStatus
                                                 ?
-                                                <div class="col-md-6 mt-2">
-                                                    <div class="form-part"><label for="">Name of the Special Person*</label><input maxlength="50"
+                                                <div className="col-md-6 mt-2">
+                                                    <div className="form-part"><label for="">Name of the Special Person*</label><input maxlength="50"
                                                         type="text" name="memoryOfSomeoneName" placeholder="Name" /></div>
                                                 </div>
                                                 : ""
@@ -209,16 +209,16 @@ export default function Page({ }) {
                                             </span>
                                             : ""
                                     }
-                                    <div class="col-12 mt-2">
+                                    <div className="col-12 mt-2">
                                         <button type="submit" disabled={status?.disabled}
-                                            class="box-hover custom-btn-cls donation_btn ms-0 donate-now-clicked-form">DONATE
+                                            className="box-hover custom-btn-cls donation_btn ms-0 donate-now-clicked-form">DONATE
                                             NOW </button></div>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="donate-note my-5">
+                <div className="donate-note my-5">
                     <p>Note: Avail 80G Benefits On All Donations Made To ISKCON Warangal.
                     </p>
                     <p>&quot;Exemption order ref no. AAATI0017PF2021901 dated 24/09/2021 valid up-to 31/03/2026.&quot;</p>

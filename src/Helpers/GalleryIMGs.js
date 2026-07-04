@@ -4,9 +4,9 @@ export default function GalleryIMGs(props) {
 
     return (
         props?.data.map((d, i) => {
-            return <div class="video-holder vh2 item" key={i}>
+            return <div className="video-holder vh2 item" key={i}>
                 <a data-fancybox="video" target="_blank" href={`${mainFolder}${d.src}`}>
-                    <figure class="mb-0">
+                    <figure className="mb-0">
                         <img src={`${mainFolder}${d.src}`} alt="Not Found" />
                     </figure>
                 </a>
