@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import TransactionsView from "@/components/TransactionsView";
-import DonorsDirectoryView from "@/components/DonorsDirectoryView";
-import DonationEntryForm from "@/components/DonationEntryForm";
+import TransactionsView from "@/Components/TransactionsView";
+import DonorsDirectoryView from "@/Components/DonorsDirectoryView";
+import DonationEntryForm from "@/Components/DonationEntryForm";
 
 export default function UnifiedDashboard() {
     // State to track which view is currently selected
