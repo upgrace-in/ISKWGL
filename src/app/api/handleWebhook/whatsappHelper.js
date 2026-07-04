@@ -84,7 +84,7 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
                     policy: 'deterministic',
                     code: 'en'
                 },
-                name: 'newbirthdaywishes2026',
+                name: 'newbirthdaywishes',
                 components: [
                     {
                         type: 'header',
@@ -102,6 +102,10 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
                         parameters: [
                             {
                                 type: 'text',
+                                text: name
+                            },
+                            {
+                                type: 'text',
                                 text: AnnaDaanLink
                             },
                             {
@@ -111,10 +115,6 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
                             {
                                 type: 'text',
                                 text: RathyatraLink
-                            },
-                            {
-                                type: 'text',
-                                text: name
                             }
                         ]
                     }
