@@ -38,6 +38,7 @@ export async function POST(req) {
             orderId: donation.orderId,
             phone: donation.phone,
             name: donation.name,
+            email: donation.email || null,
             amount: donation.amount,
             donationDate: new Date(),
             seva: donation.seva,
