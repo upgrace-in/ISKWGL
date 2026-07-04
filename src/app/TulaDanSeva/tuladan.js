@@ -52,13 +52,14 @@ export default function TulaDanSeva({ }){
     };
 
     const { setDonationData } = useDonation();
-    const handleDonateClick = (amount, reason) => {
+    const handleDonateClick = (amount, reason, seva) => {
         // We encode the reason to handle spaces and special characters safely
         // const encodedReason = encodeURIComponent(selectedPlan.title);
         // const selectedAmount = selectedPlan.price; // This would be your dynamic state variable
         setDonationData({
             amount: amount,
-            reason: reason
+            reason: reason,
+            seva: seva
         });
 
         router.push('/payment-page');
@@ -161,7 +162,7 @@ export default function TulaDanSeva({ }){
                                         <span className="total-amount">{(weight * currentPricePerKg).toFixed(2)}</span>
                                     </div>
 
-                                    <button className="donate-btn" onClick={() =>handleDonateClick((weight * currentPricePerKg).toFixed(2), "Tula Dan Seva - "+activeItem.id)}>Donate</button>
+                                    <button className="donate-btn" onClick={() =>handleDonateClick((weight * currentPricePerKg).toFixed(2), "Tula Dan Seva - "+activeItem.id, "Tula Daan")}>Donate</button>
                                     </div>
                                 {/* </div> */}
                                 {/* </div> */}

@@ -152,16 +152,6 @@ export default function FestivalAnnaDaan({ }) {
         }, 2000);
     };
 
-    const bank_details = [
-        { label: "Bank Name", value: "ICICI Bank" },
-        { label: "Account Name", value: "ISKCON" },
-        { label: "Account No.", value: "092201002821" },
-        { label: "IFSC Code", value: "ICIC0000922" }
-    ];
-    const upiid_details = [
-        { label: "UPI ID", value: "donate.iskcon@icici"}
-    ];
-
     return (
         <>
             <Header handleNav={() => setNavOpen(!navOpen)} />
@@ -256,7 +246,7 @@ export default function FestivalAnnaDaan({ }) {
                                     <div className="tier-title">{`${option.title}`}</div>
                                 </div>
                             </div>
-                            <button type="button" className="action-btn" onClick={() =>handleDonateClick(option.price, option.title)}><b>
+                            <button type="button" className="action-btn" onClick={() =>handleDonateClick(option.price, option.title, "AnnaDaan")}><b>
                                 Donate ₹{option.price}</b>
                             </button>
                         </div>
@@ -266,7 +256,7 @@ export default function FestivalAnnaDaan({ }) {
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            handleDonateClick(amount, "AnnaDaan");
+                            handleDonateClick(amount, "AnnaDaan", "AnnaDaan");
                         }}
                         className = "custom-dination-container"
                         >

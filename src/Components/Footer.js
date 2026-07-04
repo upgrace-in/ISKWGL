@@ -1,12 +1,12 @@
 export default function Footer() {
     return (
         <footer id="contact-us">
-            <div class="container-fluid px-0">
-                <div class="row m-0">
-                    <div class="col-lg-4 px-0 order-lg-1">
-                        <div class="footer-content always-dark">
+            <div className="container-fluid px-0">
+                <div className="row m-0">
+                    <div className="col-lg-4 px-0 order-lg-1">
+                        <div className="footer-content always-dark">
                             <h5>AARATIS AND DISCOURSES</h5>
-                            <div class="footer-details">
+                            <div className="footer-details">
                                 <p>
                                     Mangal Aarati - 04:30 am
                                     <br />Srimad Bhagavatam Discourse - 07:10-08:00 am <a href="https://us02web.zoom.us/j/7160575687?pwd=R1ViUUxDVzJVcStNUWN0d042bkllZz09" target="_blank">[Live Link]</a>
@@ -17,14 +17,14 @@ export default function Footer() {
                                     <br />Shayan Aarati - 08:30 pm
                                 </p>
                             </div>
-                            <div class="footer-details">
+                            <div className="footer-details">
                                 <h6>Darshan Timings</h6>
                                 <p>
-                                    04:30 am to 01:00 pm <br />04:30 pm to 08:45 pm<span class="inner-para d-block">Temple timings may be
+                                    04:30 am to 01:00 pm <br />04:30 pm to 08:45 pm<span className="inner-para d-block">Temple timings may be
                                         changed on special occasions.</span>
                                 </p>
                             </div>
-                            <div class="footer-details">
+                            <div className="footer-details">
                                 <a target="_blank" href="/extras/RefundPolicy.html">Refund Policy</a>
                                 <br />
                                 <a target="_blank" href="/extras/PrivacyPolicy.html">Privacy Policy</a>
@@ -33,14 +33,14 @@ export default function Footer() {
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 order-lg-2 order-3">
-                        <div class="footer-content first-dark">
+                    <div className="col-lg-4 order-lg-2 order-3">
+                        <div className="footer-content first-dark">
                             <a href="#about-us/#founder">
-                                <figure class="mb-4 footer-img">
-                                    <img class="w-100" src="/index_files/footer-img.png" alt="" />
+                                <figure className="mb-4 footer-img">
+                                    <img className="w-100" src="/index_files/footer-img.png" alt="" />
                                 </figure>
                             </a>
-                            <div class="footer-details">
+                            <div className="footer-details">
                                 <h6>ISKCON Warangal</h6>
                                 <a target="_blank" href="https://maps.app.goo.gl/pCYGwBeL9qbxCarM7">
                                     <p>
@@ -51,8 +51,8 @@ export default function Footer() {
                                     </p>
                                 </a>
                             </div>
-                            <h5 class="mb-4">FOLLOW US</h5>
-                            <div class="social-links">
+                            <h5 className="mb-4">FOLLOW US</h5>
+                            <div className="social-links">
                                 <a target="_blank" href="https://www.facebook.com/warangaliskcon"><svg stroke="currentColor"
                                     fill="currentColor" strokeWidth="0" viewBox="0 0 320 512" height="1em" width="1em"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -73,28 +73,28 @@ export default function Footer() {
                                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                                 </svg></a>
                             </div>
-                            <p class="inner-para text-center mt-4">
+                            <p className="inner-para text-center mt-4">
                                 Dedicated to His Divine Grace A.C. Bhaktivedanta Swami
                                 Prabhupada Founder Acharya of the International Society for
                                 Krishna Consciousness.
                             </p>
-                            <p class="mt-2 mb-0">
+                            <p className="mt-2 mb-0">
                                 © 2024 ISKCON-WARANGAL
-                                <span class="d-inline-block mx-2">|</span> All Rights
+                                <span className="d-inline-block mx-2">|</span> All Rights
                                 Reserved.
                             </p>
-                            {/* <!-- <a class="sitemap-link" href="#sitemap">SITEMAP</a> --> */}
+                            {/* <!-- <a className="sitemap-link" href="#sitemap">SITEMAP</a> --> */}
                         </div>
                     </div>
-                    <div class="col-lg-4 px-0 order-lg-3 order-2">
-                        <div class="footer-content second-dark">
+                    <div className="col-lg-4 px-0 order-lg-3 order-2">
+                        <div className="footer-content second-dark">
                             <h5>SUNDAY SCHEDULE</h5>
-                            <div class="footer-details">
+                            <div className="footer-details">
                                 <p>DARSHAN AARATI:<br />8:00 - 8:30 AM</p>
-                                <p>Common Class for ALL:<br />8:30 - 10:00 AM</p>
+                                <p>Common className for ALL:<br />8:30 - 10:00 AM</p>
                                 <p>Saturday Youth Program:<br />5:30 - 7:30 PM</p>
                             </div>
-                            <figure class="international-logo">
+                            <figure className="international-logo">
                                 <img src="/index_files/international-logo.png" alt="" />
                             </figure>
                         </div>

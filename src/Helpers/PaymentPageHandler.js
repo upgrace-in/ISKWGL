@@ -6,10 +6,11 @@ export function useDonate() {
     const router = useRouter();
     const { setDonationData } = useDonation();
 
-    const handleDonateClick = (price, reason) => {
+    const handleDonateClick = (price, reason, seva) => {
         setDonationData({
             amount: price,
-            reason: reason
+            reason: reason,
+            seva: seva
         });
 
         router.push('/payment-page');

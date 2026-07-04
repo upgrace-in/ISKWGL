@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from 'react';
 const DonationContext = createContext();
 
 export function DonationProvider({ children }) {
-  const [donationData, setDonationData] = useState({ amount: 0, reason: '' });
+  const [donationData, setDonationData] = useState({ amount: 0, reason: '', seva: '' });
   return (
     <DonationContext.Provider value={{ donationData, setDonationData }}>
       {children}

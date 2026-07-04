@@ -8,6 +8,10 @@ const DonationSchema = new Schema({
     donatedFor: {
         type: String
     },
+    seva: {
+        type: String,
+        default: null
+    },
     abhishekamTimeSlot: {
         type: String
     },
@@ -26,6 +30,15 @@ const DonationSchema = new Schema({
     address: {
         type: String,
         required: true
+    },
+    fulladdress: {
+        addressLine1: { type: String, trim: true, default: '' },
+        addressLine2: { type: String, trim: true, default: '' },
+        pinCode: { type: String, trim: true, default: '' },
+        city: { type: String, trim: true, default: '' },
+        district: { type: String, trim: true, default: '' },
+        state: { type: String, trim: true, default: '' },
+        country: { type: String, trim: true, default: 'India' }
     },
     pin: {
         type: String,

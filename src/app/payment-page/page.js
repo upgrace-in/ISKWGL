@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from "../../Components/Header"
 import SideNav from "../../Components/SideNav"
 import { useRouter } from "next/navigation"
@@ -8,6 +8,7 @@ import './checkout.css';
 import { useDonation } from "@/Helpers/DonationContext";
 import Foooter from "../../Components/footter"
 import Floating from "@/Components/Floating";
+import statesDistrictsDB from '../../Components/states_districts_db.json';
 import axios from 'axios';
 
 
@@ -19,9 +20,15 @@ export default function DonationCheckout() {
     const [navOpen, setNavOpen] = useState(false)
     const [formData, setFormData] = useState({
         name: '', email: '', phone: '', pan: '', dob: '',
-        flatNo: '', street: '', landmark: '', pin: '', city: '', state: '',memoryOfSomeoneName:''
+        flatNo: '', street: '', landmark: '', pin: '', city: '', state: '', district: '', memoryOfSomeoneName:''
     });
     
+    const indianStates = Object.keys(statesDistrictsDB).sort();
+    const [districtOptions, setDistrictOptions] = useState([]);
+    const [postalAreas, setPostalAreas] = useState([]);
+    const [isLoadingPin, setIsLoadingPin] = useState(false);
+    const [pinError, setPinError] = useState('');
+
     const [status, setStatus] = useState({})
     const [memoryStatus, setMemoryStatus] = useState(false)
 
@@ -35,6 +42,67 @@ export default function DonationCheckout() {
         const cleanedValue = value.replace(/\D/g, '').slice(0, 10);
         setFormData({ ...formData, phone: cleanedValue });
     };
+
+    // Watch state to populate districts
+    useEffect(() => {
+        if (formData.state && statesDistrictsDB[formData.state]) {
+            setDistrictOptions(statesDistrictsDB[formData.state]);
+        } else {
+            setDistrictOptions([]);
+        }
+    }, [formData.state]);
+
+    const triggerPincodeLookup = async (pin) => {
+        if (pin.length !== 6) return;
+        setIsLoadingPin(true);
+        setPinError(''); // Clear previous errors
+        
+        try {
+            const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+            const data = await res.json();
+
+            if (data[0]?.Status === "Success" && data[0].PostOffice?.length > 0) {
+                const locList = data[0].PostOffice;
+                const fetchedState = locList[0].State;
+                const fetchedDistrict = locList[0].District;
+                
+                const areas = [...new Set(locList.map(po => po.Name))];
+                setPostalAreas(areas);
+
+                const selectedCity = areas[0] || '';
+
+                setFormData(prev => ({
+                    ...prev,
+                    pin: pin,
+                    state: fetchedState,
+                    district: fetchedDistrict,
+                    city: selectedCity
+                }));
+            } else {
+                setPinError("Invalid Pincode. Please check and try again.");
+                setPostalAreas([]);
+                setFormData(prev => ({
+                    ...prev,
+                    state: '',
+                    district: '',
+                    city: ''
+                }));
+            }
+        } catch (err) {
+            console.error('Failed to resolve pin code via external network.');
+            setPinError('Could not verify pincode. Check network.');
+        } finally {
+            setIsLoadingPin(false);
+        }
+    };
+
+    const handlePinChange = (e) => {
+        setPinError('');
+        const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+        setFormData(prev => ({ ...prev, pin: val }));
+        if (val.length === 6) triggerPincodeLookup(val);
+    };
+
     const increaseDots = () => {
         setStatus({ message: "Processing Payment.", disabled: true })
         setTimeout(() => {
@@ -65,6 +133,7 @@ export default function DonationCheckout() {
             formData.flatNo, 
             formData.street, 
             formData.landmark, 
+            formData.district,
             formData.city, 
             formData.state
         ].filter(part => part && part.trim() !== "");
@@ -81,7 +150,9 @@ export default function DonationCheckout() {
             pin: formData.pin,
             amount: donationData.amount, // From your Context
             donationType: donationData.reason,
-            memoryOfSomeoneName: formData.memoryOfSomeoneName
+            seva: donationData.seva,
+            memoryOfSomeoneName: formData.memoryOfSomeoneName,
+            fulladdress: addressParts
         };
         console.log("Passing this to the final function:", submissionData);
         Object.entries(submissionData).forEach(([property, value]) => {
@@ -111,6 +182,36 @@ export default function DonationCheckout() {
         } finally {
             setIsLoading(false);
         }
+        // const submissiData = {} // Replace with actual order ID from your backend
+        // const response = await fetch('/api/payment_testing', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(submissionData) // Send the data to your server
+        // });
+        // const data1 = await response.json();
+
+        // if (response.ok) {
+        //     console.log("Success! Bank says:", data1);
+            
+        //     // 1. Extract the transaction context/token from the bank's response.
+        //     // NOTE: Check your terminal logs to see exactly what ICICI calls this field! 
+        //     // It might be data.tranCtx, data.token, data.transactionId, etc.
+        //     const tranCtx = data1.tranCtx || "abcd"; 
+            
+        //     // 2. Construct the redirect URL
+        //     const redirectUrl = `https://pgpayuat.icici.bank.in/tsp/pg/api/v2/authRedirect?tranCtx=${tranCtx}`;
+
+        //     // 3. Redirect the user to the ICICI payment page!
+        //     // Using window.location.href physically navigates the browser away from your site to the bank
+        //     window.location.href = redirectUrl;
+            
+        // } else {
+        //     console.error("Payment failed to initiate:", data);
+        //     setStatus({ message: "Payment initialization failed", disabled: false });
+        // }
+        
     }
 
     return (
@@ -158,14 +259,37 @@ export default function DonationCheckout() {
                         </div>
                         <input type="text" name="landmark" placeholder="Road/Area/Landmark" onChange={handleChange} required/>
                         <div className="form-row">
-                            <input type="text" name="pin" placeholder="Pincode" onChange={handleChange} required />
-                            <input type="text" name="city" placeholder="City/State" onChange={handleChange} required />
+                            <div className="pincode-wrapper">
+                                <input type="text" name="pin" maxLength="6" value={formData.pin} onChange={handlePinChange} placeholder="Pincode" required />
+                                {isLoadingPin && (
+                                    <span className="pincode-loading">...</span>
+                                )}
+                                {pinError && <div className="pincode-error">{pinError}</div>}
+                            </div>
+                            <select name="state" value={formData.state} onChange={handleChange} required>
+                                <option value="">Select State</option>
+                                {indianStates.map(state => (
+                                    <option key={state} value={state}>{state}</option>
+                                ))}
+                            </select>
+                            <select name="district" value={formData.district} onChange={handleChange} disabled={!formData.state} required>
+                                <option value="">{formData.state ? "Select District" : "Select a state first"}</option>
+                                {districtOptions.map(district => (
+                                    <option key={district} value={district}>{district}</option>
+                                ))}
+                            </select>
+                            <select name="city" value={formData.city} onChange={handleChange} disabled={postalAreas.length === 0} required>
+                                <option value="">{formData.pin.length === 6 ? "Select Postal Area" : "Enter pincode first"}</option>
+                                {postalAreas.map(area => (
+                                    <option key={area} value={area}>{area}</option>
+                                ))}
+                            </select>
                         </div>
 
-                        <div>
+                        <div className="form-row">
                             <div className='maemorystatus'>
                                 <input type="checkbox" onChange={() => setMemoryStatus(old => !old ? true : false)} id="memoryOfSomeone" />
-                                <label for="memoryOfSomeone">This Donation in the
+                                <label htmlFor="memoryOfSomeone">This Donation in the
                                     memory/honor of someone or performed on a specific occasion</label>
                             </div>
 
@@ -176,7 +300,6 @@ export default function DonationCheckout() {
                                     : ""
                             }
                         </div>
-
 
                         <button type="submit" className="final-donate-btn" disabled={isLoading}>
                             {isLoading ? (
