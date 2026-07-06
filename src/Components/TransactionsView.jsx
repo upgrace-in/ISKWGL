@@ -1,15 +1,24 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { 
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     PieChart, Pie, Cell, Legend , BarChart, Bar
 } from 'recharts';
 import Link from "next/link";
 
-export default function Dashboard() {
+export default function TransactionsView({ session }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isMenuOpen, setIsMenuOpen] = useState(null); // For the 3-dot menu
+    const [recordToDelete, setRecordToDelete] = useState(null); // For delete confirmation modal
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [deletionSuccess, setDeletionSuccess] = useState(false);
+
+    const menuRef = useRef(null);
+
     
+    const isAdmin = session?.user?.role === 'admin';
+
     // Helper function to format dates as YYYY-MM-DD for the input fields
     const getFormattedDate = (date) => {
         const yyyy = date.getFullYear();
@@ -31,6 +40,7 @@ export default function Dashboard() {
         name: "", 
         sevaName: "", 
         messageSent: "",
+        source: "",
         startDate: getFormattedDate(firstDay), 
         endDate: getFormattedDate(today)    
     });
@@ -63,15 +73,30 @@ export default function Dashboard() {
         
     }, [filters]);
 
+    // Effect to close the 3-dot menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            // Check if the click is outside the menu container and not on a menu button
+            if (menuRef.current && !menuRef.current.contains(event.target) && !event.target.closest('button[data-menu-button]')) {
+                setIsMenuOpen(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     const handleFilterChange = (e) => {
         setFilters({ ...filters, [e.target.name]: e.target.value });
     };
 
     // Add this function inside your component, before the return statement
     const downloadCSV = () => {
-        const headers = ["Order ID", "Name", "Phone", "Amount", "Seva Name", "Status", "Message Sent", "Date"];
+        const headers = ["Order ID", "Name", "Phone", "Amount", "Seva Name", "Source", "Status", "Message Sent", "Date"];
         const rows = data.map(row => 
-            `"${row.orderId}","${row.name}","${row.phone}","${row.amount}","${row.seva || ""}","${row.status}","${row.messageSent ? 'Yes' : 'No'}","${new Date(row.donationDate).toLocaleDateString()}"`
+            `"${row.orderId}","${row.name}","${row.phone}","${row.amount}","${row.seva || ""}","${row.source || 'N/A'}","${row.status}","${row.messageSent ? 'Yes' : 'No'}","${new Date(row.donationDate).toLocaleDateString()}"`
         );
         const csvContent = [headers.join(","), ...rows].join("\n");
         
@@ -91,7 +116,7 @@ export default function Dashboard() {
                     'Content-Type': 'application/json',
                 },
                 // Sending the order_id in the body exactly as requested
-                body: JSON.stringify({ orderId: orderId }) 
+                body: JSON.stringify({ orderId: orderId, formentry: true }), 
             });
 
             const result = await response.json();
@@ -110,6 +135,40 @@ export default function Dashboard() {
         }
     };
 
+    const handleOpenDeleteModal = (record) => {
+        setRecordToDelete(record);
+        setIsMenuOpen(null); // Close the menu
+    };
+
+    const handleCloseDeleteModal = () => {
+        setRecordToDelete(null);
+        setDeletionSuccess(false); // Reset success state on close
+    };
+
+    const handleDeleteConfirm = async () => {
+        if (!recordToDelete) return;
+        setIsDeleting(true);
+
+        try {
+            const response = await fetch(`/api/dashboard/transactions/${recordToDelete.orderId}`, {
+                method: 'DELETE',
+            });
+            const result = await response.json();
+
+            if (response.ok) {
+                setData(prevData => prevData.filter(item => item.orderId !== recordToDelete.orderId));
+                setDeletionSuccess(true);
+            } else {
+                throw new Error(result.message || 'Failed to delete transaction.');
+            }
+        } catch (error) {
+            console.error('Deletion failed:', error);
+            alert(error.message);
+            handleCloseDeleteModal(); // Close modal on error
+        } finally {
+            setIsDeleting(false);
+        }
+    };
     // --- INDEPENDENT CHART TOGGLE STATES ---
     const [hiddenLineSevas, setHiddenLineSevas] = useState([]);
     const [hiddenPieSevas, setHiddenPieSevas] = useState([]);
@@ -397,6 +456,55 @@ export default function Dashboard() {
 
     return (
         <div>
+            {/* --- DELETE CONFIRMATION MODAL --- */}
+            {recordToDelete && (
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300">
+                    <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full m-4 transform transition-all">
+                        {deletionSuccess ? (
+                            // --- SUCCESS VIEW ---
+                            <div>
+                                <div className="flex items-center justify-center mx-auto bg-green-100 rounded-full h-12 w-12">
+                                    <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <h3 className="text-lg font-bold text-gray-900 text-center mt-4">Deletion Successful</h3>
+                                <p className="text-sm text-gray-600 mt-2 text-center">
+                                    The transaction has been permanently deleted.
+                                </p>
+                                <div className="mt-6 flex justify-center">
+                                    <button onClick={handleCloseDeleteModal} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-medium">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            // --- CONFIRMATION VIEW ---
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900">Confirm Deletion</h3>
+                                <p className="text-sm text-gray-600 mt-2">
+                                    Are you sure you want to permanently delete this transaction? This action cannot be undone.
+                                </p>
+                                <div className="mt-4 bg-red-50 p-3 rounded-md border border-red-200 space-y-1 text-sm text-gray-700">
+                                    <p><strong>Order ID:</strong> {recordToDelete.orderId?.substring(0, 12)}...</p>
+                                    <p><strong>Name:</strong> {recordToDelete.name}</p>
+                                    <p><strong>Phone:</strong> {recordToDelete.phone}</p>
+                                    <p><strong>Amount:</strong> ₹{recordToDelete.amount.toLocaleString('en-IN')}</p>
+                                    <p><strong>Seva:</strong> {recordToDelete.seva || 'N/A'}</p>
+                                </div>
+                                <div className="mt-6 flex justify-end space-x-3">
+                                    <button onClick={handleCloseDeleteModal} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-medium">
+                                        Cancel
+                                    </button>
+                                    <button onClick={handleDeleteConfirm} disabled={isDeleting} className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:bg-red-300 disabled:cursor-not-allowed font-medium">
+                                        {isDeleting ? 'Deleting...' : 'Delete'}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
             {/* --- PARALLEL TOP CONTROL BAR --- */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
                 
@@ -707,13 +815,25 @@ export default function Dashboard() {
                 </div>
 
                 <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-1">Message Sent</label>
-                    <select name="messageSent" onChange={handleFilterChange} className="border p-2 rounded w-full bg-gray-50 focus:bg-white">
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Source</label>
+                    <select name="source" onChange={handleFilterChange} className="border p-2 rounded w-full bg-gray-50 focus:bg-white">
                         <option value="">Any</option>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Website">Website</option>
+                        <option value="UPI">UPI</option>
                     </select>
                 </div>
+
+                {isAdmin && (
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-600 mb-1">Message Sent</label>
+                        <select name="messageSent" onChange={handleFilterChange} className="border p-2 rounded w-full bg-gray-50 focus:bg-white">
+                            <option value="">Any</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                )}
                 
             </div>
 
@@ -729,40 +849,67 @@ export default function Dashboard() {
                             <th className="p-4 font-semibold text-gray-700">Phone</th>
                             <th className="p-4 font-semibold text-gray-700">Amount</th>
                             <th className="p-4 font-semibold text-gray-700">Seva Name</th>
-                            <th className="p-4 font-semibold text-gray-700">Msg Sent</th>
+                            <th className="p-4 font-semibold text-gray-700">Source</th>
+                            {isAdmin && <th className="p-4 font-semibold text-gray-700">Msg Sent</th>}
                             <th className="p-4 font-semibold text-gray-700">Date</th>
+                            {isAdmin && <th className="p-4 font-semibold text-gray-700 text-center">Actions</th>}
                         </tr>
                     </thead>
                     <tbody>
                         {loading ? (
-                            <tr><td colSpan="8" className="p-8 text-center text-gray-500">Loading data...</td></tr>
+                            <tr><td colSpan={isAdmin ? 9 : 7} className="p-8 text-center text-gray-500">Loading data...</td></tr>
                         ) : data.length === 0 ? (
-                            <tr><td colSpan="8" className="p-8 text-center text-gray-500">No records match your filters.</td></tr>
+                            <tr><td colSpan={isAdmin ? 9 : 7} className="p-8 text-center text-gray-500">No records match your filters.</td></tr>
                         ) : (
                             data.map((record) => (
                                 <tr key={record._id} className="hover:bg-gray-50 border-b border-gray-100">
                                     <td className="p-4 text-gray-500 font-mono text-xs">{record.orderId?.substring(0, 8)}...</td>
                                     <td className="p-4 font-medium text-gray-900">
-                                        <Link href={`/dashboard/donors/${record.phone}`} className="block hover:underline">
+                                        <Link href={`/dashboard/donors/${record.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
                                             {record.name}
                                         </Link>
                                     </td>
                                     <td className="p-4 text-gray-600">{record.phone}</td>
                                     <td className="p-4 font-semibold text-emerald-600">₹{record.amount}</td>
                                     <td className="p-4 text-gray-600">{record.seva || "-"}</td>
-                                    <td className="p-4">
-                                        {record.messageSent ? (
-                                            <span className="text-green-600 font-bold">✓</span>
-                                        ) : (
-                                            <button 
-                                                onClick={() => handleSendMessage(record.orderId)}
-                                                className="bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors shadow-sm"
-                                            >
-                                                Send Message
-                                            </button>
-                                        )}
-                                    </td>
+                                    <td className="p-4 text-gray-600">{record.source || "N/A"}</td>
+                                    {isAdmin && (
+                                        <td className="p-4">
+                                            {record.messageSent ? (
+                                                <span className="text-green-600 font-bold">✓</span>
+                                            ) : (
+                                                <button 
+                                                    onClick={() => handleSendMessage(record.orderId)}
+                                                    className="bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors shadow-sm"
+                                                >
+                                                    Send Message
+                                                </button>
+                                            )}
+                                        </td>
+                                    )}
                                     <td className="p-4 text-gray-500">{new Date(record.donationDate).toLocaleDateString()}</td>
+                                    {isAdmin && (
+                                        <td className="p-4 text-center">
+                                            <div className="relative inline-block">
+                                                <button 
+                                                    data-menu-button 
+                                                    onClick={() => setIsMenuOpen(isMenuOpen === record._id ? null : record._id)} 
+                                                    className="p-1.5 rounded-full text-gray-500 hover:bg-gray-200 hover:text-gray-800 transition-colors"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                                    </svg>
+                                                </button>
+                                                {isMenuOpen === record._id && (
+                                                    <div ref={menuRef} className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-20 border border-gray-200 py-1">
+                                                        <button onClick={() => handleOpenDeleteModal(record)} className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors">
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </td>
+                                    )}
                                 </tr>
                             ))
                         )}

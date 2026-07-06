@@ -17,7 +17,8 @@ export default function DonationEntryForm() {
         city: '',     // Specific Post Office / Postal Area
         district: '', // District
         state: '',
-        country: 'India'
+        country: 'India',
+        source: 'Cash'
     });
 
     const indianStates = Object.keys(statesDistrictsDB).sort();
@@ -26,9 +27,10 @@ export default function DonationEntryForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isLoadingPin, setIsLoadingPin] = useState(false);
     const [message, setMessage] = useState({ text: '', type: '' });
+    const [popupMessage, setPopupMessage] = useState({ text: '', type: '' });
 
     const sevaOptions = [
-        "AnnaDaan", "Go Seva", "Rath Yatra", "Ekadasi", "Tula Daan", "Nithya Seva", "General Donation"
+        "Easy", "AnnaDaan", "Go Seva", "Rath Yatra", "Ekadasi", "Tula Daan", "Nithya Seva", "General Donation"
     ];
 
     // Initialize "Donation Date" to today's date on component mount
@@ -112,19 +114,19 @@ export default function DonationEntryForm() {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage({ text: 'Contribution successfully recorded!', type: 'success' });
+                setPopupMessage({ text: 'Contribution successfully recorded!', type: 'success' });
                 const today = new Date().toISOString().split('T')[0];
                 setFormData({
-                    donationDate: today, phone: '', name: '', dob: '', amount: '', seva: '', pan: '',
+                    donationDate: today, phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash',
                     addressLine1: '', addressLine2: '', city: '', district: '', state: '', pinCode: '', country: 'India'
                 });
                 setPostalAreas([]);
                 setDistrictOptions([]);
             } else {
-                setMessage({ text: data.message || 'Failed to save entry.', type: 'error' });
+                setPopupMessage({ text: data.message || 'Failed to save entry.', type: 'error' });
             }
         } catch (err) {
-            setMessage({ text: 'Network error. Please try again.', type: 'error' });
+            setPopupMessage({ text: 'Network error. Please try again.', type: 'error' });
         } finally {
             setIsSubmitting(false);
         }
@@ -199,6 +201,39 @@ export default function DonationEntryForm() {
 
     return (
         <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm max-w-4xl mx-auto">
+            {/* --- SUBMISSION STATUS POPUP --- */}
+            {popupMessage.text && (
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300">
+                    <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full m-4 transform transition-all">
+                        <div className={`flex items-center justify-center mx-auto rounded-full h-12 w-12 ${popupMessage.type === 'success' ? 'bg-green-100' : 'bg-red-100'}`}>
+                            {popupMessage.type === 'success' ? (
+                                <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            ) : (
+                                <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            )}
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900 text-center mt-4">
+                            {popupMessage.type === 'success' ? 'Success' : 'Error'}
+                        </h3>
+                        <p className="text-sm text-gray-600 mt-2 text-center">
+                            {popupMessage.text}
+                        </p>
+                        <div className="mt-6 flex justify-center">
+                            <button 
+                                onClick={() => setPopupMessage({ text: '', type: '' })} 
+                                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-medium"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <h2 className="text-xl font-bold text-gray-900 mb-6">New Contribution Entry</h2>
             
             {message.text && (
@@ -253,6 +288,15 @@ export default function DonationEntryForm() {
                             {sevaOptions.map(seva => (
                                 <option key={seva} value={seva}>{seva}</option>
                             ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-600 mb-1">Source *</label>
+                        <select name="source" value={formData.source} onChange={handleChange} required className="border border-gray-300 p-2.5 rounded-lg w-full bg-gray-50 focus:bg-white text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="Cash">Cash</option>
+                            <option value="Website">Website</option>
+                            <option value="UPI">UPI</option>
                         </select>
                     </div>
 
@@ -336,7 +380,7 @@ export default function DonationEntryForm() {
                 <div className="flex justify-end pt-4 space-x-3">
                     <button 
                         type="button" 
-                        onClick={() => setFormData({ phone: '', name: '', dob: '', amount: '', seva: '', pan: '', addressLine1: '', addressLine2: '', city: 'Warangal', district: 'Warangal', state: 'Telangana', pinCode: '506002', country: 'India' })}
+                        onClick={() => setFormData({ phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash', addressLine1: '', addressLine2: '', city: 'Warangal', district: 'Warangal', state: 'Telangana', pinCode: '506002', country: 'India' })}
                         className="px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                         Reset Defaults

@@ -43,7 +43,7 @@ export default function DonorsDirectory() {
                             <tr key={donor._id} className="hover:bg-blue-50 border-b border-gray-100 transition-colors">
                                 {/* Wrap the first cell in a link so the row is clickable */}
                                 <td className="p-4 font-medium text-blue-600">
-                                    <Link href={`/dashboard/donors/${donor.phone}`} className="block">
+                                    <Link href={`/dashboard/donors/${donor.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
                                         {donor.name}
                                     </Link>
                                 </td>

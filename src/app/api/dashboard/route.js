@@ -21,12 +21,19 @@ export async function GET(req) {
         // // 3. Filter by PIN (Exact match)
         // const pin = searchParams.get('pin');
         // if (pin) query.pin = pin;
+        
 
         // 5. Filter by Message Sent (Boolean)
         const messageSent = searchParams.get('messageSent');
         if (messageSent !== null && messageSent !== '') {
             // Convert string "true"/"false" to actual boolean for MongoDB
             query.messageSent = messageSent === 'true';
+        }
+
+        // 8. Filter by Source
+        const source = searchParams.get('source');
+        if (source) {
+            query.source = source;
         }
 
         // --- SEARCH (Looking across specific fields) ---

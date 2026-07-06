@@ -54,7 +54,7 @@ export default function DonorsDirectoryView() {
         // Different headers tailored for the Donor CRM
         const headers = ["Name", "Phone", "PAN", "Address", "Total Donations"];
         const rows = donors.map(donor => 
-            `"${donor.name}","${donor.phone}","${donor.pan || "N/A"}","${donor.address}","${donor.donationCount}"`
+            `"${donor.name}","${donor.phone}","${donor.pan || "N/A"}","${donor.address.addressLine1 + ", " + donor.address.addressLine2 + ", " + donor.address.city + ", " + donor.address.district + ", " + donor.address.state + " (" + donor.address.pinCode + ")"}","${donor.donationCount}"`
         );
         const csvContent = [headers.join(","), ...rows].join("\n");
         
@@ -104,7 +104,7 @@ export default function DonorsDirectoryView() {
                                     </div>
                                     <div className="overflow-hidden">
                                         <p className="text-sm font-bold text-gray-900 truncate">
-                                            <Link href={`/dashboard/donors/${donor._id}`} className="block hover:underline">
+                                            <Link href={`/dashboard/donors/${donor._id}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
                                             {donor.name || donor._id} {/* Fallback to phone number if name is blank */}
                                             </Link>
                                         </p>
@@ -172,7 +172,7 @@ export default function DonorsDirectoryView() {
                             <tr key={donor._id} className="hover:bg-blue-50 border-b border-gray-100 transition-colors">
                                 <td className="p-4 font-medium text-blue-600">
                                     {/* Link to the dynamic profile page we created earlier */}
-                                    <Link href={`/dashboard/donors/${donor.phone}`} className="block hover:underline">
+                                    <Link href={`/dashboard/donors/${donor.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
                                         {donor.name}
                                     </Link>
                                 </td>

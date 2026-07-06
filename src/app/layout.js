@@ -1,5 +1,7 @@
 import "@/globals.css";
 import { DonationProvider } from '@/Helpers/DonationContext';
+import RathYatraPromo from './rathyatrapromo/page.jsx'; // Import the promo component
+import AuthProvider from "@/Components/AuthProvider";
 import Script from 'next/script';
 export const metadata = {
   title: "ISKCON WARANGAL",
@@ -8,15 +10,6 @@ export const metadata = {
     icon: "/assets/iskcon_logo.jpg",
   }
 };
-
-// export default function RootLayout({ children }) {
-
-//   return (
-//     <html lang="en">
-//       <body>{children}</body>
-//     </html>
-//   );
-// }
 
 export default function RootLayout({ children }) {
 
@@ -35,7 +28,12 @@ export default function RootLayout({ children }) {
         `}
       </Script>
       <body>
-        <DonationProvider>{children}</DonationProvider>
+        <AuthProvider>
+          <DonationProvider>
+            {children}
+          </DonationProvider>
+        </AuthProvider>
+        <RathYatraPromo /> {/* This can remain here if it's positioned absolutely/fixed */}
       </body>
     </html>
   );
