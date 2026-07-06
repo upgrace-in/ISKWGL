@@ -12,6 +12,11 @@ const donationSchema = new mongoose.Schema({
         trim: true, 
         match: [/^\d{10}$/, 'Phone number must be exactly 10 digits'] 
     },
+    email: { 
+        type: String, 
+        trim: true,
+        default: null,
+    },
     name: { 
         type: String, 
         required: true, 
@@ -28,6 +33,11 @@ const donationSchema = new mongoose.Schema({
     donationDate: { 
         type: Date, 
         required: true 
+    },
+    source: { 
+        type: String, 
+        trim: true, 
+        default: null 
     },
     seva: { 
         type: String, 

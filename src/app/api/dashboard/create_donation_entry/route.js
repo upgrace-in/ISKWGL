@@ -10,7 +10,7 @@ export async function POST(request) {
         // 2. Parse the incoming JSON payload from the frontend form
         const body = await request.json();
         const { 
-            phone, name, dob, amount, seva, pan, donationDate,
+            phone, name, dob, amount, seva, pan, donationDate, source,
             addressLine1, addressLine2, pinCode, state, district, city, country 
         } = body;
 
@@ -46,6 +46,7 @@ export async function POST(request) {
             name,
             dob: dob ? new Date(dob) : null,
             amount: Number(amount),
+            source,
             seva,
             pan: pan ? pan.toUpperCase() : null,
             address: {
