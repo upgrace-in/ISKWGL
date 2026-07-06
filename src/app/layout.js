@@ -1,6 +1,6 @@
 import "@/globals.css";
 import { DonationProvider } from '@/Helpers/DonationContext';
-import RathYatraPromo from './rathyatrapromo/page.jsx'; // Import the promo component
+// import RathYatraPromo from './rathyatrapromo/page.jsx'; // Import the promo component
 import AuthProvider from "@/Components/AuthProvider";
 import Script from 'next/script';
 export const metadata = {
@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
             {children}
           </DonationProvider>
         </AuthProvider>
-        <RathYatraPromo /> {/* This can remain here if it's positioned absolutely/fixed */}
+        {/* <RathYatraPromo /> This can remain here if it's positioned absolutely/fixed */}
       </body>
     </html>
   );
