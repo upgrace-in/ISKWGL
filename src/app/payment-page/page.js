@@ -39,7 +39,10 @@ export default function DonationCheckout() {
     const handlePhoneChange = (e) => {
         const value = e.target.value;
         // This RegEx allows only numbers and limits to 10 digits
-        const cleanedValue = value.replace(/\D/g, '').slice(0, 10);
+        let cleanedValue = value.replace(/\D/g, '').slice(0, 10);
+        if (cleanedValue.startsWith('0')) {
+            cleanedValue = cleanedValue.substring(1);
+        }
         setFormData({ ...formData, phone: cleanedValue });
     };
 

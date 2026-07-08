@@ -2,6 +2,8 @@ import TotalDonations from '@/models/TotalDonations';
 import dbConnect from "@/app/lib/dbConnect";
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic'; // Ensures the route is always dynamic
+
 export async function GET(req) {
     try {
         await dbConnect();
@@ -17,6 +19,15 @@ export async function GET(req) {
         const endDate = new Date(year + 1, 0, 1); // Jan 1st of NEXT year, 00:00:00
 
         const topDonors = await TotalDonations.aggregate([
+            // 1. Match: Filter documents to only include the specified year
+            {
+                $match: {
+                    donationDate: {
+                        $gte: startDate,
+                        $lt: endDate
+                    }
+                }
+            },
             // 2. Group: Combine records with the same phone number
             {
                 $group: {
