@@ -10,7 +10,7 @@ export async function POST(request) {
         // 2. Parse the incoming JSON payload from the frontend form
         const body = await request.json();
         const { 
-            phone, name, dob, amount, seva, pan, donationDate, source,
+            phone, name, dob, amount, seva, pan, donationDate, source,email, receiptNo,
             addressLine1, addressLine2, pinCode, state, district, city, country 
         } = body;
 
@@ -22,31 +22,32 @@ export async function POST(request) {
             );
         }
 
-        let isUnique = false;
-        let orderId = "";
+        // let isUnique = false;
+        // let orderId = "";
 
-        while (!isUnique) {
-            // 1. Generate a random ID
-            orderId = `order_${Math.floor(Math.random() * 1000000)}`;
+        // while (!isUnique) {
+        //     // 1. Generate a random ID
+        //     orderId = `order_${Math.floor(Math.random() * 1000000)}`;
             
-            // 2. Check the database to see if it already exists
-            const existingDonation = await TotalDonations.findOne({ orderId: orderId });
+        //     // 2. Check the database to see if it already exists
+        //     const existingDonation = await TotalDonations.findOne({ orderId: orderId });
             
-            // 3. If nothing is found, it's unique! Exit the loop.
-            if (!existingDonation) {
-                isUnique = true;
-            }
-            // If it DOES exist, the loop repeats and generates a new one.
-        }
+        //     // 3. If nothing is found, it's unique! Exit the loop.
+        //     if (!existingDonation) {
+        //         isUnique = true;
+        //     }
+        //     // If it DOES exist, the loop repeats and generates a new one.
+        // }
 
         // 4. Create and save the new donation record in the database
         const newDonation = new TotalDonations({
-            orderId,
+            orderId: receiptNo,
             phone,
             name,
             dob: dob ? new Date(dob) : null,
             amount: Number(amount),
             source,
+            email,
             seva,
             pan: pan ? pan.toUpperCase() : null,
             address: {
