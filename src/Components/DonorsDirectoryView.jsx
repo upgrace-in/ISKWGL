@@ -49,7 +49,7 @@ export default function DonorsDirectoryView() {
     // 3. useEffect now calls the reusable function on component mount.
     useEffect(() => {
         fetchTopDonors();
-    }, [fetchTopDonors, currentYear]);
+    }, [fetchTopDonors]);
 
     // Add this function inside your component, before the return statement
     const downloadCSV = () => {
