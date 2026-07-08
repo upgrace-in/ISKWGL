@@ -30,6 +30,7 @@ export default function DonationCheckout() {
     const [pinError, setPinError] = useState('');
 
     const [status, setStatus] = useState({})
+    const [error, setError] = useState("");
     const [memoryStatus, setMemoryStatus] = useState(false)
 
     const handleChange = (e) => {
@@ -44,6 +45,14 @@ export default function DonationCheckout() {
             cleanedValue = cleanedValue.substring(1);
         }
         setFormData({ ...formData, phone: cleanedValue });
+        // Validation
+        if (cleanedValue.length < 10) {
+            setError("Phone number must be exactly 10 digits");
+        } else if (cleanedValue.startsWith('0')) {
+            setError("Phone number should not start with 0");
+        } else {
+            setError("");
+        }
     };
 
     // Watch state to populate districts
@@ -172,6 +181,17 @@ export default function DonationCheckout() {
         });
 
         try {
+            if (finalData['phone'].length !== 10) {
+                setError("Phone number must be exactly 10 digits");
+                return;
+            }
+
+            if (finalData['phone'].startsWith('0')) {
+                setError("Phone number should not start with 0");
+                return;
+            }
+
+            setError("");
             if (!parseFloat(finalData['amount']) > 0) throw { error: "Invalid Amount !!!" }
             await checkdob(finalData, 'dob').catch(e => { throw e })
 
@@ -258,6 +278,7 @@ export default function DonationCheckout() {
                         </div>
                         <div className="form-row">
                             <input type="tel" name="phone" placeholder="Mobile Number" onChange={handlePhoneChange} required />
+                            {error && <p style={{ color: "red" }}>{error}</p>}
                             <input type="date" name="dob" placeholder="Date of Birth" onChange={handleChange} required className="date-input"/>
                         </div>
 
