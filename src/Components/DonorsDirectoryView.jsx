@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Link from "next/link";
 
 export default function DonorsDirectoryView() {
@@ -32,22 +32,24 @@ export default function DonorsDirectoryView() {
     const [topDonors, setTopDonors] = useState([]);
     const currentYear = new Date().getFullYear();
 
-    // Fetch the top donors on component mount
-    useEffect(() => {
-        const fetchTopDonors = async () => {
-            try {
-                const response = await fetch(`/api/dashboard/top_donors`);
-                const result = await response.json();
-                if (result.success) {
-                    setTopDonors(result.topDonors);
-                }
-            } catch (error) {
-                console.error("Failed to load top donors", error);
+    // 1. Reusable function to fetch top donors, wrapped in useCallback for performance.
+    const fetchTopDonors = useCallback(async () => {
+        try {
+            // 2. Added { cache: 'no-store' } to ensure fresh data is always fetched.
+            const response = await fetch(`/api/dashboard/top_donors`, { cache: 'no-store' });
+            const result = await response.json();
+            if (result.success) {
+                setTopDonors(result.topDonors);
             }
-        };
+        } catch (error) {
+            console.error("Failed to load top donors", error);
+        }
+    }, []); // No dependencies needed here
 
+    // 3. useEffect now calls the reusable function on component mount.
+    useEffect(() => {
         fetchTopDonors();
-    }, [currentYear]);
+    }, [fetchTopDonors, currentYear]);
 
     // Add this function inside your component, before the return statement
     const downloadCSV = () => {
@@ -93,6 +95,12 @@ export default function DonorsDirectoryView() {
                         <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                             Most Frequent Supporters ({currentYear})
                         </p>
+                        {/* 4. Added a refresh button to manually update the list. */}
+                        <button 
+                            onClick={fetchTopDonors} 
+                            className="text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline focus:outline-none">
+                            Refresh
+                        </button>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
