@@ -40,6 +40,7 @@ export async function POST(req) {
             name: donation.name,
             email: donation.email || null,
             amount: donation.amount,
+            source: "Website",
             donationDate: new Date(),
             seva: donation.seva,
             pan: donation.pan,
@@ -60,7 +61,7 @@ export async function POST(req) {
         fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/processSuccess`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ orderId: dict?.orderId }),
+            body: JSON.stringify({ orderId: dict?.orderId }) // Include formentry flag to indicate it's from the form,
             // don't await; it's best-effort; you can await if you want synchronous processing
         }).catch(err => console.warn('processor trigger failed', err));
         } catch (e) {
