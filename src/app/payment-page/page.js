@@ -41,12 +41,9 @@ export default function DonationCheckout() {
         const value = e.target.value;
         // This RegEx allows only numbers and limits to 10 digits
         let cleanedValue = value.replace(/\D/g, '').slice(0, 10);
-        if (cleanedValue.startsWith('0')) {
-            cleanedValue = cleanedValue.substring(1);
-        }
         setFormData({ ...formData, phone: cleanedValue });
         // Validation
-        if (cleanedValue.length < 10) {
+        if (cleanedValue.length !== 10) {
             setError("Phone number must be exactly 10 digits");
         } else if (cleanedValue.startsWith('0')) {
             setError("Phone number should not start with 0");
