@@ -11,6 +11,8 @@ export default function DonationEntryForm() {
         amount: '',
         seva: '',
         pan: '',
+        email: '',
+        receiptNo: '',
         addressLine1: '',
         addressLine2: '',
         pinCode: '506002',
@@ -117,7 +119,7 @@ export default function DonationEntryForm() {
                 setPopupMessage({ text: 'Contribution successfully recorded!', type: 'success' });
                 const today = new Date().toISOString().split('T')[0];
                 setFormData({
-                    donationDate: today, phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash',
+                    donationDate: today, phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash', email: '', receiptNo: '',
                     addressLine1: '', addressLine2: '', city: '', district: '', state: '', pinCode: '', country: 'India'
                 });
                 setPostalAreas([]);
@@ -172,6 +174,7 @@ export default function DonationEntryForm() {
                     name: existing.name || '',
                     dob: existing.dob ? existing.dob.split('T')[0] : '', 
                     pan: existing.pan || '',
+                    email: existing.email || '',
                     addressLine1: existing.address?.addressLine1 || '',
                     addressLine2: existing.address?.addressLine2 || ''
                 }));
@@ -304,6 +307,16 @@ export default function DonationEntryForm() {
                         <label className="block text-xs font-semibold text-gray-600 mb-1">PAN Card</label>
                         <input type="text" name="pan" value={formData.pan} onChange={handleChange} placeholder="PAN number" className="border border-gray-300 p-2.5 rounded-lg w-full bg-gray-50 focus:bg-white text-sm outline-none uppercase focus:ring-2 focus:ring-blue-500" />
                     </div>
+
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-600 mb-1">Email</label>
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email address" className="border border-gray-300 p-2.5 rounded-lg w-full bg-gray-50 focus:bg-white text-sm outline-none focus:ring-2 focus:ring-blue-500" />
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-600 mb-1">Receipt No</label>
+                        <input type="text" name="receiptNo" value={formData.receiptNo} onChange={handleChange} placeholder="Receipt number" className="border border-gray-300 p-2.5 rounded-lg w-full bg-gray-50 focus:bg-white text-sm outline-none focus:ring-2 focus:ring-blue-500" />
+                    </div>
                 </div>
 
                 <div className="border-t border-gray-100 pt-6 space-y-4">
@@ -380,7 +393,7 @@ export default function DonationEntryForm() {
                 <div className="flex justify-end pt-4 space-x-3">
                     <button 
                         type="button" 
-                        onClick={() => setFormData({ phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash', addressLine1: '', addressLine2: '', city: 'Warangal', district: 'Warangal', state: 'Telangana', pinCode: '506002', country: 'India' })}
+                        onClick={() => setFormData({ phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash', email: '', receiptNo: '', addressLine1: '', addressLine2: '', city: 'Warangal', district: 'Warangal', state: 'Telangana', pinCode: '506002', country: 'India' })}
                         className="px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                         Reset Defaults
