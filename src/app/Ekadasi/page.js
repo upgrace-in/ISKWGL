@@ -71,7 +71,7 @@ export default function Ekadasi() {
                 {/* MOBILE IMAGE: Shown when screen is 768px or less */}
                 <source 
                     media="(max-width: 768px)" 
-                    srcSet="/images/SSRNM_white.png" 
+                    srcSet="/images/ssrnm_short.png" 
                 />
                 {/* DESKTOP IMAGE: Default shown for larger screens */}
                 <img 
