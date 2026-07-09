@@ -28,7 +28,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Pandava Nirjala";
+    const ekadasi_name = "Yogini";
 
     const [amount, setAmount] = useState();
 
@@ -42,12 +42,15 @@ export default function Ekadasi() {
             { title: "Ekadashi Prasad (For 15 Devotees)", price: 1516},
             { title: "Ekadashi Prasad (For 30 Devotees)", price: 3116},
             { title: "Ekadashi Prasad (For 50 Devotees)", price: 5116},
-            { title: "Ekadashi Prasad (For 100 Devotees)", price: 10116},
+            { title: "Complete Ekadashi Prasad Seva", price: 10116},
         ],
         'Ekadashi Go Seva': [
             { title: "Go Seva (Feed 1 Cow)", price: 116},
             { title: "Go Seva (Feed 2 Cows)", price: 216},
             { title: "Complete Go Seva for the Day", price: 516},
+            { title: "Complete Go Seva for 2 Days", price: 1116},
+            { title: "Complete Go Seva for 4 Days", price: 2116},
+            { title: "Complete Go Seva for the week", price: 3116},
         ]
     }
 
@@ -68,23 +71,23 @@ export default function Ekadasi() {
                 {/* MOBILE IMAGE: Shown when screen is 768px or less */}
                 <source 
                     media="(max-width: 768px)" 
-                    srcSet="/images/Ekadasi/pandava-nirjala-ekadasi.jpeg" 
+                    srcSet="/images/SSRNM_white.png" 
                 />
                 {/* DESKTOP IMAGE: Default shown for larger screens */}
                 <img 
-                    src="/images/full-alter.jpeg" 
+                    src="/images/JBS.png" 
                     alt="Rath Construction" 
                     className="hero-image" 
                 />
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">25 Jun 2026</div>
+                <div className="date-badge">11 July 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadashi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 26 Jun 2026, 5:38 AM to 10:02 AM for Warangal.
+                        Fast breaking parana time: 12 July 2026, 5:43 AM to 10:06 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -94,13 +97,15 @@ export default function Ekadasi() {
             <div className="description-section">
                 {/* Spiritual Significance Paragraph */}
                 <p className="hero-description">
+                    <b style={{ color: '#d4a054'}}>Lord Krsna Said to Maharaj Yudhisthir : </b>
                     {/* <br/> */}
-                    Bhima found it difficult to observe every Ekadasi fast. Bhima approached Srila Vyasadeva, who instructed him to observe one strict fast each year on Nirjala Ekadasi. <b style={{ color: '#d4a054'}}>By sincerely observing this fast, Bhima would receive the benefits of all Ekadasis.</b> Bhima accepted the challenge, and since then this sacred day has become famous as Pandava Nirjala Ekadasi or Bhima Ekadasi .
+Whatever merit one obtains by feeding eighty-eight thousand brahmins is also obtained simply by observing a strict fast on Yogini Ekadasi.
+For one who fasts on this sacred Ekadasi, she (Ekadasi Devi), destroys heaps of past sinful reactions and makes him most pious.
                     <br/>
-                    <b style={{ color: '#d4a054'}}>On this sacred day, devotees can deepen their spiritual journey through chanting, hearing Krishna-katha, serving devotees, and supporting temple activities through Donation .</b>
+                    Along with fasting, <b>chanting the Holy Name, and reading scriptures, offering charity</b> on Yogini Ekadasi is considered one of the most rewarding devotional activities.
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/pandava-nirjala-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/yogini-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
