@@ -28,6 +28,12 @@ export default function DonorsDirectoryView() {
         
     }, [searchTerm]);
 
+    // Memoize the sorted donors list to prevent re-sorting on every render
+    const sortedDonors = useMemo(() => {
+        // Create a new sorted array to avoid mutating the original state, sort by donationCount descending
+        return [...donors].sort((a, b) => b.donationCount - a.donationCount);
+    }, [donors]);
+
     // --- TOP DONORS STATE ---
     const [topDonors, setTopDonors] = useState([]);
     const currentYear = new Date().getFullYear();
@@ -55,7 +61,7 @@ export default function DonorsDirectoryView() {
     const downloadCSV = () => {
         // Different headers tailored for the Donor CRM
         const headers = ["Name", "Phone", "PAN", "Address", "Total Donations"];
-        const rows = donors.map(donor => 
+        const rows = sortedDonors.map(donor => 
             `"${donor.name}","${donor.phone}","${donor.pan || "N/A"}","${donor.address.addressLine1 + ", " + donor.address.addressLine2 + ", " + donor.address.city + ", " + donor.address.district + ", " + donor.address.state + " (" + donor.address.pinCode + ")"}","${donor.donationCount}"`
         );
         const csvContent = [headers.join(","), ...rows].join("\n");
@@ -174,9 +180,9 @@ export default function DonorsDirectoryView() {
                     <tbody>
                         {loading ? (
                             <tr><td colSpan="5" className="p-8 text-center text-gray-500">Loading directory...</td></tr>
-                        ) : donors.length === 0 ? (
+                        ) : sortedDonors.length === 0 ? (
                             <tr><td colSpan="5" className="p-8 text-center text-gray-500">No donors match your search.</td></tr>
-                        ) : donors.map((donor) => (
+                        ) : sortedDonors.map((donor) => (
                             <tr key={donor._id} className="hover:bg-blue-50 border-b border-gray-100 transition-colors">
                                 <td className="p-4 font-medium text-blue-600">
                                     {/* Link to the dynamic profile page we created earlier */}
