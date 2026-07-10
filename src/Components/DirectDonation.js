@@ -16,7 +16,7 @@ export default function DirectDonation() {
         <section className="campaign-main-sec py-5" id="quick-donate">
             <div className="container">
                 <div className="row">
-                    <div className="col-12">
+                    {/* <div className="col-12">
                         <div className="campaign-benefits py-4 mb-5">
                             <div className="campaign-benefits-wrap">
                                 <span><img src="/index_files/bottom.png" alt="" /></span>
@@ -33,7 +33,7 @@ export default function DirectDonation() {
                                 <span><img src="/index_files/top.png" alt="" /></span>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="col-12">
                         <div className="row m-0 mb-5">
                             <div className="col-lg-6 mb-5 mb-lg-0">
