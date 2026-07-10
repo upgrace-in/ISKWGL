@@ -265,7 +265,7 @@ export default function DonationCheckout() {
                 {/* Right Side: Detailed Form */}
                 <div className="form-section">
                     <h2 className="form-title">Complete Your Donation Details</h2>
-                    <p className="helper-text"><b>**Please Note:</b> Complete Address with PIN-Code and PAN is mandatory for an 80G Receipt.</p>
+                    {/* <p className="helper-text"><b>**Please Note:</b> Complete Address with PIN-Code and PAN is mandatory for an 80G Receipt.</p> */}
                     
                     <form className="checkout-form" onSubmit={(e) => handleSubmit(e)}>
                         <div className="form-group-title">1. Personal Information *</div>
@@ -279,7 +279,8 @@ export default function DonationCheckout() {
                             <input type="date" name="dob" placeholder="Date of Birth" onChange={handleChange} required className="date-input"/>
                         </div>
 
-                        <div className="form-group-title">2. Tax Benefits (80G)</div>
+                        {/* <div className="form-group-title">2. Tax Benefits (80G)</div> */}
+                        <div className="form-group-title">2. PAN</div>
                         <input type="text" name="pan" placeholder="PAN Number" className="pan-input" onChange={handleChange} />
 
                         <div className="form-group-title">3. Detailed Address *</div>
