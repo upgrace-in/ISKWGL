@@ -340,7 +340,7 @@ export default function DonationCheckout() {
                                     <div className="dot dot-3"></div>
                                 </div>
                             ) : (
-                                "COMPLETE DONATION & GET 80G RECEIPT"
+                                "COMPLETE DONATION"
                             )}
                         </button>
                     </form>
