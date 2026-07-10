@@ -124,8 +124,8 @@ export default function DirectDonation() {
 
             <div className="G80-certificate-info" style={{color: '#666'}}>
                 <h4>80G / 10BE Certificate of Your Donation</h4>
-                <p>80G certificate is available as per Income Tax Act 1961 and rules made there under.</p>
-                <p>Tax Exemption Certificate Ref. No.: AAATI0017PF20219 dated 24/09/2021 valid upto 31/03/2026</p>
+                {/* <p>80G certificate is available as per Income Tax Act 1961 and rules made there under.</p>
+                <p>Tax Exemption Certificate Ref. No.: AAATI0017PF20219 dated 24/09/2021 valid upto 31/03/2026</p> */}
                 <p>To get the recipt of the donation, please provide your full details in the donation form</p>
                 <p> Or if you have used directly bank details or upi methods please share your <b>legal name, postal address</b> with pincode and <b>PAN</b> along with <b>transaction details</b> on <span style={{color:"blue"}}><a target="_blank" href="https://wa.me/+919121630614">+919121630614</a></span> or <span style={{color:"blue"}}><a target="_blank" href="mailto:warangaliskcon@gmail.com">warangaliskcon@gmail.com</a></span>.</p>
                 <p>For more information please call/Whatsapp on <span style={{color:"blue"}}><a target="_blank" href="https://wa.me/+919121630614">+919121630614</a></span> </p>
