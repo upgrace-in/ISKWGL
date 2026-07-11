@@ -31,6 +31,9 @@ export default function DonationEntryForm() {
     const [message, setMessage] = useState({ text: '', type: '' });
     const [popupMessage, setPopupMessage] = useState({ text: '', type: '' });
 
+    const [excelQueue, setExcelQueue] = useState([]);
+    const [currentExcelIndex, setCurrentExcelIndex] = useState(-1);
+
     const sevaOptions = [
         "Easy", "AnnaDaan", "Go Seva", "Rath Yatra", "Ekadasi", "Tula Daan", "Nithya Seva", "General Donation"
     ];
@@ -49,6 +52,29 @@ export default function DonationEntryForm() {
             setDistrictOptions([]);
         }
     }, [formData.state]);
+
+    useEffect(() => {
+        if (currentExcelIndex >= 0 && excelQueue.length > 0) {
+            const currentRow = excelQueue[currentExcelIndex];
+            setFormData(prev => ({
+                ...prev,
+                name: currentRow.name || '',
+                phone: currentRow.phone || '',
+                amount: currentRow.amount || '',
+                source: 'Website',
+                pan: currentRow.pan || '',
+                email: currentRow.email || '',
+                addressLine1: currentRow.address || '',
+                receiptNo: currentRow.orderId || '',
+                donationDate: currentRow.date ? new Date(currentRow.date).toISOString().split('T')[0] : '',
+                pinCode: currentRow.pin || '',
+            }));
+            // Optional: Trigger phone blur automatically to check DB for existing details
+            // if (currentRow.phone && currentRow.phone.length === 10) {
+            //    handlePhoneBlur({ target: { value: currentRow.phone } });
+            // }
+        }
+    }, [currentExcelIndex, excelQueue]);
 
     // 3. Reverse Geocode Pincode via India Post API
     // Added 'savedCity' parameter to allow setting a specific city from the database after fetching
@@ -101,6 +127,35 @@ export default function DonationEntryForm() {
         if (val.length === 6) triggerPincodeLookup(val); // No savedCity passed during manual typing
     };
 
+    // --- NEW: FETCH EXCEL DATA FUNCTION ---
+    const fetchExcelData = async () => {
+        try {
+            // Adjust the API route path if it's different
+            const res = await fetch('/api/FeedExistingData');
+            const json = await res.json();
+            
+            if (json.success && json.data?.length > 0) {
+                setExcelQueue(json.data);
+                setCurrentExcelIndex(0);
+                setMessage({ text: `Loaded ${json.data.length} records from Excel. Please review and submit Row 1.`, type: 'success' });
+            } else {
+                setMessage({ text: json.error || 'Failed to load data or Excel is empty.', type: 'error' });
+            }
+        } catch (error) {
+            setMessage({ text: `Error fetching Excel data. ${error}`, type: 'error' });
+        }
+    };
+
+    const resetFormDefaults = () => {
+        const today = new Date().toISOString().split('T')[0];
+        setFormData({ 
+            donationDate: today, phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash', email: '', receiptNo: '', 
+            addressLine1: '', addressLine2: '', city: '', district: '', state: '', pinCode: '', country: 'India' 
+        });
+        setPostalAreas([]);
+        setDistrictOptions([]);
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -116,14 +171,24 @@ export default function DonationEntryForm() {
             const data = await response.json();
 
             if (response.ok) {
-                setPopupMessage({ text: 'Contribution successfully recorded!', type: 'success' });
-                const today = new Date().toISOString().split('T')[0];
-                setFormData({
-                    donationDate: today, phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash', email: '', receiptNo: '',
-                    addressLine1: '', addressLine2: '', city: '', district: '', state: '', pinCode: '', country: 'India'
-                });
-                setPostalAreas([]);
-                setDistrictOptions([]);
+                // --- NEW: EXCEL QUEUE LOGIC ON SUBMIT ---
+                if (currentExcelIndex >= 0) {
+                    if (currentExcelIndex < excelQueue.length - 1) {
+                        // Advance to next row
+                        setCurrentExcelIndex(prev => prev + 1);
+                        setPopupMessage({ text: `Saved! Loading Record ${currentExcelIndex + 2} of ${excelQueue.length}...`, type: 'success' });
+                    } else {
+                        // Reached the end
+                        setCurrentExcelIndex(-1);
+                        setExcelQueue([]);
+                        setPopupMessage({ text: 'All Excel records processed successfully!', type: 'success' });
+                        resetFormDefaults();
+                    }
+                } else {
+                    // Normal single entry logic
+                    setPopupMessage({ text: 'Contribution successfully recorded!', type: 'success' });
+                    resetFormDefaults();
+                }
             } else {
                 setPopupMessage({ text: data.message || 'Failed to save entry.', type: 'error' });
             }
@@ -133,6 +198,39 @@ export default function DonationEntryForm() {
             setIsSubmitting(false);
         }
     };
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setIsSubmitting(true);
+    //     setMessage({ text: '', type: '' });
+
+    //     try {
+    //         const response = await fetch('/api/dashboard/create_donation_entry', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify(formData)
+    //         });
+
+    //         const data = await response.json();
+
+    //         if (response.ok) {
+    //             setPopupMessage({ text: 'Contribution successfully recorded!', type: 'success' });
+    //             const today = new Date().toISOString().split('T')[0];
+    //             setFormData({
+    //                 donationDate: today, phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash', email: '', receiptNo: '',
+    //                 addressLine1: '', addressLine2: '', city: '', district: '', state: '', pinCode: '', country: 'India'
+    //             });
+    //             setPostalAreas([]);
+    //             setDistrictOptions([]);
+    //         } else {
+    //             setPopupMessage({ text: data.message || 'Failed to save entry.', type: 'error' });
+    //         }
+    //     } catch (err) {
+    //         setPopupMessage({ text: 'Network error. Please try again.', type: 'error' });
+    //     } finally {
+    //         setIsSubmitting(false);
+    //     }
+    // };
 
     const handlePhoneChange = (e) => {
         const value = e.target.value;
@@ -237,7 +335,34 @@ export default function DonationEntryForm() {
                 </div>
             )}
 
-            <h2 className="text-xl font-bold text-gray-900 mb-6">New Contribution Entry</h2>
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold text-gray-900">New Contribution Entry</h2>
+                
+                {/* --- NEW: LOAD EXCEL BUTTON --- */}
+                <button 
+                    onClick={fetchExcelData}
+                    disabled={currentExcelIndex >= 0}
+                    className="px-4 py-2 bg-emerald-600 text-white rounded-md text-sm font-medium hover:bg-emerald-700 disabled:opacity-50"
+                >
+                    Load from Excel
+                </button>
+            </div>
+
+            {/* <h2 className="text-xl font-bold text-gray-900 mb-6">New Contribution Entry</h2> */}
+
+            {/* --- NEW: QUEUE PROGRESS BANNER --- */}
+            {excelQueue.length > 0 && currentExcelIndex >= 0 && (
+                <div className="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg mb-5 flex justify-between items-center">
+                    <span>Processing Excel Data: Record <strong>{currentExcelIndex + 1}</strong> of <strong>{excelQueue.length}</strong></span>
+                    <button 
+                        type="button" 
+                        onClick={() => { setExcelQueue([]); setCurrentExcelIndex(-1); resetFormDefaults(); }} 
+                        className="text-xs bg-white border border-blue-300 px-3 py-1 rounded hover:bg-blue-100 font-medium"
+                    >
+                        Cancel Bulk Mode
+                    </button>
+                </div>
+            )}
             
             {message.text && (
                 <div className={`p-4 mb-5 rounded-md text-sm font-medium border ${
