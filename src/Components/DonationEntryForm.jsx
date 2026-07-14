@@ -66,7 +66,7 @@ export default function DonationEntryForm() {
                 email: currentRow.email || '',
                 addressLine1: currentRow.address || '',
                 receiptNo: currentRow.orderId || '',
-                donationDate: currentRow.date ? new Date(currentRow.date).toISOString().split('T')[0] : '',
+                donationDate: currentRow.date,
                 pinCode: currentRow.pin || '',
             }));
             // Optional: Trigger phone blur automatically to check DB for existing details
