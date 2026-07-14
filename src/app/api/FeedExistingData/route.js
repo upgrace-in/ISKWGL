@@ -8,7 +8,7 @@ export async function GET() {
   try {
     await dbConnect();
 
-    const filePath = path.join(process.cwd(), "src", "app", "api", "FeedExistingData", "website_data.xlsx");
+    const filePath = path.join(process.cwd(), "src", "app", "api", "FeedExistingData", "26-27_online_data.xlsx");
     console.log("Exists:", fs.existsSync(filePath));  
 
      // 🔥 KEY CHANGE: read as buffer
