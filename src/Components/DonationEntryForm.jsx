@@ -61,7 +61,7 @@ export default function DonationEntryForm() {
                 name: currentRow.name || '',
                 phone: currentRow.phone || '',
                 amount: currentRow.amount || '',
-                source: 'Website',
+                source: 'UPI',
                 pan: currentRow.pan || '',
                 email: currentRow.email || '',
                 addressLine1: currentRow.address || '',
