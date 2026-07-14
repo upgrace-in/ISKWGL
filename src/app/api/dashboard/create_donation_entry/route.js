@@ -15,7 +15,7 @@ export async function POST(request) {
         } = body;
 
         // 3. Basic backend validation for required fields
-        if (!phone || !amount || !seva || !state || !city || !donationDate) {
+        if (!phone || !amount || !seva || !state || !donationDate) {
             return NextResponse.json(
                 { success: false, message: "Missing required fields (phone, amount, seva, state, city, donationDate)." },
                 { status: 400 }
