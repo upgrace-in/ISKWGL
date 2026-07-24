@@ -28,7 +28,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Yogini";
+    const ekadasi_name = "Sayana";
 
     const [amount, setAmount] = useState();
 
@@ -82,12 +82,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">11 July 2026</div>
+                <div className="date-badge">25 July 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadashi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 12 July 2026, 5:43 AM to 10:06 AM for Warangal.
+                        Fast breaking parana time: 26 July 2026, 5:54 AM to 10:13 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -99,13 +99,12 @@ export default function Ekadasi() {
                 <p className="hero-description">
                     <b style={{ color: '#d4a054'}}>Lord Krsna Said to Maharaj Yudhisthir : </b>
                     {/* <br/> */}
-Whatever merit one obtains by feeding eighty-eight thousand brahmins is also obtained simply by observing a strict fast on Yogini Ekadasi.
-For one who fasts on this sacred Ekadasi, she (Ekadasi Devi), destroys heaps of past sinful reactions and makes him most pious.
+Oh Pandava, one who wishes to please Me should strictly observe this Ekadasi. Oh lion among kings, Yudhishthira Maharaj, whoever wants liberation should regularly observe a fast on this Ekadasi which is also the day when the Chaturmasya fast begins.
                     <br/>
                     Along with fasting, <b>chanting the Holy Name, and reading scriptures, offering charity</b> on Yogini Ekadasi is considered one of the most rewarding devotional activities.
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/yogini-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/sayana-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
