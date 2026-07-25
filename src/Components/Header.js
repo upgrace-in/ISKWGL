@@ -22,7 +22,7 @@ export default function Header() {
     // 1. Get the current URL
     const pathname = usePathname();
     // 2. Check if the user is currently on the Rath Yatra page
-    const isRathYatraPage = pathname === '/rathyatra';
+    const isRathYatraPage = pathname === '/Ekadasi';
 
     useEffect(() => {
         let lastScrollY = window.scrollY;
@@ -176,16 +176,16 @@ export default function Header() {
 
                 {/* Action Buttons */}
                 <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flex: '2', justifyContent: 'flex-end' }}>
-                    {/* <Link 
-                        href="/rathyatra" 
+                    <Link 
+                        href="/Ekadasi" 
                         className={isRathYatraPage ? "standard-nav-link" : "nav-rath-yatra-highlight"}
                     >
-                        ✦ Rath Yatra
-                    </Link> */}
+                        Sayana Ekadasi
+                    </Link>
 
-                    <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
+                    {/* <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
                         <FaHeart /> Donate Now
-                    </button>
+                    </button> */}
                     {/* <Link 
                         href="/rathyatra" 
                         className={"nav-rath-yatra-highlight mobile-rath-btn"}
@@ -211,14 +211,14 @@ export default function Header() {
 
                 {/* 2. CENTER: Rath Yatra Button */}
                 {/* flex: none ensures it stays perfectly centered without being stretched */}
-                {/* <div style={{ flex: 'none', display: 'flex', justifyContent: 'center' }}>
+                <div style={{ flex: 'none', display: 'flex', justifyContent: 'center' }}>
                     <Link 
-                        href="/rathyatra" 
+                        href="/Ekadasi" 
                         className={"nav-rath-yatra-highlight mobile-rath-btn"}
                     >
-                        <FaHeart style={{ marginRight: '6px' }}/> Rath Yatra
+                        Sayana Ekadasi
                     </Link>
-                </div> */}
+                </div>
 
                 {/* 3. RIGHT: 3 Dots / Hamburger */}
                 {/* flex: 1 matches the logo side so the center item stays dead center */}
