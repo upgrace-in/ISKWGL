@@ -1,0 +1,220 @@
+.checkout-page {
+    min-height: 100vh;
+    background-color: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    /* margin-top: 80px;    */
+}
+
+.checkout-container {
+    display: flex;
+    width: 100%;
+    /* max-width: 100; */
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* LEFT SIDE */
+.summary-section {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 800px;
+}
+
+.summary-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+    padding: 40px;
+    display: flex;
+    flex-direction: column;/* Change this to flex-end */
+    justify-content: flex-end; 
+    /* This ensures it sits around the 70-80% mark from the top */
+    padding-bottom: 20%;
+}
+
+.checkout-logo { width: 80px; }
+
+.summary-sub { color: #a3db8f; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+.summary-main { color: white; font-size: 2.2rem; font-family: 'Playfair Display', serif; margin-top: 10px; }
+
+/* RIGHT SIDE */
+.form-section {
+    flex: 1.2;
+    padding: 40px;
+    padding-top: 20px;
+    background: white;
+}
+
+.form-title { font-family: 'Playfair Display', serif; color: #1f2937; margin-bottom: 10px; }
+
+.form-group-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #4b5563;
+    /* margin: 15px 0 5px 0; */
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 5px;
+}
+
+.checkout-form { display: flex; flex-direction: column; gap: 15px; }
+
+.form-row { display: flex; gap: 15px; margin-top: -10px; align-items: start; }
+.form-row input, .form-row select, .form-row .pincode-wrapper { flex: 1; }
+
+input {
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+select {
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.3s;
+    background-color: white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem; /* Make space for the arrow */
+}
+
+select:disabled {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+.pan-input{
+    margin-top: -10px;
+}
+.date-input:before {
+  content: attr(placeholder);
+  color: #999;
+  margin-right: 10px;
+}
+
+.date-input:focus:before,
+.date-input:valid:before {
+  content: "";
+}
+.maemorystatus{
+    gap: 5px;
+    display: flex;
+}
+input:focus, select:focus { 
+    border-color: #d4a054; 
+    box-shadow: 0 0 0 2px rgba(212, 160, 84, 0.1); 
+}
+
+.helper-text { font-size: 11px; color: #6b7280; margin-top: -10px; margin-bottom: 10px;}
+
+/* .final-donate-btn {
+    margin-top: 0px;
+    background: linear-gradient(to right, #b45309, #78350f);;
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+} */
+
+/* Keep your original button styles exactly the same */
+.final-donate-btn {
+    margin-top: 0px;
+    background: linear-gradient(to right, #b45309, #78350f);
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    
+    /* Centers the loading animation */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 54px; 
+    width: 100%;
+}
+
+.final-donate-btn:disabled {
+    opacity: 0.85;
+    cursor: not-allowed;
+}
+
+/* --- UPDATED SPINNER CSS --- */
+
+/* Align dots in a horizontal line */
+.dot-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px; /* Space between the dots */
+}
+
+/* Base dot styling with the new wave animation */
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    /* 1.4s duration, repeats infinitely, smooth easing */
+    animation: wave 1.4s infinite ease-in-out both;
+}
+
+/* Assign colors and stagger the animation delays so they wave cyclically */
+.dot-1 {
+    background-color: #ff0000; /* White */
+    animation-delay: -0.32s; 
+}
+
+.dot-2 {
+    background-color: #fde047; /* Light Gold */
+    animation-delay: -0.16s;
+}
+
+.dot-3 {
+    background-color: #02ff0a; /* Pale Orange */
+    animation-delay: 0s;
+}
+
+/* The linear cyclic animation (hopping up and down) */
+@keyframes wave {
+    0%, 80%, 100% { 
+        transform: translateY(0); 
+    } 
+    40% { 
+        transform: translateY(-6px); /* Adjust this value to make them jump higher or lower */
+    }
+}
+
+.final-donate-btn:hover { transform: translateY(-2px); }
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 900px) {
+    .checkout-container { flex-direction: column; }
+    .summary-section { min-height: 370px; background-position: top;}
+    .form-row { flex-direction: column; gap: 15px; }
+    .summary-main { font-size: 1.6rem; }
+    .summary-overlay{ padding-bottom: 10px;}
+}
