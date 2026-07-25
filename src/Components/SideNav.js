@@ -73,10 +73,10 @@ export default function SideNav({ openNav = "", handleNav = () => {} }) {
         </figure>
         <div className="side-nav-left-header">
           <Link 
-              href="/rathyatra" 
+              href="/#donate" 
               className={"nav-rath-yatra-highlight mobile-rath-btn" }
           >
-              <FaHeart style={{ marginRight: '6px' }}/> Rath Yatra
+              <FaHeart style={{ marginRight: '6px' }}/> Donate Now
           </Link>
           <button className="side-menu-close" onClick={() => handleNav()}>
             <X size={24} />
