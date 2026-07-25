@@ -49,7 +49,7 @@ export async function POST(request) {
 
             "appId": clientID,
             "notifyUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/api/handleWebhook`,
-            "returnUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/rathyatra?order_id={order_id}`
+            "returnUrl": `${process.env.NEXT_PUBLIC_DOMAIN}`
         }
 
         const signature = generateSignature(formData);
