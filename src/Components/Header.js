@@ -176,22 +176,16 @@ export default function Header() {
 
                 {/* Action Buttons */}
                 <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flex: '2', justifyContent: 'flex-end' }}>
-                    <Link 
+                    {/* <Link 
                         href="/Ekadasi" 
                         className={isRathYatraPage ? "standard-nav-link" : "nav-rath-yatra-highlight"}
                     >
                         Sayana Ekadasi
-                    </Link>
-
-                    {/* <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
-                        <FaHeart /> Donate Now
-                    </button> */}
-                    {/* <Link 
-                        href="/rathyatra" 
-                        className={"nav-rath-yatra-highlight mobile-rath-btn"}
-                    >
-                        <FaHeart style={{ marginRight: '6px' }}/> Rath Yatra
                     </Link> */}
+
+                    <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
+                        <FaHeart /> Donate Now
+                    </button>
                     <button style={buttonStyle} onClick={() => window.location.href='/templerenovation'}>
                         <FaHandsHelping size={18} /> Help Temple Renovate
                     </button>
@@ -211,14 +205,14 @@ export default function Header() {
 
                 {/* 2. CENTER: Rath Yatra Button */}
                 {/* flex: none ensures it stays perfectly centered without being stretched */}
-                <div style={{ flex: 'none', display: 'flex', justifyContent: 'center' }}>
+                {/* <div style={{ flex: 'none', display: 'flex', justifyContent: 'center' }}>
                     <Link 
                         href="/Ekadasi" 
                         className={"nav-rath-yatra-highlight mobile-rath-btn"}
                     >
                         Sayana Ekadasi
                     </Link>
-                </div>
+                </div> */}
 
                 {/* 3. RIGHT: 3 Dots / Hamburger */}
                 {/* flex: 1 matches the logo side so the center item stays dead center */}
