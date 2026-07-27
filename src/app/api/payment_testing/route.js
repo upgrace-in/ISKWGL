@@ -21,6 +21,14 @@ export async function POST(req) {
         return result;
     }
     try{
+        const date = new Date();
+
+        const currentFormatted = date.getFullYear().toString() +
+        String(date.getMonth() + 1).padStart(2, '0') +
+        String(date.getDate()).padStart(2, '0') +
+        String(date.getHours()).padStart(2, '0') +
+        String(date.getMinutes()).padStart(2, '0') +
+        String(date.getSeconds()).padStart(2, '0');
     const paydata = {
         "addlParam1": "000",
         "addlParam2": "111",
@@ -35,12 +43,12 @@ export async function POST(req) {
         "payType": "0",
         "returnURL": "https://www.iskconwarangal.in/api/icici_return_url",
         "transactionType": "SALE",
-        "txnDate": "20260725181328",
+        "txnDate": currentFormatted,
     }
 
     const msg = "addlParam1addlParam2aggregatorIDamountcurrencyCodecustomerEmailIDcustomerMobileNocustomerNamemerchantIdmerchantTxnNopayTypereturnURLtransactionTypetxnDate"
 
-    const stringvalue = "0001111000000004785712.00356diwakarbansal470@gmail.com9571213124Narayan100000000478572" + paydata.merchantTxnNo + "0https://www.iskconwarangal.in/api/icici_return_urlSALE20260725181328"
+    const stringvalue = "0001111000000004785712.00356diwakarbansal470@gmail.com9571213124Narayan100000000478572" + paydata.merchantTxnNo + "0https://www.iskconwarangal.in/api/icici_return_urlSALE" + paydata.txnDate
 
     // const hashvalue = hmacSHA256(stringvalue, 'db06cca0-838b-4e01-8b20-6ac446ffb6bd');
     const hashvalue = hmacDigest(stringvalue, '6ab59c07-fa70-4a8a-ba8d-c8bd6943d113');
