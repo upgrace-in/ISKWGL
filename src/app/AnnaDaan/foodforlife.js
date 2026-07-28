@@ -166,7 +166,8 @@ export default function FoodForLife({ }) {
             
                     <div className="hero-content">
                         <p className="hero-title">Anna Daan</p>
-                        <h1 className="hero-subtext">Help Us Feed the Needy</h1>
+                        {/* <h1 className="hero-subtext">Help Us Feed the Needy</h1> */}
+                        <h1 className="hero-subtext">Let us offer this humble service in gratitude to our spiritual masters and help nourish many</h1>
                         <div className="hero-line"></div>
                     </div>
             <div className="gallery-section">
