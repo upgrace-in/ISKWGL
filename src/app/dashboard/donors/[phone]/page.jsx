@@ -73,6 +73,7 @@ export default function DonorProfile() {
                             <th className="p-4 font-semibold text-gray-700">Order ID</th>
                             <th className="p-4 font-semibold text-gray-700">Seva Name</th>
                             <th className="p-4 font-semibold text-gray-700">Amount</th>
+                            <th className="p-4 font-semibold text-gray-700">Source</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,6 +84,7 @@ export default function DonorProfile() {
                                 <td className="p-4 text-gray-500 font-mono text-xs">{record.orderId}</td>
                                 <td className="p-4 text-gray-900 font-medium">{record.seva || "-"}</td>
                                 <td className="p-4 font-semibold text-emerald-600">₹{record.amount}</td>
+                                <td className="p-4 font-semibold text-emerald-600">{record.source || "-"}</td>
                             </tr>
                         ))}
                     </tbody>
