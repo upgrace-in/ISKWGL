@@ -8,6 +8,7 @@ import Floating from "@/Components/Floating";
 import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 import { useRouter } from "next/navigation"
 import axios from 'axios';
+import '../payment-page/checkout.css'
 
 export default function DonationEntryForm() {
     const router = useRouter()
@@ -523,7 +524,14 @@ export default function DonationEntryForm() {
                         disabled={isSubmitting}
                         className="w-full sm:w-auto px-5 py-2.5 bg-blue-600 rounded-lg text-sm font-medium text-white hover:bg-blue-700 transition-colors disabled:opacity-50"
                     >
-                        {isSubmitting ? 'Saving...' : 'Donate'}
+                        {isSubmitting ? (
+                                // 3. Render the rotating dots when loading
+                                <div className="dot-spinner">
+                                    <div className="dot dot-1"></div>
+                                    <div className="dot dot-2"></div>
+                                    <div className="dot dot-3"></div>
+                                </div>
+                            ) : ('Donate')}
                     </button>
                 </div>
             </form>
