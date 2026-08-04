@@ -32,11 +32,9 @@ export async function POST(req) {
 
         let {amount, orderId, name, phone, email} = await req.json();
         // const hashvalue = hmacSHA256(stringvalue, 'db06cca0-838b-4e01-8b20-6ac446ffb6bd');
-        const hashvalue = hmacDigest(stringvalue, '6ab59c07-fa70-4a8a-ba8d-c8bd6943d113');
-        console.log("Hash Value:", hashvalue);
         const paydata = {
             "addlParam1": orderId,
-            "addlParam2": hashvalue,
+            "addlParam2": "111",
             "aggregatorID": "100000000478571",
             "amount": amount.toString(),
             "currencyCode": "356",
@@ -53,8 +51,10 @@ export async function POST(req) {
 
     const msg = "addlParam1addlParam2aggregatorIDamountcurrencyCodecustomerEmailIDcustomerMobileNocustomerNamemerchantIdmerchantTxnNopayTypereturnURLtransactionTypetxnDate"
 
-    const stringvalue = orderId + hashvalue +"100000000478571" + amount.toString() + "356"+email+phone+name+"100000000478572" + paydata.merchantTxnNo + "0https://www.iskconwarangal.in/api/icici_return_urlSALE" + paydata.txnDate
+    const stringvalue = orderId + "111" + "100000000478571" + amount.toString() + "356"+email+phone+name+"100000000478572" + paydata.merchantTxnNo + "0https://www.iskconwarangal.in/api/icici_return_urlSALE" + paydata.txnDate
 
+    const hashvalue = hmacDigest(stringvalue, '6ab59c07-fa70-4a8a-ba8d-c8bd6943d113');
+    console.log("Hash Value:", hashvalue);
     
 
     paydata["secureHash"] = hashvalue
