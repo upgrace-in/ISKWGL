@@ -28,8 +28,8 @@ export async function POST(request) {
 
         const donation = await Donation.findOne({ orderId: responseData.addlParam1 });
         if (!donation) throw "No Records Exists";
-        donation.status = responseData.respDescription === "Transaction successful" ? "SUCCESS" : "FAILED";
-        donation.markModified('status');
+        donation.status = "SUCCESS";
+        // donation.markModified('status');
         await donation.save();
 
         let new_donation = new TotalDonations({
