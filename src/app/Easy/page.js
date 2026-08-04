@@ -7,6 +7,7 @@ import Foooter from "../../Components/footter"
 import Floating from "@/Components/Floating";
 import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 import { useRouter } from "next/navigation"
+import axios from 'axios';
 
 export default function DonationEntryForm() {
     const router = useRouter()
@@ -149,7 +150,7 @@ export default function DonationEntryForm() {
             address: completeAddress, // The combined variable
             pin: formData.pinCode,
             amount: formData.amount, // From your Context
-            donationType: formData.reason,
+            donationType: formData.seva,
             seva: formData.seva,
             fulladdress: address_split
         };
