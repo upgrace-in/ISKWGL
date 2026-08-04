@@ -28,7 +28,7 @@ export async function POST(request) {
 
         const donation = await Donation.findOne({ orderId: responseData.addlParam1 });
         if (!donation) throw "No Records Exists";
-        donation.status = responseData.respDescription === "Transaction successful" ? "Success" : "Failed";
+        donation.status = responseData.respDescription === "Transaction successful" ? "SUCCESS" : "FAILED";
         await donation.save();
 
         let new_donation = new TotalDonations({
@@ -50,7 +50,7 @@ export async function POST(request) {
 
 
         
-        return NextResponse.redirect(new URL('/', request.url));
+        return NextResponse.redirect(new URL('/', request.url), { status: 303 });
         // return NextResponse.redirect('https://www.iskconwarangal.in/rathyatra');
 
     } catch (error) {
