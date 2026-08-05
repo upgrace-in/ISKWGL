@@ -4,6 +4,22 @@ import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation';
 import TotalDonations from '@/models/TotalDonations';
 
+function parseCompactTimestamp(rawTime) {
+  if (!rawTime) return new Date();
+  
+  const str = String(rawTime);
+  // Matches YYYYMMDDHHMMSS or YYYYMMDD
+  const match = str.match(/^(\d{4})(\d{2})(\d{2})(?:(\d{2})(\d{2})(\d{2}))?$/);
+  
+  if (match) {
+    const [, year, month, day, hours = 0, minutes = 0, seconds = 0] = match;
+    // Month is 0-indexed in JS Date (0 = Jan, 7 = Aug)
+    return new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds));
+  }
+  
+  const parsed = new Date(rawTime);
+  return isNaN(parsed.getTime()) ? new Date() : parsed;
+}
 // The bank sends a POST request to this URL
 export async function POST(request) {
     try {
@@ -28,8 +44,19 @@ export async function POST(request) {
 
         const donation = await Donation.findOne({ orderId: responseData.addlParam1 });
         if (!donation) throw "No Records Exists";
-        if (responseData.responseCode === "0000") {
-            donation.status = "SUCCESS";
+        if (responseData.responseCode === '0000') {
+            console.log("Payment successful for orderId:", responseData.addlParam1);
+            const dict = {}
+            dict.orderId = responseData.addlParam1;
+            dict.orderAmount = responseData.amount;
+            dict.txStatus = 'SUCCESS';
+            dict.paymentMode = responseData.paymentMode;
+            dict.referenceId = responseData.paymentID;
+            dict.txTime = responseData.paymentDateTime;
+            dict.formattedDate = parseCompactTimestamp(responseData.paymentDateTime).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            donation.webhookData = dict;
+            donation.needsProcessing = true;
+            donation.status = 'SUCCESS';
             await donation.save();
 
             let new_donation = new TotalDonations({
@@ -48,11 +75,25 @@ export async function POST(request) {
             })
 
             await new_donation.save();
+
+            try {
+                fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/processSuccess`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ orderId: dict?.orderId }) // Include formentry flag to indicate it's from the form,
+                    // don't await; it's best-effort; you can await if you want synchronous processing
+                }).catch(err => console.warn('processor trigger failed', err));
+            } catch (e) {
+                console.warn('processor trigger exception', e);
+            }
         }
         else{
+            console.log("Payment failed for orderId:", responseData.addlParam1);
             donation.status = "FAILED";
+            donation.needsProcessing = false;
             await donation.save();
         }
+        
 
 
         

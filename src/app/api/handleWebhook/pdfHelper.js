@@ -42,11 +42,10 @@ export const generatePDF = async (dict, donation) => {
         const watermarkDataUrl = loadAsset('watermark_pattern.png');
 
         // Date Formatting
-        // console.log("TX TIME:", donation.webhookData?.txTime);
-        const txDate = donation.webhookData?.txTime ? new Date(donation.webhookData.txTime) : new Date();
-        const formattedDate = isNaN(txDate)
-    ? new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
-    : txDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    //     const txDate = donation.webhookData?.txTime ? new Date(donation.webhookData.txTime) : new Date();
+    //     const formattedDate = isNaN(txDate)
+    // ? new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+    // : txDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
         // Amount in Words
         // const amountWords = numberToWords(dict.orderAmount);
@@ -68,7 +67,7 @@ export const generatePDF = async (dict, donation) => {
             '{{badgeHtml}}': badgeHtml,
             '{{watermarkDataUrl}}': watermarkDataUrl,
             '{{orderId}}': dict.orderId,
-            '{{formattedDate}}': formattedDate,
+            '{{formattedDate}}': dict.formattedDate,
             '{{amountWords}}': amountWords,
             '{{orderAmount}}': dict.orderAmount,
             '{{donorName}}': donation.name,
