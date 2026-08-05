@@ -29,9 +29,15 @@ export async function POST(req) {
         console.log('Dictionary is :', dict);
 
         // Update status immediately
+        const rawTime = dict?.txTime?.replace('+', 'T');
+        const txDate = rawTime ? new Date(rawTime) : new Date();
+        const formattedDate = isNaN(txDate.getTime())
+  ? new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+  : txDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
         donation.amount = dict?.orderAmount;
         donation.status = dict?.txStatus;
         donation.webhookData = dict;
+        donation.webhookData['formattedDate'] = formattedDate;
         donation.needsProcessing = dict?.txStatus === 'SUCCESS' ? true : false;
         await donation.save();
 
