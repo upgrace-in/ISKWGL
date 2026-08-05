@@ -26,6 +26,7 @@ export async function POST(req) {
         console.log('Order ID is :', dict?.orderId);
         const donation = await Donation.findOne({ orderId: dict?.orderId });
         if (!donation) throw "No Records Exists";
+        console.log('Dictionary is :', dict);
 
         // Update status immediately
         donation.amount = dict?.orderAmount;
