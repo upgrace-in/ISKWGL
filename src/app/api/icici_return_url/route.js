@@ -28,26 +28,31 @@ export async function POST(request) {
 
         const donation = await Donation.findOne({ orderId: responseData.addlParam1 });
         if (!donation) throw "No Records Exists";
-        donation.status = "SUCCESS";
-        // donation.markModified('status');
-        await donation.save();
+        if (responseData.responseCode === "0000") {
+            donation.status = "SUCCESS";
+            await donation.save();
 
-        let new_donation = new TotalDonations({
-            orderId: donation.orderId,
-            phone: donation.phone,
-            name: donation.name,
-            email: donation.email || null,
-            amount: donation.amount,
-            source: "Website",
-            donationDate: new Date(),
-            seva: donation.seva,
-            pan: donation.pan,
-            address: donation.fulladdress,
-            messageSent: false,
-            dob: donation.dob
-        })
+            let new_donation = new TotalDonations({
+                orderId: donation.orderId,
+                phone: donation.phone,
+                name: donation.name,
+                email: donation.email || null,
+                amount: donation.amount,
+                source: "Website",
+                donationDate: new Date(),
+                seva: donation.seva,
+                pan: donation.pan,
+                address: donation.fulladdress,
+                messageSent: false,
+                dob: donation.dob
+            })
 
-        await new_donation.save();
+            await new_donation.save();
+        }
+        else{
+            donation.status = "FAILED";
+            await donation.save();
+        }
 
 
         
