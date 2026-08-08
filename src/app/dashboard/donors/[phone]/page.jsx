@@ -26,6 +26,8 @@ export default function DonorProfile() {
     if (loading) return <div className="p-8 text-center text-gray-500">Loading profile...</div>;
     if (!profile) return <div className="p-8 text-center text-red-500">Donor not found.</div>;
 
+    const totalDonation = history.reduce((sum, donation) => sum + (donation.amount || 0), 0);
+
     return (
         <div className="p-8 max-w-7xl mx-auto">
             <div className="mb-6">
@@ -58,6 +60,10 @@ export default function DonorProfile() {
                     <div className="md:col-span-2">
                         <p className="text-xs font-semibold text-gray-500 uppercase">DOB</p>
                         <p className="text-gray-900">{profile.dob}</p>
+                    </div>
+                    <div className="md:col-span-2">
+                        <p className="text-xs font-semibold text-gray-500 uppercase">Total Donation: </p>
+                        <p className="text-gray-900">₹{totalDonation.toLocaleString('en-IN')}</p>
                     </div>
                 </div>
             </div>

@@ -28,7 +28,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Sayana";
+    const ekadasi_name = "Kamika";
 
     const [amount, setAmount] = useState();
 
@@ -38,19 +38,19 @@ export default function Ekadasi() {
 
     const donationoptions = {
         'Ekadashi Prasad Seva': [
-            { title: "Ekadashi Prasad (For 10 Devotees)", price: 1116},
-            { title: "Ekadashi Prasad (For 15 Devotees)", price: 1516},
-            { title: "Ekadashi Prasad (For 30 Devotees)", price: 3116},
-            { title: "Ekadashi Prasad (For 50 Devotees)", price: 5116},
-            { title: "Complete Ekadashi Prasad Seva", price: 10116},
+            { title: "Ekadashi Prasad (For 10 Devotees)", price: 1116, seva:"Ekadasi"},
+            { title: "Ekadashi Prasad (For 15 Devotees)", price: 1516, seva:"Ekadasi"},
+            { title: "Ekadashi Prasad (For 30 Devotees)", price: 3116, seva:"Ekadasi"},
+            { title: "Ekadashi Prasad (For 50 Devotees)", price: 5116, seva:"Ekadasi"},
+            { title: "Complete Ekadashi Prasad Seva", price: 10116, seva:"Ekadasi"},
         ],
         'Ekadashi Go Seva': [
-            { title: "Go Seva (Feed 1 Cow)", price: 116},
-            { title: "Go Seva (Feed 2 Cows)", price: 216},
-            { title: "Complete Go Seva for the Day", price: 516},
-            { title: "Complete Go Seva for 2 Days", price: 1116},
-            { title: "Complete Go Seva for 4 Days", price: 2116},
-            { title: "Complete Go Seva for the week", price: 3116},
+            { title: "Go Seva (Feed 1 Cow)", price: 116, seva:"Go Seva"},
+            { title: "Go Seva (Feed 2 Cows)", price: 216, seva:"Go Seva"},
+            { title: "Complete Go Seva for the Day", price: 516, seva:"Go Seva"},
+            { title: "Complete Go Seva for 2 Days", price: 1116, seva:"Go Seva"},
+            { title: "Complete Go Seva for 4 Days", price: 2116, seva:"Go Seva"},
+            { title: "Complete Go Seva for the week", price: 3116, seva:"Go Seva"},
         ]
     }
 
@@ -82,12 +82,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">25 July 2026</div>
+                <div className="date-badge">9 August 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadashi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 26 July 2026, 5:48 AM to 10:08 AM for Warangal.
+                        Fast breaking parana time: 10 August 2026, 5:53 AM to 8:00 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -99,12 +99,12 @@ export default function Ekadasi() {
                 <p className="hero-description">
                     <b style={{ color: '#d4a054'}}>Lord Krsna Said to Maharaj Yudhisthir : </b>
                     {/* <br/> */}
-Oh Pandava, one who wishes to please Me should strictly observe this Ekadasi. Oh lion among kings, Yudhishthira Maharaj, whoever wants liberation should regularly observe a fast on this Ekadasi which is also the day when the Chaturmasya fast begins.
+This sacred day nullifies even the sin of killing a brahmana or the sin of killing an unborn child in the womb, and it promotes one to the spiritual world by making one supremely meritorious.
                     <br/>
-                    Along with fasting, <b>chanting the Holy Name, and reading scriptures, offering charity</b> on Yogini Ekadasi is considered one of the most rewarding devotional activities.
+                    Along with fasting, <b>chanting the Holy Name, and reading scriptures, offering charity</b> on {ekadasi_name} Ekadasi is considered one of the most rewarding devotional activities.
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/sayana-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/kamika-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
@@ -127,7 +127,7 @@ Oh Pandava, one who wishes to please Me should strictly observe this Ekadasi. Oh
                     {currentDonationOptions.map((tier, index) => (
                         <div key={index} className="donation-row">
                             <span className="meal-count">{tier.title}</span>
-                            <button className="donate-action-btn" onClick={() =>handleDonateClick(tier.price, tier.title, "Ekadasi")}>
+                            <button className="donate-action-btn" onClick={() =>handleDonateClick(tier.price, tier.title, tier.seva)}>
                             Donate ₹{tier.price.toLocaleString('en-IN')}
                             </button>
                         </div>
