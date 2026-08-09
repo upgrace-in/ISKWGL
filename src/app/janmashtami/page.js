@@ -172,10 +172,10 @@ export default function FoodForLife({ }) {
         gifts.push("Prasadam Box", "Charanamrita Bottle");
       }
       if (price >= 2000) {
-        gifts.push("Acrylic / Murti");
+        gifts.push("Krishna Showpiece");
       }
       if (price >= 10000) {
-        gifts.push("Big Bag");
+        gifts.push("Special Bag");
       }
       if (price === 20000) {
         gifts.push("Small Trophy");
@@ -184,13 +184,14 @@ export default function FoodForLife({ }) {
         gifts.push("Big Trophy");
       }
       if (price === 50000) {
-        gifts.push("Silver Pramidalu");
+        gifts.push("Silver Pramida");
       }
       if (price === 100000) {
-        gifts.push("Silver Ganta");
+        gifts.push("Silver Ghanta");
       }
       if (price >= 200000) {
-        gifts.push("SP 125 Coin");
+        gifts.push("Silver Pramida");
+        gifts.push("Silver Ghanta");
       }
 
       // Text Rules (Conditional Perks)
@@ -641,7 +642,7 @@ export default function FoodForLife({ }) {
             
             {/* Section Header */}
             <div className="competitions-header">
-              <span className="competitions-badge">🎨 For Kids & Youth</span>
+              <span className="competitions-badge">🎨 For Kids</span>
               <h2 className="section-title">{"Children's Competitions"}</h2>
               <p className="competitions-subtitle">
                 Participate & Win Attractive Prizes! Celebrate {"Krishna's"} Appearance Day with Devotion, Creativity & Joy.
