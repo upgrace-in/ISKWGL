@@ -177,67 +177,62 @@ export default function DonationCheckoutTest() {
             finalData[property] = value;
         });
 
-        // try {
-        //     if (finalData['phone'].length !== 10) {
-        //         setError("Phone number must be exactly 10 digits");
-        //         return;
-        //     }
+        try {
+            if (finalData['phone'].length !== 10) {
+                setError("Phone number must be exactly 10 digits");
+                return;
+            }
 
-        //     if (finalData['phone'].startsWith('0')) {
-        //         setError("Phone number should not start with 0");
-        //         return;
-        //     }
+            if (finalData['phone'].startsWith('0')) {
+                setError("Phone number should not start with 0");
+                return;
+            }
 
-        //     setError("");
-        //     if (!parseFloat(finalData['amount']) > 0) throw { error: "Invalid Amount !!!" }
-        //     await checkdob(finalData, 'dob').catch(e => { throw e })
+            setError("");
+            if (!parseFloat(finalData['amount']) > 0) throw { error: "Invalid Amount !!!" }
+            await checkdob(finalData, 'dob').catch(e => { throw e })
 
-        //     // ALL INPUTS are correct... Start showing progress
-        //     let intern = setInterval(() => {
-        //         increaseDots()
-        //     }, 500)
-        //     // save the data with an orderID
-        //     const donationdata = await axios.post(`/api/createDonation/`, finalData)
-        //     finalData['orderId'] = donationdata.data.orderId
-        //     const response = await axios.post(`/api/createOrder/`, finalData)
-        //     clearInterval(intern)
-        //     if (response?.status !== 200) throw { error: "Unable to save data, please try again later !!!" }
+            // ALL INPUTS are correct... Start showing progress
+            let intern = setInterval(() => {
+                increaseDots()
+            }, 500)
+            // save the data with an orderID
+            const donationdata = await axios.post(`/api/createDonation/`, finalData)
+            finalData['orderId'] = donationdata.data.orderId
+            console.log("Donation data saved with orderId:", donationdata.data.orderId);
+            const response = await fetch('/api/payment_testing', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(finalData) // Send the data to your server
+            });
+            const data1 = await response.json();
 
-        //     // pass the orderID with data to HandlePayment
-        //     setData(response.data)
+            if (response.ok) {
+                console.log("Success! Bank says:", data1);
+                
+                // 1. Extract the transaction context/token from the bank's response.
+                // NOTE: Check your terminal logs to see exactly what ICICI calls this field! 
+                // It might be data.tranCtx, data.token, data.transactionId, etc.
+                const tranCtx = data1.tranCtx || "abcd"; 
+                
+                // 2. Construct the redirect URL
+                const redirectUrl = `https://pgpay.icici.bank.in/pg/api/v2/authRedirect?tranCtx=${tranCtx}`;
 
-        // } catch (e) {
-        //     setStatus({ ...e, default: false })
-        // } finally {
-        //     setIsLoading(false);
-        // }
-        const response = await fetch('/api/payment_testing', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(submissionData) // Send the data to your server
-        });
-        const data1 = await response.json();
+                // 3. Redirect the user to the ICICI payment page!
+                // Using window.location.href physically navigates the browser away from your site to the bank
+                window.location.href = redirectUrl;
+                
+            } else {
+                console.error("Payment failed to initiate:", data1);
+                setStatus({ message: "Payment initialization failed", disabled: false });
+            }
 
-        if (response.ok) {
-            console.log("Success! Bank says:", data1);
-            
-            // 1. Extract the transaction context/token from the bank's response.
-            // NOTE: Check your terminal logs to see exactly what ICICI calls this field! 
-            // It might be data.tranCtx, data.token, data.transactionId, etc.
-            const tranCtx = data1.tranCtx || "abcd"; 
-            
-            // 2. Construct the redirect URL
-            const redirectUrl = `https://pgpay.icici.bank.in/pg/api/v2/authRedirect?tranCtx=${tranCtx}`;
-
-            // 3. Redirect the user to the ICICI payment page!
-            // Using window.location.href physically navigates the browser away from your site to the bank
-            window.location.href = redirectUrl;
-            
-        } else {
-            console.error("Payment failed to initiate:", data1);
-            setStatus({ message: "Payment initialization failed", disabled: false });
+        } catch (e) {
+            setStatus({ ...e, default: false })
+        } finally {
+            setIsLoading(false);
         }
         
     }
