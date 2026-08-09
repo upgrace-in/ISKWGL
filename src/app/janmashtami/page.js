@@ -15,6 +15,54 @@ import './JanmashtamiPage.css';
 import pastimeImages from "../pastimesImages.json";
 import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 
+const competitions = [
+  {
+    id: "drawing",
+    title: "Drawing Competition",
+    bgImage: "/images/Janmastami/icons/drawing.jpg",
+    date: "30th August 2026",
+    time: "10:00 AM – 11:00 AM",
+    registerBefore: "29th August, 12:00 PM",
+    theme: "Draw Any Krishna Photo",
+    rules: [
+      "Bring your own pencils, crayons, water colors, writing pad, etc.",
+      "Empty A4 drawing sheets will be provided at the venue."
+    ],
+    prizes: "Exciting prizes to win!",
+    registrationLink: "https://payments.cashfree.com/forms/2026janmashtami" // Replace with actual registration link
+  },
+  {
+    id: "shloka",
+    title: "Shloka Learning & Chanting",
+    bgImage: "/images/Janmastami/icons/sloka.jpg",
+    date: "30th August 2026",
+    time: "11:30 AM – 1:00 PM",
+    registerBefore: "12th August, 12:00 PM",
+    theme: "Recite Bhagavad Gita Chapter 9 (Verses 1 to 17)",
+    rules: [
+      "Online 30-min preparation meets daily (6:00 PM - 6:30 PM, Aug 12–29).",
+      "Exciting gifts for anyone who recites without seeing."
+    ],
+    prizes: "Special Gifts & Trophy",
+    registrationLink: "https://payments.cashfree.com/forms/2026janmashtami" // Replace with actual registration link
+  },
+  {
+    id: "fancy-dress",
+    title: "Dress & Win Fancy Dress Contest",
+    bgImage: "/images/Janmastami/icons/fancydress.jpg",
+    date: "4th September 2026",
+    time: "2:00 PM Onwards",
+    registerBefore: "30th August, 12:00 PM",
+    theme: "Dress up as any Vedic character",
+    rules: [
+      "Theme: Ramayan, Mahabharat, or Srimad Bhagavatam.",
+      "Speak, act, or perform for 1 minute on stage."
+    ],
+    prizes: "Attractive prizes on same day!",
+    registrationLink: "https://payments.cashfree.com/forms/2026janmashtami" // Replace with actual registration link
+  }
+];
+
 export default function FoodForLife({ }) {
     const router = useRouter()
     const { handleDonateClick } = useDonateTest();
@@ -92,14 +140,14 @@ export default function FoodForLife({ }) {
   // Set 2: Special Sponsorships with image paths
   const specialSponsorshipsRaw = [
     { id: "prabhupada_abhishekam", name: "Srila Prabhupada Abhishekam", price: "₹10,000", rawPrice: 10000, image: "/images/Janmastami/icons/prabhupada.png" },
-    { id: "maha_abhishekam", name: "Maha Abhishekam", price: "₹20,000", rawPrice: 20000, image: "/images/Janmastami/icons/abhishekam.png" },
+    { id: "maha_abhishekam", name: "Janmashtami Maha Abhishekam", price: "₹20,000", rawPrice: 20000, image: "/images/Janmastami/icons/abhishekam.png" },
     { id: "prasadam_boxes", name: "Prasadam Boxes", price: "₹30,000", rawPrice: 30000, image: "/images/Janmastami/icons/prasadam.png" },
     { id: "deity_dress", name: "New Deity Dress", price: "₹50,000", rawPrice: 50000, image: "/images/Janmastami/icons/dress.png" },
     { id: "sound_light", name: "Sound & Light", price: "₹50,000", rawPrice: 50000, image: "/images/Janmastami/icons/sound.png" },
-    { id: "night_prasadam", name: "Night Prasadam", price: "₹60,000", rawPrice: 60000, image: "/images/Janmastami/icons/night_prasadam.png" },
+    { id: "night_prasadam", name: "Janmashtami Night Prasadam", price: "₹60,000", rawPrice: 60000, image: "/images/Janmastami/icons/night_prasadam.png" },
     { id: "nandotsav_prasadam", name: "Nandotsav Prasadam", price: "₹60,000", rawPrice: 60000, image: "/images/Janmastami/icons/nandotsav.png" },
     { id: "flower_decoration", name: "Flower Decoration", price: "₹80,000", rawPrice: 80000, image: "/images/Janmastami/icons/flowers.png" },
-    { id: "pandal", name: "Pandal Sponsorship", price: "₹1,50,000", rawPrice: 150000, image: "/images/Janmastami/icons/pandal.png" },
+    { id: "pandal", name: "Pandal", price: "₹1,50,000", rawPrice: 150000, image: "/images/Janmastami/icons/pandal.png" },
   ];
     const [activeTab, setActiveTab] = useState('prasadam'); // 'prasadam' or 'special'
     const [expandedCardId, setExpandedCardId] = useState(null);
@@ -118,7 +166,7 @@ export default function FoodForLife({ }) {
 
       // Table Gifts (Image Source)
       if (price < 1000) {
-        gifts.push("2 Laddus");
+        gifts.push("Prasadam Packet");
       }
       if (price >= 1000) {
         gifts.push("Prasadam Box", "Charanamrita Bottle");
@@ -270,107 +318,119 @@ export default function FoodForLife({ }) {
                     <span className="sparkle-icon">✦</span> Join Us In The Divine Celebration <span className="sparkle-icon">✦</span>
                   </div> */}
 
-                  <div className="hero-buttons">
-                    <a href="#donate" className="btn btn-primary">
-                      ❤️ Offer Seva
-                    </a>
-                    <a href="#invite" className="btn btn-secondary">
-                      Event Schedule
-                    </a>
-                    
+                  <div className="hero-buttons-container">
+                    {/* Main Primary Action */}
+                    <div className="hero-primary-actions">
+                      <a href="#donate" className="btn btn-seva">
+                        <span className="btn-icon">❤️</span> Offer Seva
+                      </a>
+                      <a href="#invite" className="btn btn-schedule">
+                        <span className="btn-icon">📅</span> Event Schedule
+                      </a>
+                    </div>
+
+                    {/* Quick Navigation Badges */}
+                    <div className="hero-secondary-actions">
+                      <a href="#highlights" className="btn btn-chip">
+                        <span className="btn-icon">✨</span> Festival Highlights
+                      </a>
+                      <a href="#competitions" className="btn btn-chip">
+                        <span className="btn-icon">🎨</span> Children's Competitions
+                      </a>
+                    </div>
                   </div>
                 </div>
               </header>
 
               <section id="donate" className="section-container">
-      <div className="section-header">
-        <h2 className="section-title">Janmashtami Seva Opportunities</h2>
-        {/* <p className="section-subtitle">
-          Join us in sponsoring Prasadam & Festival Sevas.
-        </p> */}
+                <div className="section-header">
+                  <h2 className="section-title">Janmashtami Seva Opportunities</h2>
+                  {/* <p className="section-subtitle">
+                    Join us in sponsoring Prasadam & Festival Sevas.
+                  </p> */}
 
-        {/* VIP Prasadam Note Banner */}
-        <div className="vip-timing-banner">
-          <p>🎟️ Every donation between Rs. 1,000/- to Rs. 1,999/- can participate in <strong>Dugdha Abhishekam </strong></p>
-          <p>🎟️ Every donation above Rs. 2,000/- can participate in <strong>Panchamrita Abhishekam </strong></p>
-          <p>🎟️ Every donation above Rs. 10,000/- can avail <strong>VIP Pass</strong> </p>
-          <p>🎟️ <strong>VIP Prasadam Timings:</strong> 12:00 PM – 2:00 PM & 7:00 PM – 10:00 PM</p>
-        </div>
+                  {/* VIP Prasadam Note Banner */}
+                  <div className="vip-timing-banner">
+                    <p>🎟️ Every donation between Rs. 1,000/- to Rs. 1,999/- can participate in <strong>Dugdha Abhishekam </strong></p>
+                    <p>🎟️ Every donation above Rs. 2,000/- can participate in <strong>Panchamrita Abhishekam </strong></p>
+                    <p>🎟️ Every donation above Rs. 10,000/- can avail <strong>VIP Pass</strong> </p>
+                    <p>🎟️ <strong>VIP Prasadam Timings:</strong> 12:00 PM – 2:00 PM & 7:00 PM – 10:00 PM</p>
+                  </div>
 
-        {/* Tab Buttons */}
-        <div className="seva-tab-container">
-          <button
-            className={`seva-tab-btn ${activeTab === "prasadam" ? "active" : ""}`}
-            onClick={() => setActiveTab("prasadam")}
-          >
-            🍃 Leaf Cup Prasadam Sevas
-          </button>
-          <button
-            className={`seva-tab-btn ${activeTab === "special" ? "active" : ""}`}
-            onClick={() => setActiveTab("special")}
-          >
-            ✨ Special Sponsorship Opportunities
-          </button>
-        </div>
-      </div>
-
-      {/* Grid Display */}
-      <div className="donation-grid">
-      {activeSevas.map((tier) => {
-        const isExpanded = expandedCardId === tier.id;
-
-        return (
-          <div key={tier.id} className="donation-card">
-            <div className="card-top-content">
-              {/* Image + Title */}
-              <div className="seva-header-row">
-                <div className="seva-icon-box">
-                  <img src={tier.image} alt={tier.name} className="seva-icon-img" />
+                  {/* Tab Buttons */}
+                  <div className="seva-tab-container">
+                    <button
+                      className={`seva-tab-btn ${activeTab === "prasadam" ? "active" : ""}`}
+                      onClick={() => setActiveTab("prasadam")}
+                    >
+                      🍃 Leaf Cup Prasadam Sevas
+                    </button>
+                    <button
+                      className={`seva-tab-btn ${activeTab === "special" ? "active" : ""}`}
+                      onClick={() => setActiveTab("special")}
+                    >
+                      ✨ Special Sponsorship Opportunities
+                    </button>
+                  </div>
                 </div>
-                <div className="seva-title-group">
-                  <h3 className="tier-name">{tier.name}</h3>
-                  {tier.count && <span className="tier-count">({tier.count})</span>}
-                </div>
-              </div>
 
-              {/* Expandable Gifts Section */}
-              {tier.gifts && tier.gifts.length > 0 && (
-                <div className="gifts-accordion-container">
-                  <button
-                    type="button"
-                    onClick={() => toggleGifts(tier.id)}
-                    className="gift-toggle-btn"
-                  >
-                    <span className={`accordion-arrow ${isExpanded ? "open" : ""}`}>
-                      ›
-                    </span>
-                    🎁 Donor Gifts & Privileges ({tier.gifts.length})
-                  </button>
+                {/* Grid Display */}
+                <div className="donation-grid">
+                {activeSevas.map((tier) => {
+                  const isExpanded = expandedCardId === tier.id;
 
-                  {isExpanded && (
-                    <div className="gift-box">
-                      <ul className="gift-list">
-                        {tier.gifts.map((gift, idx) => (
-                          <li key={idx} className="gift-item">
-                            <span className="check-icon">✓</span> {gift}
-                          </li>
-                        ))}
-                      </ul>
+                  return (
+                    <div key={tier.id} className="donation-card">
+                      <div className="card-top-content">
+                        {/* Image + Title */}
+                        <div className="seva-header-row">
+                          <div className="seva-icon-box">
+                            <img src={tier.image} alt={tier.name} className="seva-icon-img" />
+                          </div>
+                          <div className="seva-title-group">
+                            <h3 className="tier-name">{tier.name}</h3>
+                            {tier.count && <span className="tier-count">({tier.count})</span>}
+                          </div>
+                        </div>
+
+                        {/* Expandable Gifts Section */}
+                        {tier.gifts && tier.gifts.length > 0 && (
+                          <div className="gifts-accordion-container">
+                            <button
+                              type="button"
+                              onClick={() => toggleGifts(tier.id)}
+                              className="gift-toggle-btn"
+                            >
+                              <span className={`accordion-arrow ${isExpanded ? "open" : ""}`}>
+                                ›
+                              </span>
+                              🎁 Donor Gifts & Privileges ({tier.gifts.length})
+                            </button>
+
+                            {isExpanded && (
+                              <div className="gift-box">
+                                <ul className="gift-list">
+                                  {tier.gifts.map((gift, idx) => (
+                                    <li key={idx} className="gift-item">
+                                      <span className="check-icon">✓</span> {gift}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <button className="donate-btn popular-donate-btn" onClick={() =>handleDonateClick(tier.rawPrice, tier.name, "Janmashtami")}>
+                        Offer Seva ({tier.price})
+                      </button>
                     </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <button className="donate-btn popular-donate-btn" onClick={() =>handleDonateClick(tier.rawPrice, tier.name, "Janmashtami")}>
-              Offer Seva ({tier.price})
-            </button>
-          </div>
-        );
-      })}
-    </div>
-      
-    </section>
+                  );
+                })}
+              </div>
+                
+              </section>
 
               <section className="customdonation">
                 <div  >
@@ -451,40 +511,227 @@ export default function FoodForLife({ }) {
         </section> */}
 
         {/* EVENT SCHEDULE SECTION */}
-        <section className="schedule-section" id="invite">
-      <div className="schedule-container">
-        <div className="schedule-header">
-          <span className="schedule-subtitle">✨ Divine Timings</span>
-          <h2 className="schedule-title">Festival Schedule</h2>
-        </div>
+        <section className="event-overview-section">
+          <div className="overview-container" id="invite">
 
-        <div className="timeline-container">
-          {schedule.map((item, index) => (
-            <div 
-              key={index} 
-              className={`timeline-item ${item.highlight ? "highlight-item" : ""}`}
-            >
-              {/* Left Column: Time Badge */}
-              <div className="time-badge">
-                <span className="clock-icon">⏰</span>
-                <span className="time-text">{item.time}</span>
+            {/* LEFT COLUMN: Event Schedule */}
+            <div className="schedule-column">
+              <div className="section-header">
+                <span className="section-badge">🪔 Event Schedule</span>
+                <h2 className="section-title">Program Schedule</h2>
+                <p className="section-subtitle">Join us for a day filled with spiritual devotion and bliss</p>
               </div>
 
-              {/* Middle: Vertical Connector Dot */}
-              <div className="timeline-marker">
-                <div className="marker-dot"></div>
-                {index !== schedule.length - 1 && <div className="marker-line"></div>}
-              </div>
+              <div className="schedule-timeline">
+                <div className="timeline-item">
+                  <div className="timeline-time">04:30 AM - 5:15 AM</div>
+                  <div className="timeline-details">
+                    <h4>Mangal Arati</h4>
+                  </div>
+                </div>
 
-              {/* Right Column: Event Card */}
-              <div className="event-card">
-                <h3 className="event-title">{item.title}</h3>
+                <div className="timeline-item">
+                  <div className="timeline-time">07:00 AM - 08:00 AM</div>
+                  <div className="timeline-details">
+                    <h4>Festival Class</h4>
+                  </div>
+                </div>
+
+                <div className="timeline-item">
+                  <div className="timeline-time">08:00 AM - 08:30 AM</div>
+                  <div className="timeline-details">
+                    <h4>Guru Puja & Darshan Arati</h4>
+                  </div>
+                </div>
+
+                <div className="timeline-item highlight-item">
+                  <div className="timeline-time">09:00 AM - 10:00 PM</div>
+                  <div className="timeline-details">
+                    <h4>Darshan, Kirtan, Donor Abhishekam, Cultural Programs</h4>
+                  </div>
+                </div>
+                <div className="timeline-item highlight-item">
+                  <div className="timeline-time">10:00 PM onwards</div>
+                  <div className="timeline-details">
+                    <h4>Maha Abhishekam, Class, Arati, Prasadam for all</h4>
+                  </div>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
+
+            {/* RIGHT COLUMN: Festival Highlights */}
+            <div className="highlights-column" id="highlights">
+              <div className="section-header">
+                <span className="section-badge">✨ Festival Attractions</span>
+                <h2 className="section-title">Janmashtami Highlights</h2>
+                <p className="section-subtitle">Experience special attractions prepared for all devotees</p>
+              </div>
+
+              <div className="highlights-grid">
+                <div className="highlight-card">
+                  <div className="highlight-icon-box">
+                    <img src="/images/Janmastami/Highlights/Special-Darshan.png" alt="Special Darshan" className="highlight-img" />
+                  </div>
+                  <div className="highlight-text">
+                    <h3>Special Darshan</h3>
+                  </div>
+                </div>
+
+                <div className="highlight-card">
+                  <div className="highlight-icon-box">
+                    <img src="/images/Janmastami/Highlights/abhishekam.png" alt="Special Darshan" className="highlight-img" />
+                  </div>
+                  <div className="highlight-text">
+                    <h3>Abhishekam Opportunities</h3>
+                  </div>
+                </div>
+
+                <div className="highlight-card">
+                  <div className="highlight-icon-box">
+                    <img src="/images/Janmastami/Highlights/Uyyala.png" alt="Special Darshan" className="highlight-img" />
+                  </div>
+                  <div className="highlight-text">
+                    <h3>Uyyala (Swing Baby Krishna)</h3>
+                  </div>
+                </div>
+
+                <div className="highlight-card">
+                  <div className="highlight-icon-box">
+                    <img src="/images/Janmastami/Highlights/cultural.png" alt="Special Darshan" className="highlight-img" />
+                  </div>
+                  <div className="highlight-text">
+                    <h3>Cultural Programs</h3>
+                  </div>
+                </div>
+
+                <div className="highlight-card">
+                  <div className="highlight-icon-box">
+                    <img src="/images/Janmastami/Highlights/prasadam.png" alt="Special Darshan" className="highlight-img" />
+                  </div>
+                  <div className="highlight-text">
+                    <h3>Free Prasadam</h3>
+                  </div>
+                </div>
+
+                <div className="highlight-card">
+                  <div className="highlight-icon-box">
+                    <img src="/images/Janmastami/Highlights/kirtan.png" alt="Special Darshan" className="highlight-img" />
+                  </div>
+                  <div className="highlight-text">
+                    <h3>Whole Day Kirtan</h3>
+                  </div>
+                </div>
+
+                <div className="highlight-card highlight-card-full">
+                  <div className="highlight-icon-box">
+                    <img src="/images/Janmastami/Highlights/games.png" alt="Special Darshan" className="highlight-img" />
+                  </div>
+                  <div className="highlight-text">
+                    <h3>Games for Visitors</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section className="competitions-section" id="competitions">
+          <div className="competitions-container">
+            
+            {/* Section Header */}
+            <div className="competitions-header">
+              <span className="competitions-badge">🎨 For Kids & Youth</span>
+              <h2 className="competitions-title">Children's Competitions 2026</h2>
+              <p className="competitions-subtitle">
+                Participate & Win Attractive Prizes! Celebrate Krishna's Appearance Day with Devotion, Creativity & Joy.
+              </p>
+
+              {/* Common Info Strip */}
+              <div className="common-info-bar">
+                <div className="info-chip">
+                  <span className="chip-icon">👥</span>
+                  <span><strong>Level 1:</strong> Class 5 or below</span>
+                </div>
+                <div className="info-chip">
+                  <span className="chip-icon">🎓</span>
+                  <span><strong>Level 2:</strong> Class 6 to Class 10</span>
+                </div>
+                <div className="info-chip highlight-chip">
+                  <span className="chip-icon">🪙</span>
+                  <span><strong>Fee:</strong> ₹50/- per competition</span>
+                </div>
+                <div className="info-chip">
+                  <span className="chip-icon">📍</span>
+                  <span><strong>Venue:</strong> ISKCON Warangal</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Competitions Cards Grid */}
+            <div className="competitions-grid">
+              {competitions.map((comp) => (
+                <div key={comp.id} className="competition-card">
+                  
+                  {/* Card Header with Image Background & Overlay */}
+                  <div 
+                    className="comp-card-top" 
+                    style={{ backgroundImage: `url(${comp.bgImage})` }}
+                  >
+                    <div className="comp-card-overlay" />
+                    <div className="comp-card-top-content">
+                      <h3 className="comp-title">{comp.title}</h3>
+                      <div className="comp-theme-pill">{comp.theme}</div>
+                    </div>
+                  </div>
+
+                  <div className="comp-card-body">
+                    <div className="comp-meta">
+                      <div className="meta-row">
+                        <span className="meta-label">📅 Date & Time:</span>
+                        <span className="meta-value"><strong>{comp.date}</strong> ({comp.time})</span>
+                      </div>
+                      <div className="meta-row warning-text">
+                        <span className="meta-label">⏰ Register Before:</span>
+                        <span className="meta-value">{comp.registerBefore}</span>
+                      </div>
+                    </div>
+
+                    <div className="comp-rules">
+                      <h4>Guidelines:</h4>
+                      <ul>
+                        {comp.rules.map((rule, idx) => (
+                          <li key={idx}>✓ {rule}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="comp-prize">
+                      🏆 <span>{comp.prizes}</span>
+                    </div>
+                  </div>
+
+                  <div className="comp-card-footer">
+                    <a 
+                      href={comp.registrationLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="btn-register"
+                    >
+                      Register Now ➔
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Contact Strip */}
+            <div className="competitions-footer-note">
+              <span>📞 For Queries / Assistance, Contact: <strong>+91 6301283091</strong></span>
+            </div>
+
+          </div>
+        </section>
 
         <section className="section-container pastimes-section">
           <div className="section-header">
@@ -503,12 +750,12 @@ export default function FoodForLife({ }) {
               >
                 <img 
                   src={pastimeImages[mobileIndex]?.src} 
-                  alt={pastimeImages[mobileIndex]?.title} 
+                  alt={pastimeImages[mobileIndex]?.description} 
                   className="mobile-slide-img" 
                 />
                 <div className="mobile-slide-caption">
                   <span className="zoom-icon">🔍</span>
-                  <p>{pastimeImages[mobileIndex]?.title}</p>
+                  <p>{pastimeImages[mobileIndex]?.description}</p>
                 </div>
               </div>
 
@@ -535,10 +782,10 @@ export default function FoodForLife({ }) {
                     className="pastime-row-card"
                     onClick={() => setSelectedPastimeIndex(index)}
                   >
-                    <img src={item.src} alt={item.title} className="pastime-row-img" loading="lazy" />
+                    <img src={item.src} alt={item.description} className="pastime-row-img" loading="lazy" />
                     <div className="pastime-row-overlay">
                       <span className="zoom-icon">🔍</span>
-                      <p className="pastime-card-title">{item.title}</p>
+                      <p className="pastime-card-title">{item.description}</p>
                     </div>
                   </div>
                 ))}
@@ -560,11 +807,11 @@ export default function FoodForLife({ }) {
               <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
                 <img
                   src={pastimeImages[selectedPastimeIndex].src}
-                  alt={pastimeImages[selectedPastimeIndex].title}
+                  alt={pastimeImages[selectedPastimeIndex].description}
                   className="lightbox-image"
                 />
                 <div className="lightbox-caption">
-                  {pastimeImages[selectedPastimeIndex].title}
+                  {pastimeImages[selectedPastimeIndex].description}
                 </div>
               </div>
 
