@@ -335,7 +335,7 @@ export default function FoodForLife({ }) {
                         <span className="btn-icon">✨</span> Festival Highlights
                       </a>
                       <a href="#competitions" className="btn btn-chip">
-                        <span className="btn-icon">🎨</span> Children's Competitions
+                        <span className="btn-icon">🎨</span> {"Children's Competitions"}
                       </a>
                     </div>
                   </div>
@@ -642,9 +642,9 @@ export default function FoodForLife({ }) {
             {/* Section Header */}
             <div className="competitions-header">
               <span className="competitions-badge">🎨 For Kids & Youth</span>
-              <h2 className="competitions-title">Children's Competitions 2026</h2>
+              <h2 className="competitions-title">{"Children's Competitions 2026"}</h2>
               <p className="competitions-subtitle">
-                Participate & Win Attractive Prizes! Celebrate Krishna's Appearance Day with Devotion, Creativity & Joy.
+                Participate & Win Attractive Prizes! Celebrate {"Krishna's"} Appearance Day with Devotion, Creativity & Joy.
               </p>
 
               {/* Common Info Strip */}
