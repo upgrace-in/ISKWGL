@@ -35,7 +35,7 @@ export default function DonationEntryForm() {
     const [currentExcelIndex, setCurrentExcelIndex] = useState(-1);
 
     const sevaOptions = [
-        "Easy", "AnnaDaan", "Go Seva", "Rath Yatra", "Ekadasi", "Tula Daan", "Nithya Seva", "General Donation"
+        "Easy", "AnnaDaan", "Go Seva", "Janmashtami" , "Rath Yatra", "Ekadasi", "Tula Daan", "Nithya Seva", "General Donation"
     ];
 
     // Initialize "Donation Date" to today's date on component mount
