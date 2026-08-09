@@ -13,7 +13,7 @@ export function useDonateTest() {
             seva: seva
         });
 
-        router.push('/payment-page-testing');
+        router.push('/paymentpage');
     };
 
     return { handleDonateClick };
