@@ -642,7 +642,7 @@ export default function FoodForLife({ }) {
             {/* Section Header */}
             <div className="competitions-header">
               <span className="competitions-badge">🎨 For Kids & Youth</span>
-              <h2 className="competitions-title">{"Children's Competitions 2026"}</h2>
+              <h2 className="section-title">{"Children's Competitions"}</h2>
               <p className="competitions-subtitle">
                 Participate & Win Attractive Prizes! Celebrate {"Krishna's"} Appearance Day with Devotion, Creativity & Joy.
               </p>
