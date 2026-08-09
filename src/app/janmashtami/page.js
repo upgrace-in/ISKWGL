@@ -263,7 +263,7 @@ export default function FoodForLife({ }) {
                   <h1 className="hero-title">Shri Krishna Janmashtami</h1>
 
                   <div className="event-date-badge">
-                    📅 Wednesday, September 2, 2026
+                    📅 Friday, September 4, 2026
                   </div>
 
                   {/* <div className="hero-tagline">
