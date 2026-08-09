@@ -177,11 +177,8 @@ export default function FoodForLife({ }) {
       if (price >= 10000) {
         gifts.push("Special Bag");
       }
-      if (price === 20000) {
-        gifts.push("Small Trophy");
-      }
-      if (price >= 50000) {
-        gifts.push("Big Trophy");
+      if (price >= 20000) {
+        gifts.push("Trophy");
       }
       if (price === 50000) {
         gifts.push("Silver Pramida");
