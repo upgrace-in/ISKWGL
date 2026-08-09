@@ -47,10 +47,9 @@ export default function Ekadasi() {
         'Ekadashi Go Seva': [
             { title: "Go Seva (Feed 1 Cow)", price: 116, seva:"Go Seva"},
             { title: "Go Seva (Feed 2 Cows)", price: 216, seva:"Go Seva"},
-            { title: "Complete Go Seva for the Day", price: 516, seva:"Go Seva"},
-            { title: "Complete Go Seva for 2 Days", price: 1116, seva:"Go Seva"},
-            { title: "Complete Go Seva for 4 Days", price: 2116, seva:"Go Seva"},
-            { title: "Complete Go Seva for the week", price: 3116, seva:"Go Seva"},
+            { title: "Go Seva for 3 Days", price: 516, seva:"Go Seva"},
+            { title: "Go Seva for the week", price: 1116, seva:"Go Seva"},
+            { title: "Go Seva till next Ekadasi", price: 2116, seva:"Go Seva"}
         ]
     }
 
