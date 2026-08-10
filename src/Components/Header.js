@@ -177,10 +177,10 @@ export default function Header() {
                 {/* Action Buttons */}
                 <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flex: '2', justifyContent: 'flex-end' }}>
                     <Link 
-                        href="/Ekadasi" 
+                        href="/janmashtami" 
                         className={"nav-rath-yatra-highlight"}
                     >
-                        Kamika Ekadasi (9 Aug)
+                        Krishna Janmashtami
                     </Link>
 
                     {/* <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
@@ -207,10 +207,10 @@ export default function Header() {
                 {/* flex: none ensures it stays perfectly centered without being stretched */}
                 <div style={{ flex: 'none', display: 'flex', justifyContent: 'center' }}>
                     <Link 
-                        href="/Ekadasi"
+                        href="/janmashtami"
                         className={"nav-rath-yatra-highlight mobile-rath-btn"}
                     >
-                        Kamika Ekadasi (9 Aug)
+                        Krishna Janmashtami
                     </Link>
                 </div>
 
