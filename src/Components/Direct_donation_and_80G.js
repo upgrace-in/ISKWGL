@@ -115,7 +115,7 @@ export default function DirectDonation() {
 
             {/* --- 80G Certificate Info --- */}
             <div className="G80-certificate-info" style={{ color: '#666', maxWidth: "1500px", margin: "0 auto 60px", padding: "0 20px", textAlign: "center" }}>
-                <h3 style={{ color: "#333", marginBottom: "15px" }}>80G / 10BE Certificate of Your Donation</h3>
+                <h3 style={{ color: "#333", marginBottom: "15px" }}>Acknowledgement of Your Donation</h3>
                 {/* <p>80G certificate is available as per Income Tax Act 1961 and rules made there under.</p>
 
                 <p>Tax Exemption Certificate Ref. No.: AAATI0017PF20219 dated 24/09/2021 valid upto 31/03/2026</p> */}
