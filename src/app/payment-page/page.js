@@ -210,38 +210,11 @@ export default function DonationCheckout() {
             setStatus({ ...e, default: false })
         } finally {
             setIsLoading(false);
-        }
-        // const submissiData = {} // Replace with actual order ID from your backend
-        // const response = await fetch('/api/payment_testing', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(submissionData) // Send the data to your server
-        // });
-        // const data1 = await response.json();
-
-        // if (response.ok) {
-        //     console.log("Success! Bank says:", data1);
-            
-        //     // 1. Extract the transaction context/token from the bank's response.
-        //     // NOTE: Check your terminal logs to see exactly what ICICI calls this field! 
-        //     // It might be data.tranCtx, data.token, data.transactionId, etc.
-        //     const tranCtx = data1.tranCtx || "abcd"; 
-            
-        //     // 2. Construct the redirect URL
-        //     const redirectUrl = `https://pgpayuat.icici.bank.in/tsp/pg/api/v2/authRedirect?tranCtx=${tranCtx}`;
-
-        //     // 3. Redirect the user to the ICICI payment page!
-        //     // Using window.location.href physically navigates the browser away from your site to the bank
-        //     window.location.href = redirectUrl;
-            
-        // } else {
-        //     console.error("Payment failed to initiate:", data);
-        //     setStatus({ message: "Payment initialization failed", disabled: false });
-        // }
-        
+        }        
     }
+
+    const [wantsTaxBenefit, setWantsTaxBenefit] = useState(false);
+    const [wantsPrasadam, setWantsPrasadam] = useState(false);
 
     return (
         <>
@@ -265,9 +238,12 @@ export default function DonationCheckout() {
                 {/* Right Side: Detailed Form */}
                 <div className="form-section">
                     <h2 className="form-title">Complete Your Donation Details</h2>
-                    {/* <p className="helper-text"><b>**Please Note:</b> Complete Address with PIN-Code and PAN is mandatory for an 80G Receipt.</p> */}
+                    <p className="helper-text">
+                        <b>*Please Note:</b> Complete Address with PIN-Code and PAN is mandatory for an 80G Receipt.
+                    </p>
                     
                     <form className="checkout-form" onSubmit={(e) => handleSubmit(e)}>
+                        {/* 1. Personal Information */}
                         <div className="form-group-title">1. Personal Information *</div>
                         <div className="form-row">
                             <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
@@ -279,69 +255,106 @@ export default function DonationCheckout() {
                             <input type="date" name="dob" placeholder="Date of Birth" onChange={handleChange} required className="date-input"/>
                         </div>
 
-                        {/* <div className="form-group-title">2. Tax Benefits (80G)</div> */}
-                        <div className="form-group-title">2. PAN</div>
-                        <input type="text" name="pan" placeholder="PAN Number" className="pan-input" onChange={handleChange} />
-
-                        <div className="form-group-title">3. Detailed Address *</div>
-                        <div className="form-row">
-                            <input type="text" name="flatNo" placeholder="Flat/Door No." onChange={handleChange} required/>
-                            <input type="text" name="street" placeholder="Building/Society" onChange={handleChange} required/>
-                        </div>
-                        <input type="text" name="landmark" placeholder="Road/Area/Landmark" onChange={handleChange} required/>
-                        <div className="form-row">
-                            <div className="pincode-wrapper">
-                                <input type="text" name="pin" maxLength="6" value={formData.pin} onChange={handlePinChange} placeholder="Pincode" required />
-                                {isLoadingPin && (
-                                    <span className="pincode-loading">...</span>
-                                )}
-                                {pinError && <div className="pincode-error">{pinError}</div>}
-                            </div>
-                            <select name="state" value={formData.state} onChange={handleChange} required>
-                                <option value="">Select State</option>
-                                {indianStates.map(state => (
-                                    <option key={state} value={state}>{state}</option>
-                                ))}
-                            </select>
-                            <select name="district" value={formData.district} onChange={handleChange} disabled={!formData.state} required>
-                                <option value="">{formData.state ? "Select District" : "Select a state first"}</option>
-                                {districtOptions.map(district => (
-                                    <option key={district} value={district}>{district}</option>
-                                ))}
-                            </select>
-                            <select name="city" value={formData.city} onChange={handleChange} disabled={postalAreas.length === 0} required>
-                                <option value="">{formData.pin.length === 6 ? "Select Postal Area" : "Enter pincode first"}</option>
-                                {postalAreas.map(area => (
-                                    <option key={area} value={area}>{area}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="form-row">
-                            <div className='maemorystatus'>
-                                <input type="checkbox" onChange={() => setMemoryStatus(old => !old ? true : false)} id="memoryOfSomeone" />
-                                <label htmlFor="memoryOfSomeone">This Donation in the
-                                    memory/honor of someone or performed on a specific occasion</label>
+                        {/* Checkbox 1 & Section 2: Tax Benefits */}
+                        <div className="checkout-form" style={{ marginTop: "15px" }}>
+                            <div className="checkbox-item" style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+                                <input 
+                                    type="checkbox" 
+                                    id="taxBenefit" 
+                                    checked={wantsTaxBenefit} 
+                                    onChange={(e) => setWantsTaxBenefit(e.target.checked)} 
+                                />
+                                <label htmlFor="taxBenefit">I would like to avail tax benefits under 80G</label>
                             </div>
 
-                            {
-                                memoryStatus
-                                    ?
-                                    <input type="text" name="memoryOfSomeoneName" placeholder="Name" onChange={handleChange} required/>
-                                    : ""
-                            }
+                            {wantsTaxBenefit && (
+                                <div className="checkout-form" style={{marginBottom: "15px" }}>
+                                    <div className="form-group-title">2. Tax Benefits (80G)</div>
+                                    <input 
+                                        type="text" 
+                                        name="pan" 
+                                        placeholder="PAN Number" 
+                                        className="pan-input" 
+                                        onChange={handleChange} 
+                                        required={wantsTaxBenefit}
+                                    />
+                                </div>
+                            )}
                         </div>
 
+                        {/* Checkbox 2 & Section 3: Detailed Address */}
+                        <div className="checkout-form" style={{ marginTop: "10px" }}>
+                            <div className="checkbox-item" style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+                                <input 
+                                    type="checkbox" 
+                                    id="prasadam" 
+                                    checked={wantsPrasadam} 
+                                    onChange={(e) => setWantsPrasadam(e.target.checked)} 
+                                />
+                                <label htmlFor="prasadam">I would like to receive Maha Prasadam (only within India)</label>
+                            </div>
+
+                            {wantsPrasadam && (
+                                <div className="checkout-form" style={{marginBottom: "15px" }}>
+                                    <div className="form-group-title">3. Detailed Address</div>
+                                    <div className="form-row">
+                                        <input type="text" name="flatNo" placeholder="Flat/Door No." onChange={handleChange} required={wantsPrasadam} />
+                                        <input type="text" name="street" placeholder="Building/Society" onChange={handleChange} required={wantsPrasadam} />
+                                    </div>
+                                    <input type="text" name="landmark" placeholder="Road/Area/Landmark" onChange={handleChange} required={wantsPrasadam} />
+                                    <div className="form-row">
+                                        <div className="pincode-wrapper">
+                                            <input type="text" name="pin" maxLength="6" value={formData.pin} onChange={handlePinChange} placeholder="Pincode" required={wantsPrasadam} />
+                                            {isLoadingPin && <span className="pincode-loading">...</span>}
+                                            {pinError && <div className="pincode-error">{pinError}</div>}
+                                        </div>
+                                        <select name="state" value={formData.state} onChange={handleChange} required={wantsPrasadam}>
+                                            <option value="">Select State</option>
+                                            {indianStates.map(state => (
+                                                <option key={state} value={state}>{state}</option>
+                                            ))}
+                                        </select>
+                                        <select name="district" value={formData.district} onChange={handleChange} disabled={!formData.state} required={wantsPrasadam}>
+                                            <option value="">{formData.state ? "Select District" : "Select a state first"}</option>
+                                            {districtOptions.map(district => (
+                                                <option key={district} value={district}>{district}</option>
+                                            ))}
+                                        </select>
+                                        <select name="city" value={formData.city} onChange={handleChange} disabled={postalAreas.length === 0} required={wantsPrasadam}>
+                                            <option value="">{formData.pin.length === 6 ? "Select Postal Area" : "Enter pincode first"}</option>
+                                            {postalAreas.map(area => (
+                                                <option key={area} value={area}>{area}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Occasion / Memory Option */}
+                        <div className="form-row" style={{ marginTop: "15px" }}>
+                            <div className="maemorystatus">
+                                <input type="checkbox" onChange={() => setMemoryStatus(old => !old)} id="memoryOfSomeone" />
+                                <label htmlFor="memoryOfSomeone">
+                                    This Donation in the memory/honor of someone or performed on a specific occasion
+                                </label>
+                            </div>
+
+                            {memoryStatus && (
+                                <input type="text" name="memoryOfSomeoneName" placeholder="Name" onChange={handleChange} required />
+                            )}
+                        </div>
+
+                        {/* Submit Button */}
                         <button type="submit" className="final-donate-btn" disabled={isLoading}>
                             {isLoading ? (
-                                // 3. Render the rotating dots when loading
                                 <div className="dot-spinner">
                                     <div className="dot dot-1"></div>
                                     <div className="dot dot-2"></div>
                                     <div className="dot dot-3"></div>
                                 </div>
                             ) : (
-                                "COMPLETE DONATION"
+                                "COMPLETE DONATION & GET 80G RECEIPT"
                             )}
                         </button>
                     </form>
