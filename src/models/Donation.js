@@ -29,7 +29,7 @@ const DonationSchema = new Schema({
     },
     address: {
         type: String,
-        required: true
+        default: null
     },
     fulladdress: {
         addressLine1: { type: String, trim: true, default: '' },
@@ -42,7 +42,7 @@ const DonationSchema = new Schema({
     },
     pin: {
         type: String,
-        required: true
+        default: null
     },
     amount: {
         type: String,
