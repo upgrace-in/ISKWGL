@@ -115,10 +115,10 @@ export default function DirectDonation() {
 
             {/* --- 80G Certificate Info --- */}
             <div className="G80-certificate-info" style={{ color: '#666', maxWidth: "1500px", margin: "0 auto 60px", padding: "0 20px", textAlign: "center" }}>
-                <h3 style={{ color: "#333", marginBottom: "15px" }}>Acknowledgement of Your Donation</h3>
-                {/* <p>80G certificate is available as per Income Tax Act 1961 and rules made there under.</p>
+                <h3 style={{ color: "#333", marginBottom: "15px" }}>80G Certificate for Your Donation</h3>
+                <p>80G certificate is available as per Income Tax Act 1961 and rules made there under.</p>
 
-                <p>Tax Exemption Certificate Ref. No.: AAATI0017PF20219 dated 24/09/2021 valid upto 31/03/2026</p> */}
+                <p>Tax Exemption Certificate Ref. No.: AAATI0017PF20219 dated 17/08/2026 valid upto 31/03/2031</p>
                 <p style={{ marginBottom: "10px" }}>To get the receipt of the donation, please provide your full details in the donation form.</p>
                 <p style={{ marginBottom: "10px" }}>
                     Or if you have used direct bank details or UPI methods, please share your <b>legal name, postal address</b> with pincode, and <b>PAN</b> along with <b>transaction details</b> on <span style={{ color:"#2c7a8b", fontWeight: "bold" }}><a target="_blank" rel="noreferrer" href="https://wa.me/+919121630614" style={{ textDecoration: "none", color: "inherit" }}>+919121630614</a></span> or <span style={{ color:"#2c7a8b", fontWeight: "bold" }}><a target="_blank" rel="noreferrer" href="mailto:warangaliskcon@gmail.com" style={{ textDecoration: "none", color: "inherit" }}>warangaliskcon@gmail.com</a></span>.
