@@ -99,7 +99,7 @@ export default function Ekadasi() {
                 <p className="hero-description">
                     <b style={{ color: '#d4a054'}}>Lord Krsna Said to Maharaj Yudhisthir : </b>
                     {/* <br/> */}
-This Ekadasi is famous as Putrada "bestower of a son". whoever simply hears the glories of Putrada Ekadasi becomes completely free of all sins, is blessed with a good son, and surely ascends to heaven after death.
+This Ekadasi is famous as Putrada {"bestower of a son"}. whoever simply hears the glories of Putrada Ekadasi becomes completely free of all sins, is blessed with a good son, and surely ascends to heaven after death.
                     <br/>
                     Along with fasting, <b>chanting the Holy Name, and reading scriptures, offering charity</b> on {ekadasi_name} Ekadasi is considered one of the most rewarding devotional activities.
                 </p>
