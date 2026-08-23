@@ -87,7 +87,7 @@ export default function Ekadasi() {
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 25 August 2026, 6:01 AM to 6:22 AM for Warangal.
+                        Fast breaking parana time: 25 August 2026, 5:56 AM to 6:20 AM for Warangal.
                     </p>
                 </div>
             </div>
