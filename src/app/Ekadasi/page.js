@@ -12,7 +12,8 @@ import { FiCopy, FiCheck } from "react-icons/fi";
 import DirectDonation from "@/Components/Direct_donation_and_80G"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
-import { useDonate } from "@/Helpers/PaymentPageHandler";
+// import { useDonate } from "@/Helpers/PaymentPageHandler";
+import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -21,14 +22,14 @@ import 'swiper/css/effect-fade';
 
 export default function Ekadasi() {
     const router = useRouter()
-    const { handleDonateClick } = useDonate();
+    const { handleDonateClick } = useDonateTest();
     const [data, setData] = useState()
     const [navOpen, setNavOpen] = useState(false)
 
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Kamika";
+    const ekadasi_name = "Pavitropana";
 
     const [amount, setAmount] = useState();
 
@@ -81,12 +82,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">9 August 2026</div>
+                <div className="date-badge">24 August 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadashi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 10 August 2026, 5:53 AM to 8:00 AM for Warangal.
+                        Fast breaking parana time: 25 August 2026, 6:01 AM to 6:22 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -98,12 +99,12 @@ export default function Ekadasi() {
                 <p className="hero-description">
                     <b style={{ color: '#d4a054'}}>Lord Krsna Said to Maharaj Yudhisthir : </b>
                     {/* <br/> */}
-This sacred day nullifies even the sin of killing a brahmana or the sin of killing an unborn child in the womb, and it promotes one to the spiritual world by making one supremely meritorious.
+This Ekadasi is famous as Putrada "bestower of a son". whoever simply hears the glories of Putrada Ekadasi becomes completely free of all sins, is blessed with a good son, and surely ascends to heaven after death.
                     <br/>
                     Along with fasting, <b>chanting the Holy Name, and reading scriptures, offering charity</b> on {ekadasi_name} Ekadasi is considered one of the most rewarding devotional activities.
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/kamika-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/pavitropana-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
