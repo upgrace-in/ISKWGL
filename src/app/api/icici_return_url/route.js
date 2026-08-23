@@ -97,7 +97,7 @@ export async function POST(request) {
 
 
         
-        return NextResponse.redirect(new URL('/', request.url), { status: 303 });
+        return NextResponse.redirect(new URL('/janmashtami', request.url), { status: 303 });
         // return NextResponse.redirect('https://www.iskconwarangal.in/rathyatra');
 
     } catch (error) {
