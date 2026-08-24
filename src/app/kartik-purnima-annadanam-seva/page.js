@@ -14,9 +14,9 @@ export default function Page({ params }) {
 
         payingOptions={
             [
-                { title: "Annadanam Seva (50 Devotees)", amount: 1500, imagePath: '/donateForIMGs/kartik-purnima-annadanam-seva.jpeg' },
-                { title: "Annadanam Seva (100 Devotees)", amount: 3000, imagePath: '/donateForIMGs/kartik-purnima-annadanam-seva.jpeg' },
-                { title: "Annadanam Seva (150 Devotees)", amount: 4500, imagePath: '/donateForIMGs/kartik-purnima-annadanam-seva.jpeg' },
+                { title: "Annadanam Seva (50 Devotees)", amount: 1256, imagePath: '/donateForIMGs/kartik-purnima-annadanam-seva.jpeg' },
+                { title: "Annadanam Seva (100 Devotees)", amount: 2516, imagePath: '/donateForIMGs/kartik-purnima-annadanam-seva.jpeg' },
+                { title: "Annadanam Seva (150 Devotees)", amount: 3756, imagePath: '/donateForIMGs/kartik-purnima-annadanam-seva.jpeg' },
 
             ]
         }

@@ -4,22 +4,24 @@ import Checkout from '@/Helpers/Checkout'
 import axios from 'axios'
 import { useRouter } from "next/navigation"
 import HandlePayment from "@/Helpers/HandlePayment"
+import { useDonate } from "@/Helpers/PaymentPageHandler";
 
 export default function Page({ }) {
+    const { handleDonateClick } = useDonate();
 
     const router = useRouter()
 
     const [data, setData] = useState()
 
     const payForData = [
-        { title: "250 People", amount: 250 },
+        { title: "300 People", amount: 300 },
         { title: "200 People", amount: 200 },
         { title: "100 People", amount: 100 },
         { title: "60 People", amount: 60 },    
         { title: "Custom" },
     ]
 
-    const [amount, setAmount] = useState(payForData[0]?.amount * 30)
+    const [amount, setAmount] = useState(payForData[0]?.amount * 25 + 16)
     const [donateFor, setDonateFor] = useState()
 
     const [status, setStatus] = useState({})
@@ -27,7 +29,7 @@ export default function Page({ }) {
 
     useEffect(() => {
         if (donateFor) {
-            setAmount(JSON.parse(donateFor)?.amount * 30 || 0)
+            setAmount(JSON.parse(donateFor)?.amount * 25+16 || 0)
         }
     }, [donateFor])
 
@@ -107,7 +109,16 @@ export default function Page({ }) {
                     </div>
                 </div>
                 <div className="form-wrap my-5 fw-form">
-                    <form id="donateForm" onSubmit={(e) => handleSubmit(e)}>
+                    <form id="donateForm" onSubmit={(e) => {
+                            e.preventDefault();
+                            // Parse the JSON string from the select value safely
+                            const selectedOption = e.target.donationType.value 
+                                ? JSON.parse(e.target.donationType.value) 
+                                : {};
+
+                            const title = selectedOption?.title || "Custom";
+                            handleDonateClick(e.target.amount.value, "Birthday Annadaan-"+title, "Birthday Annadaan");
+                        }}>
                         <div className="row align-items-start">
                             <div className="col-lg-4 pe-xl-4">
                                 <div className="donate-img">
@@ -140,54 +151,6 @@ export default function Page({ }) {
                                         <div className="form-part"><label for="">Amount*</label><input type="text"
                                             name="amount" onChange={(e) => setAmount(e.target.value)} value={amount} defaultValue={amount} placeholder="Enter Amount" /></div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="form-part"><label for="">Mobile Number*</label><input type="tel"
-                                            placeholder="Phone Number" maxlength="10" name="phone" /></div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-part"><label for="">Email*</label><input type="text"
-                                            name="email" placeholder="Email" /></div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-part"><label for="">Name*</label><input maxlength="50"
-                                            type="text" name="name" placeholder="Name" /></div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-part"><label for="">DOB*</label><input
-                                            type="date" name="dob" /></div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-part"><label for="">PIN Code*</label><input
-                                            type="text" minlength="6" maxlength="6" name="pin"
-                                            placeholder="PIN Code" /></div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-part"><label for="">PAN (Optional)</label><input type="text"
-                                            name="pan" id="" maxlength="10" placeholder="PAN"
-                                            aria-label="For 80G reciept" className=""
-                                            style={{ textTransform: "uppercase" }} /></div>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <div className="form-part"><label for="">Address*</label><textarea
-                                            type="text" name="address" placeholder="Address"
-                                            aria-label="For Prasadam please provide this" className=""></textarea></div>
-                                    </div>
-                                    {/* <div className="col-12">
-                                        <div className="type_checkbox mt-3">
-                                            <input type="checkbox" onChange={() => setMemoryStatus(old => !old ? true : false)} id="memoryOfSomeone" />
-                                            <label for="memoryOfSomeone">Wanna make someone's birthday brighter by donating on their behalf!</label>
-                                        </div>
-
-                                        {
-                                            memoryStatus
-                                                ?
-                                                <div className="col-md-6 mt-2">
-                                                    <div className="form-part"><label for="">Name of the Special Person*</label><input maxlength="50"
-                                                        type="text" name="memoryOfSomeoneName" placeholder="Name" /></div>
-                                                </div>
-                                                : ""
-                                        }
-                                    </div> */}
                                     {
                                         status?.message ?
                                             <span className="mt-2" style={{ color: 'red' }}>
