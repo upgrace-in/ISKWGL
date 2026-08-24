@@ -34,9 +34,9 @@ export default function DonateCategories() {
                                     <div className="first">
                                         <h4>AnnaDaan for 100 people</h4>
                                     </div>
-                                    <div className="mid"><span>₹3,000</span></div>
+                                    <div className="mid"><span>₹2,516</span></div>
                                     <div className="last">
-                                        <a onClick={() =>handleDonateClick(3000, "AnnaDaan for 100 People", "AnnaDaan")} className="custom-btn-cls box-hover w-100 h-100"><svg className="me-2" width="24"
+                                        <a onClick={() =>handleDonateClick(2516, "AnnaDaan for 100 People", "AnnaDaan")} className="custom-btn-cls box-hover w-100 h-100"><svg className="me-2" width="24"
                                             height="24" viewBox="0 0 512 512"></svg>Donate</a>
                                     </div>
                                 </div>
@@ -44,9 +44,9 @@ export default function DonateCategories() {
                                     <div className="first">
                                         <h4>AnnaDaan for 200 people</h4>
                                     </div>
-                                    <div className="mid"><span>₹6,000</span></div>
+                                    <div className="mid"><span>₹5,016</span></div>
                                     <div className="last">
-                                        <a onClick={() =>handleDonateClick(6000, "AnnaDaan for 200 People", "AnnaDaan")} className="custom-btn-cls box-hover w-100 h-100"><svg className="me-2" width="24"
+                                        <a onClick={() =>handleDonateClick(5016, "AnnaDaan for 200 People", "AnnaDaan")} className="custom-btn-cls box-hover w-100 h-100"><svg className="me-2" width="24"
                                             height="24" viewBox="0 0 512 512"></svg>Donate</a>
                                     </div>
                                 </div>
@@ -54,9 +54,9 @@ export default function DonateCategories() {
                                     <div className="first">
                                         <h4>AnnaDaan for 500 people</h4>
                                     </div>
-                                    <div className="mid"><span>₹15,000</span></div>
+                                    <div className="mid"><span>₹12,516</span></div>
                                     <div className="last">
-                                        <a onClick={() =>handleDonateClick(15000, "AnnaDaan for 500 People", "AnnaDaan")} className="custom-btn-cls box-hover w-100 h-100"><svg
+                                        <a onClick={() =>handleDonateClick(12516, "AnnaDaan for 500 People", "AnnaDaan")} className="custom-btn-cls box-hover w-100 h-100"><svg
                                             className="me-2" width="24" height="24" viewBox="0 0 512 512"></svg>Donate</a>
                                     </div>
                                 </div>
@@ -64,9 +64,9 @@ export default function DonateCategories() {
                                     <div className="first">
                                         <h4>AnnaDaan for 1000 people</h4>
                                     </div>
-                                    <div className="mid"><span>₹30,000</span></div>
+                                    <div className="mid"><span>₹25,016</span></div>
                                     <div className="last">
-                                        <a onClick={() =>handleDonateClick(30000, "AnnaDaan for 1000 People", "AnnaDaan")} className="custom-btn-cls box-hover w-100 h-100"><svg
+                                        <a onClick={() =>handleDonateClick(25016, "AnnaDaan for 1000 People", "AnnaDaan")} className="custom-btn-cls box-hover w-100 h-100"><svg
                                             className="me-2" width="24" height="24" viewBox="0 0 512 512"></svg>Donate</a>
                                     </div>
                                 </div>
@@ -166,9 +166,9 @@ export default function DonateCategories() {
                                 data={
                                     [
                                         { title: "Special Occasion" },
-                                        { title: "Feed 100 People", src: `/donate/Feed 100 People/3000` },
-                                        { title: "Feed 200 People", src: `/donate/Feed 200 People/6000` },
-                                        { title: "Feed 500 People", src: `/donate/Feed 500 People/15000` },
+                                        { title: "Feed 100 People", src: `/donate/Feed 100 People/2516` },
+                                        { title: "Feed 200 People", src: `/donate/Feed 200 People/5016` },
+                                        { title: "Feed 500 People", src: `/donate/Feed 500 People/12516` },
                                         { title: "General Donation Amount of your Choice" },
                                         { title: "Fund-raising for Community Kitchen" }
                                     ]

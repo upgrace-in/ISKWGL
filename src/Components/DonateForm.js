@@ -21,7 +21,11 @@ export default function DonateForm(props) {
         if (donateFor.includes('Feed')) {
             let d = donateFor.split(' ')[1]
             if (d)
-                setAmount(parseInt(d) * 30)
+                setAmount(parseInt(d) * 25 + 16)
+        } else if (donateFor.includes('Life Membership')) {
+            let d = donateFor.split(' ')[1]
+            if (d)
+                setAmount(55555)
         } else {
             setAmount(0)
         }

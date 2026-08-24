@@ -33,7 +33,6 @@ export default function Page({ params }) {
         { title: "Snana Yatra" },
         { title: "Ratha Yatra" },
         { title: "ISKCON Warangal's Anniversary" },
-        { title: "Food For Life" },
         { title: "FLOWER SEVA" },
         { title: "DEITY DRESS SEVA" },
         { title: "DEITY WORSHIP SEVA" },
