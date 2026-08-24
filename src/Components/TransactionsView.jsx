@@ -94,9 +94,9 @@ export default function TransactionsView({ session }) {
 
     // Add this function inside your component, before the return statement
     const downloadCSV = () => {
-        const headers = ["Order ID", "Name", "Phone", "Amount", "Seva Name", "Source", "Status", "Message Sent", "Date"];
+        const headers = ["Order ID", "Name", "Phone", "Amount", "Seva Name", "Source", "Address", "Message Sent", "Date"];
         const rows = data.map(row => 
-            `"${row.orderId}","${row.name}","${row.phone}","${row.amount}","${row.seva || ""}","${row.source || 'N/A'}","${row.status}","${row.messageSent ? 'Yes' : 'No'}","${new Date(row.donationDate).toLocaleDateString()}"`
+            `"${row.orderId}","${row.name}","${row.phone}","${row.amount}","${row.seva || ""}","${row.source || 'N/A'}","${row.address.addressLine1+ ", "+row.address.addressLine2+ ", "+row.address.city+ ", "+row.address.district+ ", "+row.address.state+ " ("+row.address.pinCode + ")" || 'N/A'}","${row.messageSent ? 'Yes' : 'No'}","${new Date(row.donationDate).toLocaleDateString()}"`
         );
         const csvContent = [headers.join(","), ...rows].join("\n");
         
@@ -110,13 +110,13 @@ export default function TransactionsView({ session }) {
     const handleSendMessage = async (orderId) => {
         try {
             // Replace with your actual backend endpoint when ready
-            const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/processSuccess`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/sendwhatsappmessagefromdashboard`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 // Sending the order_id in the body exactly as requested
-                body: JSON.stringify({ orderId: orderId, formentry: true }), 
+                body: JSON.stringify({ orderId: orderId}), 
             });
 
             const result = await response.json();
