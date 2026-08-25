@@ -176,18 +176,18 @@ export default function Header() {
 
                 {/* Action Buttons */}
                 <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flex: '2', justifyContent: 'flex-end' }}>
-                    {/* <Link 
+                    <Link 
                         href="/janmashtami" 
                         className={"nav-rath-yatra-highlight"}
                     >
                         Krishna Janmashtami
-                    </Link> */}
-                    <Link 
+                    </Link>
+                    {/* <Link 
                         href="/Ekadasi" 
                         className={"nav-rath-yatra-highlight"}
                     >
                         Pavitropana Ekadasi (24 Aug)
-                    </Link>
+                    </Link> */}
 
                     {/* <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
                         <FaHeart /> Donate Now
@@ -212,18 +212,18 @@ export default function Header() {
                 {/* 2. CENTER: Rath Yatra Button */}
                 {/* flex: none ensures it stays perfectly centered without being stretched */}
                 <div style={{ flex: 'none', display: 'flex', justifyContent: 'center' , marginLeft: '10px'}}>
-                    {/* <Link 
+                    <Link 
                         href="/janmashtami"
                         className={"nav-rath-yatra-highlight mobile-rath-btn"}
                     >
                         Krishna Janmashtami
-                    </Link> */}
-                    <Link 
+                    </Link>
+                    {/* <Link 
                         href="/Ekadasi"
                         className={"nav-rath-yatra-highlight mobile-rath-btn"}
                     >
                         Pavitropana Ekadasi (24 Aug)
-                    </Link>
+                    </Link> */}
                 </div>
 
                 {/* 3. RIGHT: 3 Dots / Hamburger */}
