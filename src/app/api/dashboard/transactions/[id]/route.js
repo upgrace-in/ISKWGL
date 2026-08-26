@@ -24,3 +24,35 @@ export async function DELETE(request, { params }) {
         return NextResponse.json({ success: false, message: 'Server error while deleting transaction.' }, { status: 500 });
     }
 }
+export async function PUT(request, { params }) {
+    try {
+        await dbConnect();
+        const { id } = params;
+        const body = await request.json();
+        const { name, orderId, donationDate, seva, amount, source } = body;
+
+        const updatedDonation = await TotalDonations.findByIdAndUpdate(
+            id,
+            {
+                $set: {
+                    name,
+                    orderId,
+                    donationDate: donationDate ? new Date(donationDate) : undefined,
+                    seva,
+                    amount: Number(amount),
+                    source
+                }
+            },
+            { new: true }
+        );
+
+        if (!updatedDonation) {
+            return NextResponse.json({ success: false, message: "Transaction not found" }, { status: 404 });
+        }
+
+        return NextResponse.json({ success: true, donation: updatedDonation });
+    } catch (error) {
+        console.error("Transaction Update Error:", error);
+        return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    }
+}
