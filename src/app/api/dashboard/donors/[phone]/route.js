@@ -31,3 +31,46 @@ export async function GET(req, { params }) {
         return NextResponse.json({ success: false, message: "Server error" }, { status: 500 });
     }
 }
+
+// 2. PUT: Update DOB and Address across ALL entries for this phone number
+export async function PUT(request, { params }) {
+    try {
+        await dbConnect();
+        const { phone } = params;
+        const body = await request.json();
+        const { email, pan, dob, address } = body;
+
+        // updateMany updates EVERY donation document with this phone number
+        const result = await TotalDonations.updateMany(
+            { phone: phone },
+            { 
+                $set: { 
+                    email: email,
+                    pan: pan ? pan.toUpperCase() : "",
+                    dob: dob ? new Date(dob) : null,
+                    // If your schema stores address as an object:
+                    address: address
+                    
+                    // Note: If your schema stores address fields as flat properties, 
+                    // un-comment the lines below instead:
+                    /*
+                    "addressLine1": address.addressLine1,
+                    "addressLine2": address.addressLine2,
+                    "city": address.city,
+                    "district": address.district,
+                    "state": address.state,
+                    "pinCode": address.pinCode
+                    */
+                } 
+            }
+        );
+
+        return NextResponse.json({ 
+            success: true, 
+            message: `Updated ${result.modifiedCount} records successfully.` 
+        });
+    } catch (error) {
+        console.error("PUT Error:", error);
+        return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    }
+}

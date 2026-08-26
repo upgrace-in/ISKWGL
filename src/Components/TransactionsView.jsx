@@ -486,7 +486,7 @@ export default function TransactionsView({ session }) {
                                     Are you sure you want to permanently delete this transaction? This action cannot be undone.
                                 </p>
                                 <div className="mt-4 bg-red-50 p-3 rounded-md border border-red-200 space-y-1 text-sm text-gray-700">
-                                    <p><strong>Order ID:</strong> {recordToDelete.orderId?.substring(0, 12)}...</p>
+                                    <p><strong>Order ID:</strong> {recordToDelete.orderId?.substring(0, 12)}</p>
                                     <p><strong>Name:</strong> {recordToDelete.name}</p>
                                     <p><strong>Phone:</strong> {recordToDelete.phone}</p>
                                     <p><strong>Amount:</strong> ₹{recordToDelete.amount.toLocaleString('en-IN')}</p>
@@ -863,7 +863,7 @@ export default function TransactionsView({ session }) {
                         ) : (
                             data.map((record) => (
                                 <tr key={record._id} className="hover:bg-gray-50 border-b border-gray-100">
-                                    <td className="p-4 text-gray-500 font-mono text-xs">{record.orderId?.substring(0, 8)}...</td>
+                                    <td className="p-4 text-gray-500 font-mono text-xs">{record.orderId?.substring(0, 12)}</td>
                                     <td className="p-4 font-medium text-gray-900">
                                         <Link href={`/dashboard/donors/${record.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
                                             {record.name}

@@ -339,19 +339,19 @@ export default function DonationEntryForm() {
                 <h2 className="text-xl font-bold text-gray-900">New Contribution Entry</h2>
                 
                 {/* --- NEW: LOAD EXCEL BUTTON --- */}
-                <button 
+                {/* <button 
                     onClick={fetchExcelData}
                     disabled={currentExcelIndex >= 0}
                     className="px-4 py-2 bg-emerald-600 text-white rounded-md text-sm font-medium hover:bg-emerald-700 disabled:opacity-50"
                 >
                     Load from Excel
-                </button>
+                </button> */}
             </div>
 
             {/* <h2 className="text-xl font-bold text-gray-900 mb-6">New Contribution Entry</h2> */}
 
             {/* --- NEW: QUEUE PROGRESS BANNER --- */}
-            {excelQueue.length > 0 && currentExcelIndex >= 0 && (
+            {/* {excelQueue.length > 0 && currentExcelIndex >= 0 && (
                 <div className="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg mb-5 flex justify-between items-center">
                     <span>Processing Excel Data: Record <strong>{currentExcelIndex + 1}</strong> of <strong>{excelQueue.length}</strong></span>
                     <button 
@@ -362,16 +362,16 @@ export default function DonationEntryForm() {
                         Cancel Bulk Mode
                     </button>
                 </div>
-            )}
+            )} */}
             
-            {message.text && (
+            {/* {message.text && (
                 <div className={`p-4 mb-5 rounded-md text-sm font-medium border ${
                     message.type === 'success' ? 'bg-green-50 text-green-800 border-green-200' : 
                     message.type === 'warning' ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-red-50 text-red-800 border-red-200'
                 }`}>
                     {message.text}
                 </div>
-            )}
+            )} */}
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -439,8 +439,8 @@ export default function DonationEntryForm() {
                     </div>
 
                     <div>
-                        <label className="block text-xs font-semibold text-gray-600 mb-1">Receipt No</label>
-                        <input type="text" name="receiptNo" value={formData.receiptNo} onChange={handleChange} placeholder="Receipt number" className="border border-gray-300 p-2.5 rounded-lg w-full bg-gray-50 focus:bg-white text-sm outline-none focus:ring-2 focus:ring-blue-500" />
+                        <label className="block text-xs font-semibold text-gray-600 mb-1">Receipt No *</label>
+                        <input type="text" name="receiptNo" value={formData.receiptNo} onChange={handleChange} required placeholder="Receipt number" className="border border-gray-300 p-2.5 rounded-lg w-full bg-gray-50 focus:bg-white text-sm outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
                 </div>
 

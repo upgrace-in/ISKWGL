@@ -29,7 +29,6 @@ export default function Page({ params }) {
         { title: "Narsimha Chaturdasi" },
         { title: "Sri Ram Navami" },
         { title: "Akshay Tritiya" },
-        { title: "Balarama Jayanti" },
         { title: "Snana Yatra" },
         { title: "Ratha Yatra" },
         { title: "ISKCON Warangal's Anniversary" },
