@@ -28,6 +28,7 @@ export async function POST(req) {
                 pan: totalDonations.pan,
                 dob: totalDonations.dob,
                 createdAt: totalDonations.donationDate,
+                signature: '-',
                 status: 'SUCCESS',
             });
             const dict = {}
