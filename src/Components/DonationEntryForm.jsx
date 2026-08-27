@@ -41,7 +41,7 @@ export default function DonationEntryForm() {
     // Initialize "Donation Date" to today's date on component mount
     useEffect(() => {
         const today = new Date().toISOString().split('T')[0];
-        setFormData(prev => ({ ...prev, donationDate: today }));
+        setFormData(prev => ({ ...prev, donationDate: '' }));
     }, []);
 
     // Watch state to populate districts
@@ -149,7 +149,7 @@ export default function DonationEntryForm() {
     const resetFormDefaults = () => {
         const today = new Date().toISOString().split('T')[0];
         setFormData({ 
-            donationDate: today, phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash', email: '', receiptNo: '', 
+            donationDate: '', phone: '', name: '', dob: '', amount: '', seva: '', pan: '', source: 'Cash', email: '', receiptNo: '', 
             addressLine1: '', addressLine2: '', city: '', district: '', state: '', pinCode: '', country: 'India' 
         });
         setPostalAreas([]);
