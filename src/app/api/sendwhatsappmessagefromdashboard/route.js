@@ -2,6 +2,14 @@ import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation'; 
 import TotalDonations from '@/models/TotalDonations'; 
 
+function cleanDateString(dateObj) {
+    return dateObj.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
+}
+
 export async function POST(req) {
     try {
         const { orderId } = await req.json();
@@ -37,7 +45,7 @@ export async function POST(req) {
             dict.txStatus = 'SUCCESS';
             dict.paymentMode = totalDonations.source;
             dict.referenceId = '-';
-            dict.formattedDate = totalDonations.donationDate;
+            dict.formattedDate = cleanDateString(totalDonations.donationDate);
             // dict.formattedDate = parseCompactTimestamp(totalDonations.donationDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
             new_donation.webhookData = dict;
             new_donation.needsProcessing = true;
