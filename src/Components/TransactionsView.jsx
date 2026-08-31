@@ -886,21 +886,21 @@ export default function TransactionsView({ session }) {
                                         <td className="p-4 text-gray-600">{record.source || "N/A"}</td>
                                         {isAdmin && (
                                             <td className="p-4">
-                                                {isSent ? (
-                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                                        ✓ Sent
-                                                    </span>
+                                                {record.messageSent ? (
+                                                    <span className="text-green-600 font-bold">✓</span>
                                                 ) : (
                                                     <button 
                                                         onClick={() => handleSendMessage(record.orderId)}
-                                                        disabled={isSending}
+                                                        disabled={isSending || isSent}
                                                         className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all shadow-sm ${
-                                                            isSending
+                                                            isSent
+                                                                ? "bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default"
+                                                                : isSending
                                                                 ? "bg-indigo-50/50 text-indigo-400 border border-indigo-100 cursor-not-allowed opacity-60"
                                                                 : "bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100"
                                                         }`}
                                                     >
-                                                        {isSending ? "Sending ..." : "Send Message"}
+                                                        {isSent ? "✓" : isSending ? "Sending ..." : "Send Message"}
                                                     </button>
                                                 )}
                                             </td>
