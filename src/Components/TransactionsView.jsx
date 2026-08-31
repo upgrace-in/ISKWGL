@@ -107,7 +107,12 @@ export default function TransactionsView({ session }) {
         link.click();
     };
 
+    // Add state at the top of your component
+    const [sendingId, setSendingId] = useState(null);
+    const [sentOrderIds, setSentOrderIds] = useState([]);
+
     const handleSendMessage = async (orderId) => {
+        setSendingId(orderId);
         try {
             // Replace with your actual backend endpoint when ready
             const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/sendwhatsappmessagefromdashboard`, {
@@ -125,6 +130,7 @@ export default function TransactionsView({ session }) {
                 console.log("Message triggered successfully for Order:", orderId);
                 // You can replace this alert with a nicer toast notification later
                 alert("Message sent successfully!"); 
+                setSentOrderIds((prev) => [...prev, orderId]);
             } else {
                 console.error("API Error:", result);
                 alert("Failed to send message.");
@@ -132,6 +138,8 @@ export default function TransactionsView({ session }) {
         } catch (error) {
             console.error("Network or server error:", error);
             alert("An error occurred while trying to send the message.");
+        } finally {
+            setSendingId(null); // Reset loading state regardless of success or error
         }
     };
 
@@ -861,57 +869,68 @@ export default function TransactionsView({ session }) {
                         ) : data.length === 0 ? (
                             <tr><td colSpan={isAdmin ? 9 : 7} className="p-8 text-center text-gray-500">No records match your filters.</td></tr>
                         ) : (
-                            data.map((record) => (
-                                <tr key={record._id} className="hover:bg-gray-50 border-b border-gray-100">
-                                    <td className="p-4 text-gray-500 font-mono text-xs">{record.orderId?.substring(0, 12)}</td>
-                                    <td className="p-4 font-medium text-gray-900">
-                                        <Link href={`/dashboard/donors/${record.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
-                                            {record.name}
-                                        </Link>
-                                    </td>
-                                    <td className="p-4 text-gray-600">{record.phone}</td>
-                                    <td className="p-4 font-semibold text-emerald-600">₹{record.amount}</td>
-                                    <td className="p-4 text-gray-600">{record.seva || "-"}</td>
-                                    <td className="p-4 text-gray-600">{record.source || "N/A"}</td>
-                                    {isAdmin && (
-                                        <td className="p-4">
-                                            {record.messageSent ? (
-                                                <span className="text-green-600 font-bold">✓</span>
-                                            ) : (
-                                                <button 
-                                                    onClick={() => handleSendMessage(record.orderId)}
-                                                    className="bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors shadow-sm"
-                                                >
-                                                    Send Message
-                                                </button>
-                                            )}
+                            data.map((record) => {
+                                const isSending = sendingId === record.orderId;
+                                const isSent = record.messageSent || sentOrderIds.includes(record.orderId);
+                                return (
+                                    <tr key={record._id} className="hover:bg-gray-50 border-b border-gray-100">
+                                        <td className="p-4 text-gray-500 font-mono text-xs">{record.orderId?.substring(0, 12)}</td>
+                                        <td className="p-4 font-medium text-gray-900">
+                                            <Link href={`/dashboard/donors/${record.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
+                                                {record.name}
+                                            </Link>
                                         </td>
-                                    )}
-                                    <td className="p-4 text-gray-500">{new Date(record.donationDate).toLocaleDateString()}</td>
-                                    {isAdmin && (
-                                        <td className="p-4 text-center">
-                                            <div className="relative inline-block">
-                                                <button 
-                                                    data-menu-button 
-                                                    onClick={() => setIsMenuOpen(isMenuOpen === record._id ? null : record._id)} 
-                                                    className="p-1.5 rounded-full text-gray-500 hover:bg-gray-200 hover:text-gray-800 transition-colors"
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                                                    </svg>
-                                                </button>
-                                                {isMenuOpen === record._id && (
-                                                    <div ref={menuRef} className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-20 border border-gray-200 py-1">
-                                                        <button onClick={() => handleOpenDeleteModal(record)} className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors">
-                                                            Delete
-                                                        </button>
-                                                    </div>
+                                        <td className="p-4 text-gray-600">{record.phone}</td>
+                                        <td className="p-4 font-semibold text-emerald-600">₹{record.amount}</td>
+                                        <td className="p-4 text-gray-600">{record.seva || "-"}</td>
+                                        <td className="p-4 text-gray-600">{record.source || "N/A"}</td>
+                                        {isAdmin && (
+                                            <td className="p-4">
+                                                {isSent ? (
+                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                        ✓ Sent
+                                                    </span>
+                                                ) : (
+                                                    <button 
+                                                        onClick={() => handleSendMessage(record.orderId)}
+                                                        disabled={isSending}
+                                                        className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all shadow-sm ${
+                                                            isSending
+                                                                ? "bg-indigo-50/50 text-indigo-400 border border-indigo-100 cursor-not-allowed opacity-60"
+                                                                : "bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100"
+                                                        }`}
+                                                    >
+                                                        {isSending ? "Sending ..." : "Send Message"}
+                                                    </button>
                                                 )}
-                                            </div>
-                                        </td>
-                                    )}
-                                </tr>
-                            ))
+                                            </td>
+                                        )}
+                                        <td className="p-4 text-gray-500">{new Date(record.donationDate).toLocaleDateString()}</td>
+                                        {isAdmin && (
+                                            <td className="p-4 text-center">
+                                                <div className="relative inline-block">
+                                                    <button 
+                                                        data-menu-button 
+                                                        onClick={() => setIsMenuOpen(isMenuOpen === record._id ? null : record._id)} 
+                                                        className="p-1.5 rounded-full text-gray-500 hover:bg-gray-200 hover:text-gray-800 transition-colors"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                                        </svg>
+                                                    </button>
+                                                    {isMenuOpen === record._id && (
+                                                        <div ref={menuRef} className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-20 border border-gray-200 py-1">
+                                                            <button onClick={() => handleOpenDeleteModal(record)} className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors">
+                                                                Delete
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </td>
+                                        )}
+                                    </tr>
+                                );
+                            })
                         )}
                     </tbody>
                 </table>
