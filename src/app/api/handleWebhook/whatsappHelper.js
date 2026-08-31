@@ -179,7 +179,7 @@ export const sendWhatsAppMessageforBirthdayInfotoTemple = async (birthdayList) =
 
         const whatsappResponse2 = await axios.post('https://api.dovesoft.io/REST/directApi/message', {
             messaging_product:"whatsapp",
-            to: '919121630614',
+            to: '918096166177',
             type: 'template',
             template: {
                 language: {
