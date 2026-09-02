@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 import webpack from "webpack"
 const nextConfig = {
+    outputFileTracingIncludes: {
+        '/api/dashboard/**/*': [
+            './src/app/api/dashboard/data_entry/**/*.xlsx',
+        ],
+    },
     reactStrictMode: false,
     webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
         config.plugins.push(
