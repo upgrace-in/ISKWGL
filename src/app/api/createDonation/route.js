@@ -18,7 +18,14 @@ export async function POST(request) {
 
     try {
 
-        await dbConnect()
+        console.log("MONGODB_URI exists:", !!process.env.MONGODB_URI);
+
+        await dbConnect();
+
+        console.log(
+            "MongoDB readyState:",
+            mongoose.connection.readyState
+        );
 
         let { name, email, donationType,seva, phone, address,fulladdress, pin, amount, pan, memoryOfSomeoneName, abhishekamTimeSlot, dob, redirectedFrom } = await request.json()
 
@@ -26,7 +33,7 @@ export async function POST(request) {
             dob = Number(new Date(dob))
         }
 
-        console.log("Abhishekam Timeslot: ", abhishekamTimeSlot);
+        // console.log("Abhishekam Timeslot: ", abhishekamTimeSlot);
         let orderId = `order_${Math.floor(Math.random() * 1000000)}`
 
         let formData = {
