@@ -13,8 +13,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import './JanmashtamiPage.css';
 import pastimeImages from "../pastimesImages.json";
-// import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
-import { useDonate } from "@/Helpers/PaymentPageHandler";
+import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 
 const competitions = [
   {
@@ -66,7 +65,7 @@ const competitions = [
 
 export default function FoodForLife({ }) {
     const router = useRouter()
-    const { handleDonateClick } = useDonate();
+    const { handleDonateClick } = useDonateTest();
     const [navOpen, setNavOpen] = useState(false)
 
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -301,51 +300,41 @@ export default function FoodForLife({ }) {
             <div className="page-container">
               {/* HERO SECTION */}
               <header className="hero-section">
+                
+
                 {/* Subtle gradient overlay to keep white text readable on bright images */}
                 <div className="hero-overlay" />
 
-                {/* Main Container Grid */}
-                <div className="hero-layout-grid">
-                  {/* Left Side: Deity / Featured Image */}
-                  <div className="hero-left-image">
-                    <img 
-                      src="/images/Janmastami/hero-image/rnm.jpeg"  /* Replace with your image path */
-                      alt="Shri Krishna" 
-                    />
+                <div className="hero-content">
+                  <h1 className="hero-title">Shri Krishna Janmashtami</h1>
+
+                  <div className="event-date-badge">
+                    📅 Friday, September 4, 2026
                   </div>
 
-                  {/* Right Side: Hero Text Content */}
-                  <div className="hero-content">
-                    <h1 className="hero-title">Shri Krishna Janmashtami</h1>
+                  {/* <div className="hero-tagline">
+                    <span className="sparkle-icon">✦</span> Join Us In The Divine Celebration <span className="sparkle-icon">✦</span>
+                  </div> */}
 
-                    <div className="event-date-badge">
-                      📅 Friday, September 4, 2026
+                  <div className="hero-buttons-container">
+                    {/* Main Primary Action */}
+                    <div className="hero-primary-actions">
+                      <a href="#donate" className="btn btn-seva">
+                        <span className="btn-icon">❤️</span> Offer Seva
+                      </a>
+                      <a href="#invite" className="btn btn-schedule">
+                        <span className="btn-icon">📅</span> Event Schedule
+                      </a>
                     </div>
 
-                    {/* <div className="hero-tagline">
-                      <span className="sparkle-icon">✦</span> Join Us In The Divine Celebration <span className="sparkle-icon">✦</span>
-                    </div> */}
-
-                    <div className="hero-buttons-container">
-                      {/* Main Primary Action */}
-                      <div className="hero-primary-actions">
-                        <a href="#donate" className="btn btn-seva">
-                          <span className="btn-icon">❤️</span> Offer Seva
-                        </a>
-                        <a href="#invite" className="btn btn-schedule">
-                          <span className="btn-icon">📅</span> Event Schedule
-                        </a>
-                      </div>
-
-                      {/* Quick Navigation Badges */}
-                      <div className="hero-secondary-actions">
-                        <a href="#highlights" className="btn btn-chip">
-                          <span className="btn-icon">✨</span> Festival Highlights
-                        </a>
-                        <a href="#competitions" className="btn btn-chip">
-                          <span className="btn-icon">🎨</span> {"Children's Competitions"}
-                        </a>
-                      </div>
+                    {/* Quick Navigation Badges */}
+                    <div className="hero-secondary-actions">
+                      <a href="#highlights" className="btn btn-chip">
+                        <span className="btn-icon">✨</span> Festival Highlights
+                      </a>
+                      <a href="#competitions" className="btn btn-chip">
+                        <span className="btn-icon">🎨</span> {"Children's Competitions"}
+                      </a>
                     </div>
                   </div>
                 </div>
