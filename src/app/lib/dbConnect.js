@@ -1,20 +1,46 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const connection = {};
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+    throw new Error("MONGODB_URI is not defined");
+}
+
+let cached = global.mongoose;
+
+if (!cached) {
+    cached = global.mongoose = {
+        conn: null,
+        promise: null,
+    };
+}
 
 async function dbConnect() {
-    if (connection.isConnected) {
-        return;
+    if (cached.conn) {
+        return cached.conn;
+    }
+
+    if (!cached.promise) {
+        cached.promise = mongoose.connect(MONGODB_URI, {
+            bufferCommands: false,
+        });
     }
 
     try {
-        const db = await mongoose.connect(process.env.MONGODB_URI);
+        cached.conn = await cached.promise;
 
-        connection.isConnected = db.connections[0].readyState;
-        console.log('Database connected:', connection.isConnected);
+        console.log(
+            "Database connected:",
+            cached.conn.connection.readyState
+        );
+
+        return cached.conn;
     } catch (error) {
-        console.error('Database connection error:', error);
-        throw new Error('Database connection failed');
+        cached.promise = null;
+
+        console.error("Database connection error:", error);
+
+        throw error;
     }
 }
 
