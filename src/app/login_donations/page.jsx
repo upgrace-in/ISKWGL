@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -13,17 +12,22 @@ export default function LoginPage() {
         e.preventDefault();
         setError("");
 
-        const result = await signIn("credentials", {
-            password,
-            redirect: false, 
+        const response = await fetch("/api/donations/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ password }),
         });
 
-        if (result?.error) {
+        const result = await response.json();
+
+        if (!response.ok) {
             setError("Invalid password. Please try again.");
-        } else {
-            router.push("/donations");
-            router.refresh(); 
+            return;
         }
+        router.push("/donations");
+        router.refresh();
     };
 
     return (
