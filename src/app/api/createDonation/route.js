@@ -22,11 +22,6 @@ export async function POST(request) {
 
         await dbConnect();
 
-        console.log(
-            "MongoDB readyState:",
-            mongoose.connection.readyState
-        );
-
         let { name, email, donationType,seva, phone, address,fulladdress, pin, amount, pan, memoryOfSomeoneName, abhishekamTimeSlot, dob, redirectedFrom } = await request.json()
 
         if(dob){
