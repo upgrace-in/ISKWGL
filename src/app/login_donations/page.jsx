@@ -12,7 +12,7 @@ export default function LoginPage() {
         e.preventDefault();
         setError("");
 
-        const response = await fetch("/api/dashboard/login", {
+        const response = await fetch("/api/donations/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -26,8 +26,7 @@ export default function LoginPage() {
             setError("Invalid password. Please try again.");
             return;
         }
-
-        router.push("/dashboard");
+        router.push("/donations");
         router.refresh();
     };
 
@@ -41,7 +40,7 @@ export default function LoginPage() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Dashboard Password
+                            Donations Page Password
                         </label>
                         <input
                             type="password"
