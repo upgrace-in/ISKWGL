@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-const dashboardviewerPassword = process.env.DASHBOARD_VIEWER_PASSWORD;
-const dashboardadminPassword = process.env.DASHBOARD_ADMIN_PASSWORD;
+const dashboardviewerPassword = process.env.Dashboard_VIEWER_PASSWORD;
+const dashboardadminPassword = process.env.Dashboard_ADMIN_PASSWORD;
 
 export async function POST(request) {
     try {

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-const donationsPassword = process.env.DASHBOARD_VIEWER_PASSWORD;
+const donationsPassword = process.env.Dashboard_VIEWER_PASSWORD;
 export async function POST(request) {
     try {
         const { password } = await request.json();
