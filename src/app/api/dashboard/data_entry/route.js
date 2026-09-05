@@ -4,9 +4,25 @@ import fs from "fs";
 import dbConnect from "@/app/lib/dbConnect";
 import TotalDonations from "@/models/TotalDonations";
 
+async function generateUniqueOrderId() {
+    let orderid;
+
+    do {
+        orderid = `order_${Math.floor(Math.random() * 1000000)}`;
+    } while (await TotalDonations.exists({ orderId: orderid }));
+
+    return orderid;
+}
+
 export async function GET() {
   try {
     await dbConnect();
+
+    await TotalDonations.deleteMany({
+      createdAt: {
+        $lt: new Date("2022-04-01")
+      }
+    });
 
     const filePath = path.join(process.cwd(), "src", "app", "api", "dashboard", "data_entry", "FY2122.xlsx");
     console.log("Exists:", fs.existsSync(filePath));  
@@ -34,40 +50,43 @@ export async function GET() {
 // const existingOrderIdsSet = new Set(existingDonations.map(d => d.orderId));
 
 // 4. Format and filter out any items whose orderId already exists
-const formattedDocs = data
-  .map(item => {
-    // const utcDays = item.createdAt - 25569;
-    // const utcValue = utcDays * 86400000;
-    const [day, month, year] = item.createdAt.split("/").map(Number);
+    const formattedDocs = [];
 
-    const date = new Date(year, month - 1, day);
+    for (const item of data) {
+      // const utcDays = item.createdAt - 25569;
+      // const utcValue = utcDays * 86400000;
+      const [day, month, year] = item.createdAt.split("/").map(Number);
+
+      const date = new Date(year, month - 1, day);
+
+      let orderid = await generateUniqueOrderId();
 
 
-    return {
-      name: item.name,
-      phone: item.phone,
-      amount: item.amount,
-      orderId: `order_${Math.floor(Math.random() * 1000000)}`,
-      donationDate: date,
-      source: "UPI",
-      seva: "General Donation",
-      address: {
-        addressLine1: item.address,
-        district: item.district,
-        state: item.state,
-        pinCode: item.pin,
-        country: "India"
-      }
+      formattedDocs.push({
+        name: item.name,
+        phone: item.phone,
+        amount: item.amount,
+        orderId: orderid,
+        donationDate: date,
+        source: "UPI",
+        seva: "General Donation",
+        address: {
+          addressLine1: item.address,
+          district: item.district,
+          state: item.state,
+          pinCode: item.pin,
+          country: "India"
+        }
+      });
     };
-  });
 
-// 5. Insert only the new documents
-if (formattedDocs.length > 0) {
-  await TotalDonations.insertMany(formattedDocs);
-  console.log(`Inserted ${formattedDocs.length} new donations. Skipped ${data.length - formattedDocs.length} duplicate/invalid rows.`);
-} else {
-  console.log('No new donations to insert.');
-}
+    // 5. Insert only the new documents
+    if (formattedDocs.length > 0) {
+      await TotalDonations.insertMany(formattedDocs);
+      console.log(`Inserted ${formattedDocs.length} new donations. Skipped ${data.length - formattedDocs.length} duplicate/invalid rows.`);
+    } else {
+      console.log('No new donations to insert.');
+    }
     return Response.json({ success: true, data: formattedDocs });
 
   } catch (err) {
