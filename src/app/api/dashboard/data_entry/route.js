@@ -1,73 +1,65 @@
 import * as xlsx from "xlsx";
 import path from "path";
 import fs from "fs";
+import crypto from "crypto"; // Native Node.js module for collision-free IDs
 import dbConnect from "@/app/lib/dbConnect";
 import TotalDonations from "@/models/TotalDonations";
 
-async function generateUniqueOrderId() {
-    let orderid;
+// Force Next.js to skip static evaluation during build time
+export const dynamic = "force-dynamic";
 
-    do {
-        orderid = `order_${Math.floor(Math.random() * 1000000)}`;
-    } while (await TotalDonations.exists({ orderId: orderid }));
-
-    return orderid;
-}
-
-export async function GET() {
+export async function POST() {
   try {
     await dbConnect();
 
     await TotalDonations.deleteMany({
-      createdAt: {
-        $lt: new Date("2022-04-02")
-      }
+      createdAt: { $lt: new Date("2022-04-02") }
     });
 
     const filePath = path.join(process.cwd(), "src", "app", "api", "dashboard", "data_entry", "FY2122.xlsx");
-    console.log("Exists:", fs.existsSync(filePath));  
+    if (!fs.existsSync(filePath)) {
+      return Response.json({ error: "File not found" }, { status: 404 });
+    }
 
-     // 🔥 KEY CHANGE: read as buffer
     const fileBuffer = fs.readFileSync(filePath);
-
-    const workbook = xlsx.read(fileBuffer, { type: "buffer"});
-
+    const workbook = xlsx.read(fileBuffer, { type: "buffer" });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     const data = xlsx.utils.sheet_to_json(sheet, { raw: false });
 
-    // 1. Extract all orderIds from the Excel sheet into an array (converting to Strings)
-// const excelOrderIds = data
-//   .map(item => item.orderId ? String(item.orderId) : null)
-//   .filter(Boolean); // Remove empty/null values
+    const itemsWithTempIds = data.map((item) => ({
+      ...item,
+      tempOrderId: `order_${crypto.randomBytes(6).toString("hex")}`,
+    }));
 
-// // 2. Query MongoDB for existing orderIds in a single call
-// const existingDonations = await TotalDonations.find(
-//   { orderId: { $in: excelOrderIds } },
-//   { orderId: 1 } // Only retrieve the orderId field for performance
-// ).lean();
+    // 2. Extract generated IDs
+    const generatedIds = itemsWithTempIds.map((item) => item.tempOrderId);
 
-// // 3. Create a Set of existing orderIds for fast O(1) lookups
-// const existingOrderIdsSet = new Set(existingDonations.map(d => d.orderId));
+    // 3. Query MongoDB ONCE to find any existing collisions
+    const existingDocs = await TotalDonations.find(
+      { orderId: { $in: generatedIds } },
+      { orderId: 1 }
+    ).lean();
 
-// 4. Format and filter out any items whose orderId already exists
-    const formattedDocs = [];
+    const existingIdsSet = new Set(existingDocs.map((doc) => doc.orderId));
 
-    for (const item of data) {
-      // const utcDays = item.createdAt - 25569;
-      // const utcValue = utcDays * 86400000;
+    // FAST: Generate collision-free unique IDs instantly without DB round-trips
+    // 4. Map documents, regenerating any ID that collided (extremely rare)
+    const formattedDocs = itemsWithTempIds.map((item) => {
+      let finalOrderId = item.tempOrderId;
+
+      // If a collision occurred, generate a new one
+      while (existingIdsSet.has(finalOrderId)) {
+        finalOrderId = `order_${crypto.randomBytes(6).toString("hex")}`;
+      }
+
       const [day, month, year] = item.createdAt.split("/").map(Number);
 
-      const date = new Date(year, month - 1, day);
-
-      let orderid = await generateUniqueOrderId();
-
-
-      formattedDocs.push({
+      return {
         name: item.name,
         phone: item.phone,
         amount: item.amount,
-        orderId: orderid,
-        donationDate: date,
+        orderId: finalOrderId,
+        donationDate: new Date(year, month - 1, day),
         source: "UPI",
         seva: "General Donation",
         address: {
@@ -75,21 +67,18 @@ export async function GET() {
           district: item.district,
           state: item.state,
           pinCode: item.pin,
-          country: "India"
-        }
-      });
-    };
+          country: "India",
+        },
+      };
+    });
 
-    // 5. Insert only the new documents
     if (formattedDocs.length > 0) {
       await TotalDonations.insertMany(formattedDocs);
-      console.log(`Inserted ${formattedDocs.length} new donations. Skipped ${data.length - formattedDocs.length} duplicate/invalid rows.`);
-    } else {
-      console.log('No new donations to insert.');
+      console.log(`Inserted ${formattedDocs.length} new donations.`);
     }
-    return Response.json({ success: true, data: formattedDocs });
 
+    return Response.json({ success: true, count: formattedDocs.length });
   } catch (err) {
-    return Response.json({ error: err.message });
+    return Response.json({ error: err.message }, { status: 500 });
   }
 }
