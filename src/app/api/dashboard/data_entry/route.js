@@ -49,6 +49,7 @@ export async function POST() {
       }
 
       // const [day, month, year] = item.createdAt.split("/").map(Number);
+      let excelEpoch = new Date(Date.UTC(1899, 11, 30));
 
       return {
         name: item.name,
