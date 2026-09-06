@@ -20,7 +20,7 @@ export async function GET() {
 
     await TotalDonations.deleteMany({
       createdAt: {
-        $lt: new Date("2022-04-01")
+        $lt: new Date("2022-04-02")
       }
     });
 
