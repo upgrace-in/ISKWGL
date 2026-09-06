@@ -29,7 +29,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Pavitropana";
+    const ekadasi_name = "Annada";
 
     const [amount, setAmount] = useState();
 
@@ -82,12 +82,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">24 August 2026</div>
+                <div className="date-badge">07 September 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadashi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 25 August 2026, 5:56 AM to 6:20 AM for Warangal.
+                        Fast breaking parana time: 08 August 2026, 5:58 AM to 10:06 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -97,14 +97,14 @@ export default function Ekadasi() {
             <div className="description-section">
                 {/* Spiritual Significance Paragraph */}
                 <p className="hero-description">
-                    <b style={{ color: '#d4a054'}}>Lord Krsna Said to Maharaj Yudhisthir : </b>
+                    <b style={{ color: '#d4a054'}}>Gautama Muni Said to Maharaj Harishchandra : </b>
                     {/* <br/> */}
-This Ekadasi is famous as Putrada {"bestower of a son"}. whoever simply hears the glories of Putrada Ekadasi becomes completely free of all sins, is blessed with a good son, and surely ascends to heaven after death.
+This Ekadasi is so auspicious that if you simply fast on that day and perform no other austerity,all your sins will be nullified.
                     <br/>
-                    Along with fasting, <b>chanting the Holy Name, and reading scriptures, offering charity</b> on {ekadasi_name} Ekadasi is considered one of the most rewarding devotional activities.
+                    King Harishchandra followed Gautama Muni’s instructions and the reactions to his previous sins were completely destroyed at once.
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/pavitropana-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/annada-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
