@@ -13,43 +13,104 @@ export async function POST() {
     await dbConnect();
 
     await TotalDonations.deleteMany({
-      createdAt: { $lt: new Date("2022-04-02") }
+      donationDate: { $lt: new Date("2022-04-02") }
     });
 
-    const filePath = path.join(process.cwd(), "src", "app", "api", "dashboard", "data_entry", "FY2122.xlsx");
+    let filePath = path.join(process.cwd(), "src", "app", "api", "dashboard", "data_entry", "FY2122.xlsx");
     if (!fs.existsSync(filePath)) {
       return Response.json({ error: "File not found" }, { status: 404 });
     }
 
-    const fileBuffer = fs.readFileSync(filePath);
-    const workbook = xlsx.read(fileBuffer, { type: "buffer" });
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const data = xlsx.utils.sheet_to_json(sheet, { raw: false });
+    let fileBuffer = fs.readFileSync(filePath);
+    let workbook = xlsx.read(fileBuffer, { type: "buffer" });
+    let sheet = workbook.Sheets[workbook.SheetNames[0]];
+    let data = xlsx.utils.sheet_to_json(sheet, { raw: false });
 
-    const itemsWithTempIds = data.map((item) => ({
+    let itemsWithTempIds = data.map((item) => ({
       ...item,
-      tempOrderId: `order_${crypto.randomBytes(6).toString("hex")}`,
+      tempOrderId: `order_${crypto.randomInt(100000, 1000000)}`,
     }));
 
     // 2. Extract generated IDs
-    const generatedIds = itemsWithTempIds.map((item) => item.tempOrderId);
+    let generatedIds = itemsWithTempIds.map((item) => item.tempOrderId);
 
     // 3. Query MongoDB ONCE to find any existing collisions
-    const existingDocs = await TotalDonations.find(
+    let existingDocs = await TotalDonations.find(
       { orderId: { $in: generatedIds } },
       { orderId: 1 }
     ).lean();
 
-    const existingIdsSet = new Set(existingDocs.map((doc) => doc.orderId));
+    let existingIdsSet = new Set(existingDocs.map((doc) => doc.orderId));
 
     // FAST: Generate collision-free unique IDs instantly without DB round-trips
     // 4. Map documents, regenerating any ID that collided (extremely rare)
-    const formattedDocs = itemsWithTempIds.map((item) => {
+    let formattedDocs = itemsWithTempIds.map((item) => {
       let finalOrderId = item.tempOrderId;
 
       // If a collision occurred, generate a new one
       while (existingIdsSet.has(finalOrderId)) {
-        finalOrderId = `order_${crypto.randomBytes(6).toString("hex")}`;
+        finalOrderId = `order_${crypto.randomInt(100000, 1000000)}`;
+      }
+
+      const [day, month, year] = item.createdAt.split("/").map(Number);
+
+      return {
+        name: item.name,
+        phone: item.phone,
+        amount: item.amount,
+        orderId: finalOrderId,
+        donationDate: new Date(year, month - 1, day),
+        source: "UPI",
+        seva: "General Donation",
+        address: {
+          addressLine1: item.address,
+          district: item.district,
+          state: item.state,
+          pinCode: item.pin,
+          country: "India",
+        },
+      };
+    });
+
+    if (formattedDocs.length > 0) {
+      await TotalDonations.insertMany(formattedDocs);
+      console.log(`Inserted ${formattedDocs.length} new donations.`);
+    }
+
+    filePath = path.join(process.cwd(), "src", "app", "api", "dashboard", "data_entry", "FY2223.xlsx");
+    if (!fs.existsSync(filePath)) {
+      return Response.json({ error: "File not found" }, { status: 404 });
+    }
+
+    fileBuffer = fs.readFileSync(filePath);
+    workbook = xlsx.read(fileBuffer, { type: "buffer" });
+    sheet = workbook.Sheets[workbook.SheetNames[0]];
+    data = xlsx.utils.sheet_to_json(sheet, { raw: false });
+
+    itemsWithTempIds = data.map((item) => ({
+      ...item,
+      tempOrderId: `order_${crypto.randomInt(100000, 1000000)}`,
+    }));
+
+    // 2. Extract generated IDs
+    generatedIds = itemsWithTempIds.map((item) => item.tempOrderId);
+
+    // 3. Query MongoDB ONCE to find any existing collisions
+    existingDocs = await TotalDonations.find(
+      { orderId: { $in: generatedIds } },
+      { orderId: 1 }
+    ).lean();
+
+    existingIdsSet = new Set(existingDocs.map((doc) => doc.orderId));
+
+    // FAST: Generate collision-free unique IDs instantly without DB round-trips
+    // 4. Map documents, regenerating any ID that collided (extremely rare)
+    formattedDocs = itemsWithTempIds.map((item) => {
+      let finalOrderId = item.tempOrderId;
+
+      // If a collision occurred, generate a new one
+      while (existingIdsSet.has(finalOrderId)) {
+        finalOrderId = `order_${crypto.randomInt(100000, 1000000)}`;
       }
 
       const [day, month, year] = item.createdAt.split("/").map(Number);
