@@ -74,7 +74,6 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
     try {
         const AnnaDaanLink = 'https://www.iskconwarangal.in/AnnaDaan';
         const TulaDaanLink = 'https://www.iskconwarangal.in/TulaDanSeva';
-        const EkadasiLink = 'https://www.iskconwarangal.in/Ekadasi';
         const whatsappResponse = await axios.post('https://api.dovesoft.io/REST/directApi/message', {
             messaging_product:"whatsapp",
             to:to,
@@ -110,10 +109,6 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
                             },
                             {
                                 type: 'text',
-                                text: EkadasiLink
-                            },
-                            {
-                                type: 'text',
                                 text: TulaDaanLink
                             }
                         ]
@@ -143,13 +138,13 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
     }
 };
 
-export const sendWhatsAppMessageforBirthdayInfotoTemple = async (birthdayList) => {
+export const sendWhatsAppMessageforBirthdayInfotoTemple = async (to, birthdayList) => {
     const formattedList = birthdayList.birthdaylist.map(p => `${p.name} (${p.phone})`).join(', ');
     try {
         
         const whatsappResponse = await axios.post('https://api.dovesoft.io/REST/directApi/message', {
             messaging_product:"whatsapp",
-            to: '919571213124',
+            to: to,
             type: 'template',
             template: {
                 language: {
@@ -177,43 +172,43 @@ export const sendWhatsAppMessageforBirthdayInfotoTemple = async (birthdayList) =
             }
         });
 
-        const whatsappResponse2 = await axios.post('https://api.dovesoft.io/REST/directApi/message', {
-            messaging_product:"whatsapp",
-            to: '918096166177',
-            type: 'template',
-            template: {
-                language: {
-                    policy: 'deterministic',
-                    code: 'en'
-                },
-                name: 'birthdayinfototemple',
-                components: [
-                    {
-                        type: 'body',
-                        parameters: [
-                            {
-                                type: 'text',
-                                text: formattedList
-                            }
-                        ]
-                    }
-                ]
-            }
-        }, {
-            headers: {
-                'wabaNumber': '918374047115',
-                'Key': '83f4e8ac08XX',
-                'Content-Type': 'application/json'
-            }
-        });
+        // const whatsappResponse2 = await axios.post('https://api.dovesoft.io/REST/directApi/message', {
+        //     messaging_product:"whatsapp",
+        //     to: '918096166177',
+        //     type: 'template',
+        //     template: {
+        //         language: {
+        //             policy: 'deterministic',
+        //             code: 'en'
+        //         },
+        //         name: 'birthdayinfototemple',
+        //         components: [
+        //             {
+        //                 type: 'body',
+        //                 parameters: [
+        //                     {
+        //                         type: 'text',
+        //                         text: formattedList
+        //                     }
+        //                 ]
+        //             }
+        //         ]
+        //     }
+        // }, {
+        //     headers: {
+        //         'wabaNumber': '918374047115',
+        //         'Key': '83f4e8ac08XX',
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
 
         // Check if the response indicates success
         
-        if (whatsappResponse2.status === 200 && whatsappResponse2.data?.messages?.[0]?.message_status === 'accepted' && whatsappResponse.status === 200 && whatsappResponse.data?.messages?.[0]?.message_status === 'accepted') {
-            console.log('WhatsApp message sent successfully:', whatsappResponse.data, whatsappResponse2.data);
+        if (whatsappResponse.status === 200 && whatsappResponse.data?.messages?.[0]?.message_status === 'accepted') {
+            console.log('WhatsApp message sent successfully:', whatsappResponse.data);
             return { success: true, data: whatsappResponse.data };
         } else {
-            console.error('WhatsApp message failed:', whatsappResponse.data, whatsappResponse2.data);
+            console.error('WhatsApp message failed:', whatsappResponse.data);
             return { success: false, error: whatsappResponse.data };
         }
     } catch (error) {
