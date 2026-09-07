@@ -2,8 +2,9 @@ import { sendWhatsAppMessageforBirthdayInfotoTemple } from '../handleWebhook/wha
 
 export async function POST(req) {
     try {
-        const { phone, Birthdaylist } = await req.json();
-        console.log('Received Birthdaylist:', Birthdaylist);
+        const body = await req.json();
+        const { phone, Birthdaylist } = body || {};
+        console.log('Received Birthdaylist:', phone, Birthdaylist);
 
     // Expected fields: phone, name, orderId (optional), amount, address, pan, webhookData (optional), date (optional)
     // const { Birthdaylist } = body || {};
