@@ -151,7 +151,7 @@ export const sendWhatsAppMessageforBirthdayInfotoTemple = async (to, birthdayLis
                     policy: 'deterministic',
                     code: 'en'
                 },
-                name: 'birthdayinfototemple',
+                name: 'birthdayinfototemple1',
                 components: [
                     {
                         type: 'body',
