@@ -2,7 +2,7 @@ import { sendWhatsAppMessageforBirthdayInfotoTemple } from '../handleWebhook/wha
 
 export async function POST(req) {
     try {
-        const Birthdaylist = await req.json();
+        const { phone, Birthdaylist } = await req.json();
         console.log('Received Birthdaylist:', Birthdaylist);
 
     // Expected fields: phone, name, orderId (optional), amount, address, pan, webhookData (optional), date (optional)
@@ -14,7 +14,7 @@ export async function POST(req) {
         // const normalizedPhone = phone.toString().replace(/[^0-9]/g, '').replace(/^0+/, '').replace(/^91/, '');
         // const to = '91' + normalizedPhone;
 
-    const messageResult = await sendWhatsAppMessageforBirthdayInfotoTemple(Birthdaylist);
+    const messageResult = await sendWhatsAppMessageforBirthdayInfotoTemple(phone, Birthdaylist);
 
         // No DB operations: do not store or update anything
 
