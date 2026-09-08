@@ -27,7 +27,7 @@ export default function DirectDonation() {
                                     </h4>
                                     <p>
                                         &quot;Exemption order ref no. AAATI0017PF2021901 dated
-                                        24/09/2021 valid upto 31/03/2026&quot;
+                                        17/08/2026 valid upto 31/03/2031&quot;
                                     </p>
                                 </div>
                                 <span><img src="/index_files/top.png" alt="" /></span>

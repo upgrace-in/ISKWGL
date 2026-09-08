@@ -222,7 +222,7 @@ export default function JanmastamiAnnadanam({ params, defaultReferral }) {
                 <div class="donate-note my-5">
                     <p>Note: Avail 80G Benefits On All Donations Made To ISKCON Warangal.
                     </p>
-                    <p>&quot;Exemption order ref no. AAATI0017PF2021901 dated 24/09/2021 valid up-to 31/03/2026.&quot;</p>
+                    <p>&quot;Exemption order ref no. AAATI0017PF2021901 dated 17/08/2026 valid up-to 31/03/2031.&quot;</p>
                 </div>
             </div>
         </section>

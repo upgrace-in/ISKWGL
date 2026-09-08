@@ -182,16 +182,16 @@ export default function Header() {
                     >
                         Krishna Janmashtami
                     </Link> */}
-                    <Link 
+                    {/* <Link 
                         href="/Ekadasi" 
                         className={"nav-rath-yatra-highlight"}
                     >
                         Annada Ekadasi (07 Sep)
-                    </Link>
+                    </Link> */}
 
-                    {/* <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
+                    <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
                         <FaHeart /> Donate Now
-                    </button> */}
+                    </button>
                     <button style={buttonStyle} onClick={() => window.location.href='/templerenovation'}>
                         <FaHandsHelping size={18} /> Help Temple Renovate
                     </button>
@@ -218,12 +218,12 @@ export default function Header() {
                     >
                         Krishna Janmashtami
                     </Link> */}
-                    <Link 
+                    {/* <Link 
                         href="/Ekadasi"
                         className={"nav-rath-yatra-highlight mobile-rath-btn"}
                     >
                         Annada Ekadasi (07 Sep)
-                    </Link>
+                    </Link> */}
                 </div>
 
                 {/* 3. RIGHT: 3 Dots / Hamburger */}

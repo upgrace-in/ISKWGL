@@ -29,13 +29,13 @@ export default function Gallery() {
     }, [])
 
     return (
-        <section class="yt-links-sec" id="gallery">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <div class="heading">
-                            <h2 class="head-1">GALLERY</h2>
-                            {/* <!-- <p class="b-line">
+        <section className="yt-links-sec" id="gallery">
+            <div className="container">
+                <div className="row">
+                    <div className="col-lg-8 mx-auto">
+                        <div className="heading">
+                            <h2 className="head-1">GALLERY</h2>
+                            {/* <!-- <p className="b-line">
                                 Deep dive into the spiritual oasis that is the Hare Krishna
                                 Movement by way of these beautiful short-films of under
                                 90-seconds duration. Discover the bliss of Bhakti...
@@ -43,8 +43,8 @@ export default function Gallery() {
                         </div>
                     </div>
                 </div>
-                <div class="video-wrap">
-                    <div class="row my-5">
+                <div className="video-wrap">
+                    <div className="row my-5">
                         <OwlCarousel className="owl-theme"
                             loop
                             nav
