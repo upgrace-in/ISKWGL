@@ -112,12 +112,7 @@ export default function DonateForm(props) {
                                     <figure className="up-right">
                                         <Image width={100} height={100} src={`/donateForIMGs/${donateFor === "Akshay Tritiya" ? "akshaytritiya.jpg" : "krishna.webp"}`} alt=""></Image></figure>
                                 </div>
-                                <div className="form-part mt-4 me-lg-2">
-                                    <div className="notes-wrap mt-0">
-                                        <p className="text-center"><span> Please Note:</span> Complete Address with PIN-Code
-                                            and PAN is mandatory for an 80G Receipt.</p>
-                                    </div>
-                                </div>
+                                
                             </div>
                             <div className="col-lg-8 mt-lg-0 mt-4 ">
                                 <div className="row">
@@ -173,7 +168,7 @@ export default function DonateForm(props) {
                 <div className="donate-note my-5">
                     <p>Note: Avail 80G Benefits On All Donations Made To ISKCON Warangal.
                     </p>
-                    <p>&quot;Exemption order ref no. AAATI0017PF2021901 dated 24/09/2021 valid up-to 31/03/2026.&quot;</p>
+                    <p>&quot;Exemption order ref no. AAATI0017PF2021901 dated 17/08/2026 valid up-to 31/03/2031.&quot;</p>
                 </div>
             </div>
         </section>

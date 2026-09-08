@@ -153,7 +153,7 @@ export default function DonateCategories() {
                                         { title: "Narsimha Chaturdasi", src: "/narsimha-chaturdasi" },
                                         { title: "Sri Ram Navami", src: "/ramnavami" },
                                         { title: "Akshay Tritiya (Chandan Yatra)", src: `/donate/Akshay_Tritiya/0` },
-                                        { title: "Balarama Jayanti" },
+                                        { title: "Balarama Purnima", src: "/balarampurnima" },
                                         { title: "Snana Yatra" },
                                         { title: "Ratha Yatra", src:"/rathyatra"},
                                         { title: "ISKCON Warangal's Anniversary" }

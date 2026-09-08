@@ -1,16 +1,16 @@
 export default function Founder() {
     return (
-        <section class="founder-info-sec py-lg-0" id="founder">
-            <figure class="founder-img">
+        <section className="founder-info-sec py-lg-0" id="founder">
+            <figure className="founder-img">
                 <img src="/index_files/prabhu.webp" alt="" />
             </figure>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 order-lg-1 order-2 mt-4 mt-lg-0">
-                        <div class="heading">
-                            <div class="h2-wrap">
-                                <h2 class="head-1">FOUNDER ACHARYA</h2>
-                                <h2 class="head-2">SRILA PRABHUPADA</h2>
+            <div className="container">
+                <div className="row">
+                    <div className="col-lg-6 order-lg-1 order-2 mt-4 mt-lg-0">
+                        <div className="heading">
+                            <div className="h2-wrap">
+                                <h2 className="head-1">FOUNDER ACHARYA</h2>
+                                <h2 className="head-2">SRILA PRABHUPADA</h2>
                             </div>
                             <p>
                                 His Divine Grace A.C. Bhaktivedanta Swami Prabhupada
@@ -31,12 +31,12 @@ export default function Founder() {
                                 of Krishna, Krishna’s avatars, and His many devotees
                                 throughout the history of the universe.
                             </p>
-                            {/* <!-- <button class="custom-btn-cls box-hover ms-0">
+                            {/* <!-- <button className="custom-btn-cls box-hover ms-0">
                                 CONTINUE READING
                             </button> --> */}
                         </div>
                     </div>
-                    <div class="col-lg-4 order-lg-2 order-1 d-lg-none d-block">
+                    <div className="col-lg-4 order-lg-2 order-1 d-lg-none d-block">
                         <figure>
                             <img src="/index_files/prabhu.webp" alt="" />
                         </figure>

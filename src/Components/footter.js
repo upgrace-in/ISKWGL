@@ -78,7 +78,7 @@ export default function Foooter() {
         {/* Bottom Bar: Copyright */}
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm font-medium" style={{textAlign:"center"}}>
           <p className="mt-2 mb-0">
-              © 2024 ISKCON-WARANGAL
+              © 2026 ISKCON-WARANGAL
               <span className="d-inline-block mx-2">|</span> All Rights
               Reserved.
           </p>

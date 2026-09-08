@@ -53,7 +53,9 @@ export default function NewsArticles() {
                                 nav
                                 autoplay={true}
                                 // autoplayHoverPause={true}
-                                autoplayTimeout={2000}
+                                autoplayTimeout={5000}
+                                autoplaySpeed={800}
+                                smartSpeed={800}
                                 responsive={{
                                     0: {
                                         items: 1,

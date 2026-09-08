@@ -79,7 +79,7 @@ export default function Footer() {
                                 Krishna Consciousness.
                             </p>
                             <p className="mt-2 mb-0">
-                                © 2024 ISKCON-WARANGAL
+                                © 2026 ISKCON-WARANGAL
                                 <span className="d-inline-block mx-2">|</span> All Rights
                                 Reserved.
                             </p>
