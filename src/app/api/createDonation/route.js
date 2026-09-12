@@ -14,11 +14,31 @@ function generateSignature(postData) {
     return signature;
 }
 
+// Helper function to generate a unique orderId
+async function generateUniqueOrderId() {
+    let orderId;
+    let isUnique = false;
+
+    while (!isUnique) {
+        // Generate orderId (e.g., order_1710000000000_1234)
+        orderId = `order_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`;
+
+        // Check if the orderId already exists in MongoDB
+        const existingDonation = await Donation.findOne({ orderId }).lean();
+        
+        if (!existingDonation) {
+            isUnique = true; // Unique ID found, exit loop
+        }
+    }
+
+    return orderId;
+}
+
 export async function POST(request) {
 
     try {
 
-        console.log("MONGODB_URI exists:", !!process.env.MONGODB_URI);
+        // console.log("MONGODB_URI exists:", !!process.env.MONGODB_URI);
 
         await dbConnect();
 
@@ -29,7 +49,8 @@ export async function POST(request) {
         }
 
         // console.log("Abhishekam Timeslot: ", abhishekamTimeSlot);
-        let orderId = `order_${Math.floor(Math.random() * 1000000)}`
+        // 1. Generate guaranteed unique order ID
+        const orderId = await generateUniqueOrderId();
 
         let formData = {
             "customerName": name,
@@ -85,8 +106,8 @@ export async function POST(request) {
     } catch (error) {
         console.log(`Error while creating order: ${error}`)
         return Response.json({
-            response: error
-        }, { status: 404 })
+            error: error.message || "Failed to create order"
+        }, { status: 500 })
     }
 
 }

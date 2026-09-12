@@ -133,6 +133,18 @@ export default function DonationCheckoutTest() {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    // Popup Modal State
+    const [popup, setPopup] = useState({ isOpen: false, title: '', message: '' });
+
+    const showErrorPopup = (message, title = "Technical Issue") => {
+        setPopup({ isOpen: true, title, message });
+    };
+
+    const closePopup = () => {
+        setPopup({ isOpen: false, title: '', message: '' });
+        window.location.reload(); // Refreshes the page automatically
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setIsLoading(true);
@@ -170,7 +182,8 @@ export default function DonationCheckoutTest() {
             donationType: donationData.reason,
             seva: donationData.seva,
             memoryOfSomeoneName: formData.memoryOfSomeoneName,
-            fulladdress: address_split
+            fulladdress: address_split,
+            orderId: ''
         };
         console.log("Passing this to the final function:", submissionData);
         Object.entries(submissionData).forEach(([property, value]) => {
@@ -197,9 +210,29 @@ export default function DonationCheckoutTest() {
                 increaseDots()
             }, 500)
             // save the data with an orderID
-            const donationdata = await axios.post(`/api/createDonation/`, finalData)
-            finalData['orderId'] = donationdata.data.orderId
-            console.log("Donation data saved with orderId:", donationdata.data.orderId);
+            let donationRes;
+            // Step 1: Create donation order in database
+            try {
+                donationRes = await axios.post('/api/createDonation/', submissionData);
+            } catch (err) {
+                // Check if server responded with status code 500
+                if (err.response && err.response.status === 500) {
+                    showErrorPopup("Some technical issue was faced, please refresh and try again.");
+                }else {
+                    showErrorPopup(err.response?.data?.error || "Failed to create donation record. Please try again.");
+                }
+                
+                setIsSubmitting(false);
+                return; // Stop further execution
+            }
+            const orderId = donationRes?.data?.orderId;
+            if (!orderId) {
+                showErrorPopup("Some technical issue was faced, please refresh and try again.");
+                setIsSubmitting(false);
+                return;
+            }
+            console.log("Donation data saved with orderId:", orderId);
+            finalData.orderId = orderId;
             const response = await fetch('/api/payment_testing', {
                 method: 'POST',
                 headers: {
@@ -239,6 +272,52 @@ export default function DonationCheckoutTest() {
     const [wantsTaxBenefit, setWantsTaxBenefit] = useState(false);
     const [wantsPrasadam, setWantsPrasadam] = useState(false);
 
+    // Inline Styles for Quick Integration (Can be replaced with Tailwind CSS)
+    const modalStyles = {
+        overlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+        },
+        modal: {
+            backgroundColor: '#fff',
+            padding: '24px',
+            borderRadius: '8px',
+            maxWidth: '400px',
+            width: '90%',
+            textAlign: 'center',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+        },
+        title: {
+            margin: '0 0 12px 0',
+            color: '#d9534f',
+            fontSize: '20px',
+        },
+        message: {
+            margin: '0 0 20px 0',
+            color: '#333',
+            fontSize: '15px',
+            lineHeight: '1.4',
+        },
+        button: {
+            backgroundColor: '#d9534f',
+            color: '#fff',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: 'bold',
+        }
+    };
+
     return (
         <>
         {/* <Header handleNav={() => setNavOpen(!navOpen)} />
@@ -275,7 +354,7 @@ export default function DonationCheckoutTest() {
                         <div className="form-row">
                             <input type="tel" name="phone" placeholder="Mobile Number" onChange={handlePhoneChange} required />
                             {error && <p style={{ color: "red" }}>{error}</p>}
-                            <input type="date" name="dob" placeholder="Date of Birth" onChange={handleChange} required className="date-input"/>
+                            <input type="date" name="dob" placeholder="Date of Birth (optional)" onChange={handleChange} className="date-input"/>
                         </div>
 
                         {/* Checkbox 1 & Section 2: Tax Benefits */}
@@ -384,6 +463,18 @@ export default function DonationCheckoutTest() {
                 </div>
 
             </div>
+            {/* Custom Modal Popup */}
+            {popup.isOpen && (
+                <div style={modalStyles.overlay}>
+                    <div style={modalStyles.modal}>
+                        <h3 style={modalStyles.title}>{popup.title}</h3>
+                        <p style={modalStyles.message}>{popup.message}</p>
+                        <button style={modalStyles.button} onClick={closePopup}>
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
         <Foooter />  
         <Floating /> 

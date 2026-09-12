@@ -176,12 +176,12 @@ export default function Header() {
 
                 {/* Action Buttons */}
                 <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flex: '2', justifyContent: 'flex-end' }}>
-                    {/* <Link 
-                        href="/janmashtami" 
+                    <Link 
+                        href="/radhashtami" 
                         className={"nav-rath-yatra-highlight"}
                     >
-                        Krishna Janmashtami
-                    </Link> */}
+                        Sri Radhashtami
+                    </Link>
                     {/* <Link 
                         href="/Ekadasi" 
                         className={"nav-rath-yatra-highlight"}
@@ -189,9 +189,9 @@ export default function Header() {
                         Annada Ekadasi (07 Sep)
                     </Link> */}
 
-                    <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
+                    {/* <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
                         <FaHeart /> Donate Now
-                    </button>
+                    </button> */}
                     <button style={buttonStyle} onClick={() => window.location.href='/templerenovation'}>
                         <FaHandsHelping size={18} /> Help Temple Renovate
                     </button>
@@ -212,12 +212,12 @@ export default function Header() {
                 {/* 2. CENTER: Rath Yatra Button */}
                 {/* flex: none ensures it stays perfectly centered without being stretched */}
                 <div style={{ flex: 'none', display: 'flex', justifyContent: 'center' , marginLeft: '10px'}}>
-                    {/* <Link 
-                        href="/janmashtami"
+                    <Link 
+                        href="/radhashtami"
                         className={"nav-rath-yatra-highlight mobile-rath-btn"}
                     >
-                        Krishna Janmashtami
-                    </Link> */}
+                        Sri Radhashtami
+                    </Link>
                     {/* <Link 
                         href="/Ekadasi"
                         className={"nav-rath-yatra-highlight mobile-rath-btn"}
