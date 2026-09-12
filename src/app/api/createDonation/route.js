@@ -21,7 +21,7 @@ async function generateUniqueOrderId() {
 
     while (!isUnique) {
         // Generate orderId (e.g., order_1710000000000_1234)
-        orderId = `order_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`;
+        orderId = `order_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}_${Math.floor(1000 + Math.random() * 9000)}`
 
         // Check if the orderId already exists in MongoDB
         const existingDonation = await Donation.findOne({ orderId }).lean();
@@ -72,7 +72,7 @@ export async function POST(request) {
 
             "appId": clientID,
             "notifyUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/api/handleWebhook`,
-            "returnUrl": `${process.env.NEXT_PUBLIC_DOMAIN}`
+            "returnUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/radhashtami`,
         }
 
         const signature = generateSignature(formData);
