@@ -33,9 +33,9 @@ const DonationPage = () => {
   ];
 
   const sponsorshipOptions = [
-    { title: "New Deity Dress", amount: 30000 },
-    { title: "Radhashtami Abhishekam Seva", amount: 3016 },
-    { title: "Flower Decoration Seva", amount: 2116 },
+    { title: "New Deity Dress Seva", amount: 35116 },
+    { title: "Flower Decoration Seva", amount: 5116 },
+    { title: "Maha Abhishekam Seva", amount: 4116 },
   ];
 
   const allSevas = [...prasadamOptions, ...sponsorshipOptions]; 
