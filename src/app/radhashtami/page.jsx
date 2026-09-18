@@ -14,16 +14,13 @@ const DonationPage = () => {
     const [navOpen, setNavOpen] = useState(false)
     const { handleDonateClick } = useDonateTest();
 
-  const sevaOptions = [
-    { title: "New Deity Dress", amount: 30000 },
-    { title: "250 Devotees Prasadam Seva", amount: 25116 },
-    { title: "100 Devotees Prasadam Seva", amount: 10116 },
-    { title: "60 Devotees Prasadam Seva", amount: 6116 },
-    { title: "30 Devotees Prasadam Seva", amount: 3116 },
-    { title: "15 Devotees Prasadam Seva", amount: 1516 },
-    { title: "Abhishekam Seva", amount: 3016 }, 
-    { title: "Flower Decoration Seva", amount: 2116 }, 
+  const pushpaAbhishekamOptions = [
+    { title: "Radha Nilamadhav Altar Flower Seva", amount: 5000 },
+    { title: "Jagannath Baladev Subhadra Altar Flower Seva", amount: 7000 },
+    { title: "Gaur Nitai Altar Flower Seva", amount: 5000 },
+    { title: "Total Flower Seva (All Altars)", amount: 17000 },
   ];
+
   const prasadamOptions = [
     { title: "250 Devotees Prasadam Seva", amount: 25116 },
     { title: "100 Devotees Prasadam Seva", amount: 10116 },
@@ -110,6 +107,36 @@ const DonationPage = () => {
             </p>
 
             <form onSubmit={handleDonate} className="donation-form">
+
+              {/* Highlighted Special Category: Pushpa Abhishekam */}
+              <div className="seva-category-group highlighted-category">
+                <div className="special-highlight-badge">✨ First Time in Temple History! ✨</div>
+                <h3 className="category-header">Pushpa Abhishekam</h3>
+                <h3 className="category-header">(Flower Seva Sponsorship)</h3>
+                <div className="seva-options-grid">
+                  {pushpaAbhishekamOptions.map((seva, index) => {
+                    const isSelected = selectedSevas.some((item) => item.title === seva.title);
+                    return (
+                      <div
+                        key={`pushpa-${index}`}
+                        onClick={() => handleSevaToggle(seva)}
+                        className={`seva-card ${isSelected ? 'active' : ''}`}
+                      >
+                        <div className="seva-info">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => {}}
+                            className="seva-checkbox"
+                          />
+                          <span className="seva-title">{seva.title}</span>
+                        </div>
+                        <span className="seva-amount">₹{seva.amount.toLocaleString()}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
               
               
 
@@ -189,6 +216,19 @@ const DonationPage = () => {
                 Contribute Now {finalTotal > 0 ? `(₹${finalTotal.toLocaleString()})` : ''}
               </button>
             </form>
+
+            {/* Festival Schedule Box */}
+            <div className="festival-schedule-card">
+              <h3 className="schedule-heading">🌸 Festival Schedule 🌸</h3>
+              <ul className="schedule-list">
+                <li><span className="schedule-time">4:30 AM - 5:15 AM</span> <span className="schedule-event">Mangal Arati</span></li>
+                <li><span className="schedule-time">7:30 AM - 8:00 AM</span> <span className="schedule-event">Darshan Arati, Guru Puja</span></li>
+                <li><span className="schedule-time">8:00 AM - 9:00 AM</span> <span className="schedule-event">Bhagavatam Class</span></li>
+                <li><span className="schedule-time">9:00 AM - 10:30 AM</span> <span className="schedule-event">Kirtans, Flower Plucking Seva</span></li>
+                <li><span className="schedule-time">10:30 AM - 11:00 AM</span> <span className="schedule-event">Maha Abhishekam</span></li>
+                <li><span className="schedule-time">11:15 AM onwards</span> <span className="schedule-event">Pushpa Abhishekam, Class, Arati & Prasadam</span></li>
+              </ul>
+            </div>
           </div>
         </div>
 
