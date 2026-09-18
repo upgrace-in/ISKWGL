@@ -327,7 +327,7 @@ export default function DonationCheckoutTest() {
             <div className="checkout-container">
                 
                 {/* Left Side: Summary & Image */}
-                <div className="summary-section" style={{ backgroundImage: `url('/assets/KA1_063.jpg')` }}>
+                <div className="summary-section" style={{ backgroundImage: `url('/images/srimati-radharani-1.png')` }}>
                     <div className="summary-overlay">
                         {/* <img src="/logo.png" alt="ISKCON Logo" className="checkout-logo" /> */}
                         <div className="summary-content">
