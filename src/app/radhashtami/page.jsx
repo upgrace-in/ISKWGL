@@ -110,7 +110,6 @@ const DonationPage = () => {
 
               {/* Highlighted Special Category: Pushpa Abhishekam */}
               <div className="seva-category-group highlighted-category">
-                <div className="special-highlight-badge">✨ First Time in Temple History! ✨</div>
                 <h3 className="category-header">Pushpa Abhishekam</h3>
                 <h3 className="category-header">(Flower Seva Sponsorship)</h3>
                 <div className="seva-options-grid">
