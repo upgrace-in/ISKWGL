@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import Link from "next/link";
 
-export default function TransactionsView({ session }) {
+export default function TransactionsView({ role }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(null); // For the 3-dot menu
@@ -17,7 +17,7 @@ export default function TransactionsView({ session }) {
     const menuRef = useRef(null);
 
     
-    const isAdmin = session?.user?.role === 'admin';
+    const isAdmin = role === 'admin';
 
     // Helper function to format dates as YYYY-MM-DD for the input fields
     const getFormattedDate = (date) => {
@@ -853,7 +853,7 @@ export default function TransactionsView({ session }) {
                     <thead className="bg-gray-100 border-b border-gray-200 sticky top-0 z-10 shadow-sm">
                         <tr>
                             <th className="p-4 font-semibold text-gray-700">Order ID</th>
-                            <th className="p-4 font-semibold text-gray-700">Name</th>
+                            <th className="p-4 font-semibold text-gray-700 w-[150px] min-w-[120px] max-w-[150px]">Name</th>
                             <th className="p-4 font-semibold text-gray-700">Phone</th>
                             <th className="p-4 font-semibold text-gray-700">Amount</th>
                             <th className="p-4 font-semibold text-gray-700">Seva Name</th>
@@ -876,7 +876,7 @@ export default function TransactionsView({ session }) {
                                     <tr key={record._id} className="hover:bg-gray-50 border-b border-gray-100">
                                         <td className="p-4 text-gray-500 font-mono text-xs">{record.orderId?.substring(0, 12)}</td>
                                         <td className="p-4 font-medium text-gray-900">
-                                            <Link href={`/dashboard/donors/${record.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
+                                            <Link href={`/dashboard/donors/${record.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline truncate w-[150px] min-w-[120px] max-w-[150px]">
                                                 {record.name}
                                             </Link>
                                         </td>
