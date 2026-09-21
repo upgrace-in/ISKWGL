@@ -8,7 +8,7 @@ export default function PinSpacer() {
     // const imageArray = ["/headerImages/RY11.png","/headerImages/RY13.png", "/headerImages/RY14.png", "/headerImages/abode-inspiration-min.png", "/headerImages/Annadanam.png", "/headerImages/Chant-and-Be-happy-min.png", "/headerImages/Destination-for-Peace-min.png", "/headerImages/Sunday-Program-min.png", "/headerImages/Prahlad-School-min.png"]
 
     // IMAGE ARRAY
-    const imageArray = ["/images/radhaastami_pinspacer_1.jpeg","/images/radhaastami_pinspacer_2.jpeg","/images/radhaastami_pinspacer_3.jpeg","headerImages/temple_renovation_1.png", "headerImages/temple_renovation_2.png", "headerImages/temple_renovation_3.png", "headerImages/temple_renovation_4.png", "headerImages/volunteer.png", "/headerImages/Chant-and-Be-happy-min.png", "/headerImages/Sunday-Program-min.png"]
+    const imageArray = ["images/Ekadasi/parsva-ekadasi.jpeg", "headerImages/volunteer.png", "/headerImages/Chant-and-Be-happy-min.png", "/headerImages/Sunday-Program-min.png"]
 
     return (
 
@@ -16,16 +16,8 @@ export default function PinSpacer() {
         {imageArray.map((src, index) => (
              <Carousel.Item key={index}>
              <div className="CarouselContainer">
-                 {src === "/images/radhaastami_pinspacer_1.jpeg" ? (
-                     <a href="/radhashtami">
-                         <img src={src} alt={`Slide ${index + 1}`} className="d-block w-80 pin-spacer__image" />
-                     </a>
-                 ) : src === "/images/radhaastami_pinspacer_2.jpeg" ? (
-                     <a href="/radhashtami">
-                         <img src={src} alt={`Slide ${index + 1}`} className="d-block w-80 pin-spacer__image" />
-                     </a>
-                 ) : src === "/images/radhaastami_pinspacer_3.jpeg" ? (
-                     <a href="/radhashtami">
+                 {src === "images/Ekadasi/parsva-ekadasi.jpeg" ? (
+                     <a href="/Ekadasi">
                          <img src={src} alt={`Slide ${index + 1}`} className="d-block w-80 pin-spacer__image" />
                      </a>
                  ) : src === "/headerImages/annadanam-janmashtami.png" ? (

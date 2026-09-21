@@ -177,17 +177,11 @@ export default function Header() {
                 {/* Action Buttons */}
                 <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flex: '2', justifyContent: 'flex-end' }}>
                     <Link 
-                        href="/radhashtami" 
-                        className={"nav-rath-yatra-highlight"}
-                    >
-                        Sri Radhashtami
-                    </Link>
-                    {/* <Link 
                         href="/Ekadasi" 
                         className={"nav-rath-yatra-highlight"}
                     >
-                        Annada Ekadasi (07 Sep)
-                    </Link> */}
+                        Parsva Ekadasi (22 Sep)
+                    </Link>
 
                     {/* <button style={buttonStyle} onClick={() => window.location.href='/#donate'}>
                         <FaHeart /> Donate Now
@@ -213,10 +207,10 @@ export default function Header() {
                 {/* flex: none ensures it stays perfectly centered without being stretched */}
                 <div style={{ flex: 'none', display: 'flex', justifyContent: 'center' , marginLeft: '10px'}}>
                     <Link 
-                        href="/radhashtami"
+                        href="/Ekadasi"
                         className={"nav-rath-yatra-highlight mobile-rath-btn"}
                     >
-                        Sri Radhashtami
+                        Parsva Ekadasi (22 Sep)
                     </Link>
                     {/* <Link 
                         href="/Ekadasi"
