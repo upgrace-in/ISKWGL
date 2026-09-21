@@ -25,7 +25,7 @@ function Home() {
   return <>
     <Header />
     <PinSpacer />
-    <BirthdayHandler />
+    {/* <BirthdayHandler /> */}
     <Welcome />
     <Gallery />
     <Mission />
