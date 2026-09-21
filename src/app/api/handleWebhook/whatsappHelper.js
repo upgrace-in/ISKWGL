@@ -74,6 +74,7 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
     try {
         const AnnaDaanLink = 'https://www.iskconwarangal.in/AnnaDaan';
         const TulaDaanLink = 'https://www.iskconwarangal.in/TulaDanSeva';
+        const EkadasiLink = 'https://www.iskconwarangal.in/Ekadasi';
         const whatsappResponse = await axios.post('https://api.dovesoft.io/REST/directApi/message', {
             messaging_product:"whatsapp",
             to:to,
@@ -102,6 +103,10 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
                             {
                                 type: 'text',
                                 text: name
+                            },
+                            {
+                                type: 'text',
+                                text: EkadasiLink
                             },
                             {
                                 type: 'text',

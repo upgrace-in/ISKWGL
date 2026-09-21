@@ -29,7 +29,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Annada";
+    const ekadasi_name = "Parsva";
 
     const [amount, setAmount] = useState();
 
@@ -82,12 +82,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">07 September 2026</div>
-                <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadashi</p>
+                <div className="date-badge">22 September 2026</div>
+                <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadasi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 08 August 2026, 5:58 AM to 10:06 AM for Warangal.
+                        Fast breaking parana time: 23 September 2026, 6:01 AM to 10:03 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -97,14 +97,14 @@ export default function Ekadasi() {
             <div className="description-section">
                 {/* Spiritual Significance Paragraph */}
                 <p className="hero-description">
-                    <b style={{ color: '#d4a054'}}>Gautama Muni Said to Maharaj Harishchandra : </b>
+                    <b style={{ color: '#d4a054'}}>Lork Krishna Said to Maharaj Yudhisthir : </b>
                     {/* <br/> */}
-This Ekadasi is so auspicious that if you simply fast on that day and perform no other austerity,all your sins will be nullified.
+On this day the faithful devotee should worship Lord Trivikrama, Vamanadeva, who is the supreme father, because on this day I turn over to sleep on My other side.
                     <br/>
-                    King Harishchandra followed Gautama Muni’s instructions and the reactions to his previous sins were completely destroyed at once.
+                    <b>Note: </b> Fasting till noon on 22nd for Lord Vamanadeva and then Ekadasi Fasting continues till parana time on 23rd. 
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/annada-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/parsva-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
