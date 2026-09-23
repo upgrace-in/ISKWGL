@@ -106,11 +106,11 @@ export const sendWhatsAppMessageforBirthdayWishes = async (to, name) => {
                             },
                             {
                                 type: 'text',
-                                text: EkadasiLink
+                                text: AnnaDaanLink
                             },
                             {
                                 type: 'text',
-                                text: AnnaDaanLink
+                                text: TulaDaanLink
                             }
                         ]
                     }
