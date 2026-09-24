@@ -1,0 +1,49 @@
+name: Automated MongoDB Backup
+
+on:
+  schedule:
+    # Runs every day at midnight (00:00 UTC)
+    - cron: '0 0 * * *'
+  # Allows you to run it manually from the "Actions" tab
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install MongoDB Database Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg
+          curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
+          echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/software-sources.list.d/mongodb-org-7.0.list
+          # Simpler built-in alternative for ubuntu-latest:
+          sudo apt-get install -y mongodb-database-tools
+
+      - name: Run mongodump
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+          BACKUP_NAME="mongo-backup-$TIMESTAMP"
+          
+          echo "Starting backup..."
+          mongodump --uri="$MONGO_URI" --archive="$BACKUP_NAME.gz" --gzip
+          
+          echo "BACKUP_FILE=$BACKUP_NAME.gz" >> $GITHUB_ENV
+
+      - name: Upload Backup to GitHub Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mongodb-backup-${{ env.BACKUP_FILE }}
+          path: ${{ env.BACKUP_FILE }}
+          retention-days: 14 # Keeps the backup file stored on GitHub for 14 days for free
