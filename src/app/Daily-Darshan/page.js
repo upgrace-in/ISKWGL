@@ -9,7 +9,7 @@ export default function DarshanGrid() {
 
   useEffect(() => {
     // Fetch grouped darshan data from your backend
-    fetch('https://iskconwarangal.in/api/handleWebhook/daily-darshan')
+    fetch('/api/handleWebhook/daily-darshan')
       .then((res) => res.json())
       .then((data) => setDarshanDays(data))
       .catch((err) => console.error('Error fetching darshans:', err));
