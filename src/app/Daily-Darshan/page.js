@@ -168,7 +168,7 @@ export default function DarshanPage() {
 
 
                     <a
-                      href={`/darshan/${dateToSlug(
+                      href={`/Daily-Darshan/${dateToSlug(
                         darshan.date
                       )}`}
                       className="view-all-button"
