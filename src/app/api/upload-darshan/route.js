@@ -38,6 +38,7 @@ export async function GET(request) {
             .find({})
             .sort({ _id: -1 })
             .toArray();
+        console.log(darshans);
 
         return NextResponse.json(darshans);
     } catch (error) {
