@@ -52,6 +52,7 @@ export default function DarshanPage() {
     async function fetchDarshans() {
       try {
         const response = await fetch("/api/upload-darshan");
+        console.log(response);
 
         if (!response.ok) {
           throw new Error("Failed to fetch Darshan");
