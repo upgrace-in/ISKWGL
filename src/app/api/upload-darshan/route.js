@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
+import { put } from '@vercel/blob';
 import sharp from 'sharp';
+import { randomBytes } from 'crypto';
 
 const uri = process.env.MONGODB_URI;
 let client;
@@ -23,9 +25,30 @@ if (process.env.NODE_ENV === 'development') {
 
 async function getDatabase() {
     const dbClient = await clientPromise;
-    return dbClient.db('Daily_Darshan'); // Using your existing database name
+    return dbClient.db('Daily_Darshan');
 }
 
+// ----------------------------------------------------
+// 1. GET: Frontend fetches all darshans for the gallery
+// ----------------------------------------------------
+export async function GET(request) {
+    try {
+        const db = await getDatabase();
+        const darshans = await db.collection('darshans')
+            .find({})
+            .sort({ _id: -1 })
+            .toArray();
+
+        return NextResponse.json(darshans);
+    } catch (error) {
+        console.error('Database fetch error:', error);
+        return NextResponse.json({ error: 'Failed to load darshans' }, { status: 500 });
+    }
+}
+
+// ----------------------------------------------------
+// 2. POST: Admin uploads photo (Compress -> Blob -> MongoDB)
+// ----------------------------------------------------
 export async function POST(request) {
     try {
         const formData = await request.formData();
@@ -36,26 +59,31 @@ export async function POST(request) {
             return NextResponse.json({ error: 'No image file uploaded' }, { status: 400 });
         }
 
-        // Convert uploaded file into a buffer
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // --- COMPRESSION PIPELINE USING SHARP ---
-        // Resizes max width to 1200px (ideal for web displays), strips metadata, 
-        // and converts to WebP format at 80% quality (visually lossless, tiny file size)
+        // --- COMPRESS & CONVERT TO WEBP ---
         const compressedBuffer = await sharp(buffer)
             .resize({ width: 1200, withoutEnlargement: true })
             .webp({ quality: 80 })
             .toBuffer();
 
-        // Convert the compressed image to a Base64 Data URL so it can be stored directly in MongoDB
-        // (Alternatively, you can upload this buffer to Cloudinary/AWS S3 and save the URL)
-        const base64Image = `data:image/webp;base64,${compressedBuffer.toString('base64')}`;
+        // --- GENERATE SECURE UNGUESSABLE FILENAME ---
+        const secureHash = randomBytes(8).toString('hex');
+        const fileName = `darshan-${Date.now()}-${secureHash}.webp`;
 
+        // --- UPLOAD TO VERCEL BLOB ---
+        const blob = await put(fileName, compressedBuffer, {
+            access: 'public',
+            contentType: 'image/webp',
+        });
+
+        const imageUrl = blob.url;
+
+        // --- SAVE TO MONGODB ---
         const db = await getDatabase();
         const collection = db.collection('darshans');
 
-        // Format today's date string (e.g., "27 September 2026")
         const todayDateStr = new Date().toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'long',
@@ -63,32 +91,29 @@ export async function POST(request) {
         });
 
         const photoItem = {
-            url: base64Image,
+            url: imageUrl,
             caption: caption
         };
 
-        // Check if an entry for TODAY already exists in MongoDB
         const existingDay = await collection.findOne({ date: todayDateStr });
 
         if (existingDay) {
-            // If today's card exists, push the new photo into its photos array
             await collection.updateOne(
                 { date: todayDateStr },
                 { $push: { photos: photoItem } }
             );
         } else {
-            // If it's the first photo of the day, create a brand new date card document
             await collection.insertOne({
                 date: todayDateStr,
-                mainImage: base64Image, // First photo becomes the cover card image
+                mainImage: imageUrl,
                 photos: [photoItem],
                 createdAt: new Date()
             });
         }
 
-        return NextResponse.json({ status: 'success', message: 'Darshan compressed and saved to MongoDB!' });
+        return NextResponse.json({ status: 'success', message: 'Darshan uploaded successfully!' });
     } catch (error) {
-        console.error('Upload & compression error:', error);
+        console.error('Upload error:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

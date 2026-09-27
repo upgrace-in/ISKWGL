@@ -12,6 +12,7 @@
     "@cashfreepayments/cashfree-js": "^1.0.4",
     "@fontsource/open-sans": "^5.2.7",
     "@sparticuz/chromium": "^143.0.0",
+    "@vercel/blob": "^2.8.0",
     "aws-sdk": "^2.1677.0",
     "axios": "^1.6.8",
     "body-parser": "^1.20.2",

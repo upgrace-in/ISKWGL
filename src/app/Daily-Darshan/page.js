@@ -8,12 +8,13 @@ export default function DarshanGrid() {
   const [selectedDay, setSelectedDay] = useState(null); // For the "View All" modal
 
   useEffect(() => {
-    // Fetch grouped darshan data from your backend
-    fetch('/api/handleWebhook/daily-darshan')
-      .then((res) => res.json())
-      .then((data) => setDarshanDays(data))
-      .catch((err) => console.error('Error fetching darshans:', err));
-  }, []);
+    fetch('/api/upload-darshan')
+        .then((res) => res.json())
+        .then((data) => {
+        setDarshanDays(data);
+        setLoading(false);
+        });
+    }, []);
 
   return (
     <div className="darshan-section">
