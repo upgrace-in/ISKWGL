@@ -1,61 +1,195 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import './Darshan.css';
+import React, { useEffect, useState } from "react";
+import { ChevronRight, Loader2 } from "lucide-react";
+import "./Darshan.css";
+import Header from "../../Components/Header"
+import SideNav from "../../Components/SideNav"
+import Foooter from "../../Components/footter"
+import Floating from "@/Components/Floating";
+import DirectDonation from "@/Components/Direct_donation_and_80G"
 
-export default function DarshanGrid() {
-  const [darshanDays, setDarshanDays] = useState([]);
-  const [selectedDay, setSelectedDay] = useState(null); // For the "View All" modal
+function dateToSlug(date) {
+  return date
+    .toLowerCase()
+    .replace(/,/g, "")
+    .replace(/\s+/g, "-");
+}
+
+export default function DarshanPage() {
+  // const [darshans, setDarshans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+      const [navOpen, setNavOpen] = useState(false)
+  // const darshans = [
+  //   {
+  //     mainImage : "/images/cow.png",
+  //     date : "1 January 2024",
+  //   },
+  //   {
+  //     mainImage : "/images/cow.png",
+  //     date : "1 January 2024",
+  //   },
+  //   {
+  //     mainImage : "/images/cow.png",
+  //     date : "1 January 2024",
+  //   },
+  //   {
+  //     mainImage : "/images/cow.png",
+  //     date : "1 January 2024",
+  //   },
+  //   {
+  //     mainImage : "/images/cow.png",
+  //     date : "1 January 2024",
+  //   },
+  //   {
+  //     mainImage : "/images/cow.png",
+  //     date : "1 January 2024",
+  //   }
+  // ]
 
   useEffect(() => {
-    fetch('/api/upload-darshan')
-        .then((res) => res.json())
-        .then((data) => {
-        setDarshanDays(data);
+    async function fetchDarshans() {
+      try {
+        const response = await fetch("/api/upload-darshan");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch Darshan");
+        }
+
+        const data = await response.json();
+
+        setDarshans(data);
+      } catch (error) {
+        console.error("Failed to fetch Darshans:", error);
+        setError("Failed to load Darshan photos.");
+      } finally {
         setLoading(false);
-        });
-    }, []);
+      }
+    }
+
+    fetchDarshans();
+  }, []);
 
   return (
-    <div className="darshan-section">
-      <h2>🙏 Daily Darshan Gallery</h2>
-      
-      {/* Grid of Days matching your reference image */}
-      <div className="darshan-grid">
-        {darshanDays.map((day, index) => (
-          <div key={index} className="darshan-card">
-            <img src={day.mainImage} alt={`Darshan on ${day.date}`} loading="lazy" />
-            <div className="card-footer">
-              <span className="date-text">{day.date}</span>
-              <button 
-                className="view-all-btn" 
-                onClick={() => setSelectedDay(day)} // Opens modal for this specific day
-              >
-                View All
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+    <>
+    
+      {/* <Header handleNav={() => setNavOpen(!navOpen)} />
+      <SideNav openNav={navOpen ? "open-nav" : ""} handleNav={() => setNavOpen(!navOpen)} /> */}
+      <div className="darshan-page">
 
-      {/* "View All" Popup Modal */}
-      {selectedDay && (
-        <div className="modal-backdrop" onClick={() => setSelectedDay(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setSelectedDay(null)}>&times;</button>
-            <h3>Darshan Photos - {selectedDay.date}</h3>
-            
-            <div className="modal-photos-grid">
-              {selectedDay.photos.map((photo, pIndex) => (
-                <div key={pIndex} className="modal-photo-item">
-                  <img src={photo.url} alt={photo.caption} />
-                  <p>{photo.caption}</p>
-                </div>
-              ))}
+        {/* HEADER */}
+        <section className="darshan-header">
+          <div className="darshan-header-inner">
+
+            <h1>DAILY DARSHAN</h1>
+
+            <div className="header-line"></div>
+
+            <div className="breadcrumb">
+              <span>Home</span>
+
+              <ChevronRight size={15} />
+
+              <span className="breadcrumb-current">
+                Daily Darshan
+              </span>
             </div>
+
           </div>
-        </div>
-      )}
-    </div>
+        </section>
+
+
+        {/* CONTENT */}
+        <main className="darshan-content">
+
+
+          {/* TITLE */}
+          <h2 className="section-title">
+            Sringar Darshan
+          </h2>
+
+
+          {/* LOADING */}
+          {loading && (
+            <div className="darshan-loading">
+
+              <Loader2
+                size={35}
+                className="loading-spinner"
+              />
+
+              <span>
+                Loading Darshan...
+              </span>
+
+            </div>
+          )}
+
+
+          {/* ERROR */}
+          {!loading && error && (
+            <div className="darshan-error">
+              {error}
+            </div>
+          )}
+
+
+          {/* CARDS */}
+          {!error && !loading && (
+            <div className="darshan-grid">
+
+              {darshans.map((darshan) => (
+
+                <div
+                  className="darshan-card"
+                  key={darshan._id}
+                >
+
+                  {/* MAIN IMAGE */}
+                  <div className="darshan-image-wrapper">
+
+                    <img
+                      src={darshan.mainImage}
+                      alt={`Sringar Darshan ${darshan.date}`}
+                      className="darshan-card-image"
+                    />
+
+                  </div>
+
+
+                  {/* CARD FOOTER */}
+                  <div className="darshan-card-footer">
+
+                    <div className="darshan-date">
+                      {darshan.date}
+                    </div>
+
+
+                    <a
+                      href={`/darshan/${dateToSlug(
+                        darshan.date
+                      )}`}
+                      className="view-all-button"
+                    >
+                      View All
+                    </a>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+          )}
+
+        </main>
+
+      </div>
+      <Floating />
+      
+      <Foooter />
+    </>
   );
 }
