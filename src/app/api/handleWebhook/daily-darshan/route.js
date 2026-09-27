@@ -1,23 +1,53 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { MongoClient } from 'mongodb';
 
-const dbPath = path.join(process.cwd(), 'data', 'darshans.json');
+const uri = process.env.MONGODB_URI;
+let client;
+let clientPromise;
 
-// 1. Handles the GET request from your React frontend
+if (!uri) {
+    throw new Error('Please add your Mongo URI to .env.local');
+}
+
+// In Next.js, use a global variable so the connection is cached across requests
+if (process.env.NODE_ENV === 'development') {
+    if (!global._mongoClientPromise) {
+        client = new MongoClient(uri);
+        global._mongoClientPromise = client.connect();
+    }
+    clientPromise = global._mongoClientPromise;
+} else {
+    client = new MongoClient(uri);
+    clientPromise = client.connect();
+}
+
+async function getDatabase() {
+    const dbClient = await clientPromise;
+    return dbClient.db('Daily_Darshan'); // You can name your database whatever you like
+}
+
+// ----------------------------------------------------
+// 1. HANDLE GET REQUEST (Frontend fetches darshans)
+// ----------------------------------------------------
 export async function GET(request) {
     try {
-        if (!fs.existsSync(dbPath)) {
-            return NextResponse.json([]);
-        }
-        const fileData = fs.readFileSync(dbPath, 'utf8');
-        return NextResponse.json(JSON.parse(fileData));
+        const db = await getDatabase();
+        // Fetch all darshans from MongoDB, sorted by date in descending order (newest first)
+        const darshans = await db.collection('darshans')
+            .find({})
+            .sort({ _id: -1 })
+            .toArray();
+
+        return NextResponse.json(darshans);
     } catch (error) {
+        console.error('Database fetch error:', error);
         return NextResponse.json({ error: 'Failed to load darshans' }, { status: 500 });
     }
 }
 
-// 2. Handles the POST request from Dove Soft WhatsApp webhook
+// ----------------------------------------------------
+// 2. HANDLE POST REQUEST (Webhook from Dove Soft / WhatsApp)
+// ----------------------------------------------------
 export async function POST(request) {
     try {
         const body = await request.json();
@@ -27,38 +57,43 @@ export async function POST(request) {
             return NextResponse.json({ error: 'No image URL provided' }, { status: 400 });
         }
 
-        const dir = path.dirname(dbPath);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-        }
+        const db = await getDatabase();
+        const collection = db.collection('darshans');
 
-        let darshans = [];
-        if (fs.existsSync(dbPath)) {
-            darshans = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-        }
-
+        // Format today's date string (e.g., "27 September 2026")
         const todayDateStr = new Date().toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'long',
             year: 'numeric'
         });
 
-        let todayEntry = darshans.find(d => d.date === todayDateStr);
-        const photoItem = { url: imageUrl, caption: caption || 'Daily Darshan' };
+        const photoItem = {
+            url: imageUrl,
+            caption: caption || 'Daily Darshan'
+        };
 
-        if (todayEntry) {
-            todayEntry.photos.push(photoItem);
+        // Check if an entry for TODAY already exists in MongoDB
+        const existingDay = await collection.findOne({ date: todayDateStr });
+
+        if (existingDay) {
+            // If today's card exists, push the new photo into its photos array
+            await collection.updateOne(
+                { date: todayDateStr },
+                { $push: { photos: photoItem } }
+            );
         } else {
-            darshans.unshift({
+            // If it's the first photo of the day, create a brand new date card document
+            await collection.insertOne({
                 date: todayDateStr,
-                mainImage: imageUrl,
-                photos: [photoItem]
+                mainImage: imageUrl, // First photo becomes the cover card image
+                photos: [photoItem],
+                createdAt: new Date()
             });
         }
 
-        fs.writeFileSync(dbPath, JSON.stringify(darshans, null, 2));
-        return NextResponse.json({ status: 'success' });
+        return NextResponse.json({ status: 'success', message: 'Darshan saved to MongoDB' });
     } catch (error) {
+        console.error('Webhook save error:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
