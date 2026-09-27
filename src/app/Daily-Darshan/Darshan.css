@@ -1,48 +1,573 @@
+/* =========================================
+   MAIN
+========================================= */
+
+.darshan-page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #102d5a;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.darshan-header {
+  /* height: 158px; */
+
+  background:
+    linear-gradient(
+      105deg,
+      #8d1117 0%,
+      #651b46 35%,
+      #25376f 70%,
+      #104e9c 100%
+    );
+
+  color: white;
+}
+
+.darshan-header-inner {
+  width: calc(100% - 15.5%);
+  max-width: 1650px;
+  margin: auto;
+  /* padding-top: 10px; */
+}
+
+.darshan-header h1 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 50px;
+  line-height: 1.1;
+
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.header-line {
+  width: 930px;
+  max-width: 100%;
+
+  height: 1px;
+
+  background: #e1a020;
+
+  margin-top: 12px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 10px;
+
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+}
+
+.breadcrumb a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.breadcrumb-current {
+  color: #d8c6ce;
+}
+
+
+/* =========================================
+   FIRST PAGE
+========================================= */
+
+.darshan-content {
+  width: calc(100% - 15.5%);
+  max-width: 1650px;
+
+  margin: 0 auto;
+
+  padding-top: 25px;
+  padding-bottom: 40px;
+}
+
+
+/* =========================================
+   TABS
+========================================= */
+
+.darshan-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 38px;
+}
+
+.darshan-tab {
+  height: 56px;
+
+  padding: 0 31px;
+
+  border-radius: 30px;
+
+  border: 1px solid #e3aa46;
+
+  background: white;
+
+  color: #555;
+
+  font-size: 17px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.darshan-tab.active {
+  background: #0750aa;
+
+  border-color: #0750aa;
+
+  color: white;
+}
+
+
+/* =========================================
+   SECTION TITLE
+========================================= */
+
+.section-title {
+  margin: 0 0 38px;
+
+  text-align: center;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 38px;
+
+  color: #092f61;
+
+  font-weight: 700;
+}
+
+
+/* =========================================
+   DARSHAN CARDS
+========================================= */
+
 .darshan-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-  padding: 20px;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 30px;
 }
 
 .darshan-card {
-  background: #fff;
-  border: 1px solid #e0d0b0; /* Soft gold temple border */
-  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  display: flex;
-  flex-direction: column;
+
+  background: white;
+
+  border: 1px solid #e9b04d;
+
+  border-radius: 14px;
+
+  box-shadow: none;
 }
 
-.darshan-card img {
+.darshan-image-wrapper {
   width: 100%;
-  height: 200px;
+
+  aspect-ratio: 1.48 / 1;
+
+  overflow: hidden;
+}
+
+.darshan-card-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+.darshan-card-footer {
+  min-height: 85px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 22px;
+}
+
+.darshan-date {
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 18px;
+
+  color: #171717;
+
+  white-space: nowrap;
+}
+
+.view-all-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 108px;
+  height: 42px;
+
+  padding: 0 20px;
+
+  border-radius: 25px;
+
+  background: #073f87;
+
+  color: white;
+
+  text-decoration: none;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.view-all-button:hover {
+  background: #052f67;
+}
+
+
+/* =========================================
+   DETAIL PAGE
+========================================= */
+
+.darshan-detail-content {
+  width: calc(100% - 15.5%);
+  max-width: 1650px;
+
+  margin: 0 auto;
+
+  padding-top: 74px;
+  padding-bottom: 80px;
+}
+
+
+/* =========================================
+   DATE / NAVIGATION
+========================================= */
+
+.detail-top {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 42px;
+}
+
+.detail-date {
+  margin: 0;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 38px;
+
+  font-weight: 500;
+
+  color: #d48100;
+}
+
+.detail-date span {
+  color: #092f61;
+
+  font-size: 34px;
+}
+
+
+/* =========================================
+   PREVIOUS / NEXT
+========================================= */
+
+.date-navigation {
+  display: flex;
+
+  align-items: center;
+
+  gap: 28px;
+
+  font-family: Arial, sans-serif;
+}
+
+.navigation-link {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #092f61;
+
+  text-decoration: none;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.4px;
+}
+
+.navigation-link:hover {
+  color: #d48100;
+}
+
+.current-date {
+  font-size: 16px;
+
+  color: #555;
+
+  font-weight: 700;
+}
+
+.navigation-placeholder {
+  width: 90px;
+}
+
+
+/* =========================================
+   DETAIL IMAGE GRID
+========================================= */
+
+.detail-image-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.detail-image-card {
+  width: 100%;
+
+  aspect-ratio: 1.48 / 1;
+
+  overflow: hidden;
+
+  border-radius: 13px;
+
+  background: #eee;
+}
+
+.detail-image-card img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
   object-fit: cover;
 }
 
-.card-footer {
+
+/* =========================================
+   NOT FOUND
+========================================= */
+
+.darshan-not-found {
+  min-height: 100vh;
+
   display: flex;
-  justify-content: space-between;
+
+  flex-direction: column;
+
   align-items: center;
-  padding: 15px;
+  justify-content: center;
+
+  gap: 20px;
 }
 
-.date-text {
-  font-weight: 600;
-  color: #333;
+.darshan-not-found a {
+  color: #0750aa;
 }
 
-.view-all-btn {
-  background-color: #0b2545; /* Deep blue theme */
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 500;
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1200px) {
+
+  .darshan-grid,
+  .detail-image-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-top {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 25px;
+  }
+
 }
 
-.view-all-btn:hover {
-  background-color: #134074;
+
+@media (max-width: 700px) {
+
+  .darshan-header {
+    height: auto;
+
+    padding-bottom: 25px;
+  }
+
+  .darshan-header-inner {
+    width: calc(100% - 40px);
+  }
+
+  .darshan-header h1 {
+    font-size: 34px;
+  }
+
+  .darshan-content,
+  .darshan-detail-content {
+    width: calc(100% - 30px);
+
+    padding-top: 40px;
+  }
+
+  .darshan-tabs {
+    flex-wrap: wrap;
+  }
+
+  .darshan-tab {
+    height: 48px;
+
+    font-size: 15px;
+
+    padding: 0 20px;
+  }
+
+  .section-title {
+    font-size: 30px;
+  }
+
+  .darshan-grid,
+  .detail-image-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .darshan-card-footer {
+    padding: 0 15px;
+  }
+
+  .darshan-date {
+    font-size: 16px;
+  }
+
+  .view-all-button {
+    min-width: 90px;
+
+    padding: 0 15px;
+  }
+
+  .detail-date {
+    font-size: 30px;
+  }
+
+  .date-navigation {
+    width: 100%;
+
+    justify-content: space-between;
+
+    gap: 10px;
+  }
+
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.darshan-loading {
+  min-height: 300px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 15px;
+
+  color: #092f61;
+
+  font-size: 17px;
+}
+
+
+.darshan-loading-page {
+  min-height: 60vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 15px;
+
+  color: #092f61;
+
+  font-size: 18px;
+}
+
+
+.loading-spinner {
+  animation: darshan-spin 1s linear infinite;
+}
+
+
+@keyframes darshan-spin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.darshan-error {
+  text-align: center;
+
+  padding: 60px 20px;
+
+  color: #b42318;
+
+  font-size: 18px;
 }

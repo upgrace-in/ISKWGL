@@ -5494,7 +5494,7 @@ fieldset:disabled .btn {
   flex-wrap: wrap;
   font-size: var(--bs-breadcrumb-font-size);
   list-style: none;
-  margin-bottom: var(--bs-breadcrumb-margin-bottom);
+  /* margin-bottom: var(--bs-breadcrumb-margin-bottom); */
   padding: var(--bs-breadcrumb-padding-y) var(--bs-breadcrumb-padding-x);
 }
 
