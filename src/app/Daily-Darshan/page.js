@@ -17,7 +17,7 @@ function dateToSlug(date) {
 }
 
 export default function DarshanPage() {
-  // const [darshans, setDarshans] = useState([]);
+  const [darshans, setDarshans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
       const [navOpen, setNavOpen] = useState(false)
