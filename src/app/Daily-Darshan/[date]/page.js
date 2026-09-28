@@ -221,6 +221,7 @@ export default function DarshanDatePage({ params }) {
                       photo.caption ||
                       `Sringar Darshan ${currentDarshan.date} ${index + 1}`
                     }
+                    loading="lazy"
                   />
                 </div>
               ))}
@@ -295,6 +296,7 @@ export default function DarshanDatePage({ params }) {
                 <img
                   src={currentDarshan.photos[lightboxIndex].url}
                   alt="Enlarged Darshan"
+                  loading="lazy"
                 />
               </div>
 
@@ -319,7 +321,7 @@ export default function DarshanDatePage({ params }) {
                     setIsZoomed(false);
                   }}
                 >
-                  <img src={photo.url} alt={`Thumbnail ${idx + 1}`} />
+                  <img src={photo.url} alt={`Thumbnail ${idx + 1}`} loading="lazy"/>
                 </div>
               ))}
             </div>

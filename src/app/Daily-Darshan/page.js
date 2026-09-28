@@ -154,6 +154,7 @@ export default function DarshanPage() {
                       src={darshan.mainImage}
                       alt={`Sringar Darshan ${darshan.date}`}
                       className="darshan-card-image"
+                      loading="lazy"
                     />
 
                   </div>
