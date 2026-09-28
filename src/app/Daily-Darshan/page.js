@@ -75,8 +75,8 @@ export default function DarshanPage() {
   return (
     <>
     
-      {/* <Header handleNav={() => setNavOpen(!navOpen)} />
-      <SideNav openNav={navOpen ? "open-nav" : ""} handleNav={() => setNavOpen(!navOpen)} /> */}
+      <Header handleNav={() => setNavOpen(!navOpen)} />
+      <SideNav openNav={navOpen ? "open-nav" : ""} handleNav={() => setNavOpen(!navOpen)} />
       <div className="darshan-page">
 
         {/* HEADER */}
@@ -88,7 +88,7 @@ export default function DarshanPage() {
             <div className="header-line"></div>
 
             <div className="breadcrumb">
-              <span>Home</span>
+              <a href="/">Home</a>
 
               <ChevronRight size={15} />
 

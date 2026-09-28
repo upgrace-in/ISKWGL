@@ -6,8 +6,14 @@
   min-height: 100vh;
   background: #ffffff;
   color: #102d5a;
+  margin-top:60px;
 }
 
+@media (max-width: 700px) {
+  .darshan-page {
+    margin-top: 40px;
+  }
+}
 
 /* =========================================
    HEADER
@@ -32,7 +38,7 @@
   width: calc(100% - 15.5%);
   max-width: 1650px;
   margin: auto;
-  /* padding-top: 10px; */
+  padding-top: 20px;
 }
 
 .darshan-header h1 {
@@ -40,7 +46,7 @@
 
   font-family: Georgia, "Times New Roman", serif;
 
-  font-size: 50px;
+  font-size: 30px;
   line-height: 1.1;
 
   font-weight: 700;
@@ -65,7 +71,7 @@
 
   margin-top: 10px;
 
-  font-size: 18px;
+  font-size: 13px;
   font-family: Arial, sans-serif;
 }
 
@@ -147,7 +153,7 @@
 
   font-family: Georgia, "Times New Roman", serif;
 
-  font-size: 38px;
+  font-size: 30px;
 
   color: #092f61;
 
@@ -198,7 +204,7 @@
 }
 
 .darshan-card-footer {
-  min-height: 85px;
+  min-height: 55px;
 
   display: flex;
 
@@ -206,7 +212,7 @@
 
   justify-content: space-between;
 
-  padding: 0 22px;
+  padding: 0 12px;
 }
 
 .darshan-date {
@@ -226,13 +232,19 @@
   justify-content: center;
 
   min-width: 108px;
-  height: 42px;
+  height: 35px;
 
   padding: 0 20px;
 
   border-radius: 25px;
 
-  background: #073f87;
+  background: linear-gradient(
+      105deg,
+      #8d1117 0%,
+      #651b46 35%,
+      #25376f 70%,
+      #104e9c 100%
+    );;
 
   color: white;
 
@@ -240,16 +252,16 @@
 
   font-family: Arial, sans-serif;
 
-  font-size: 15px;
+  font-size: 13px;
 
   font-weight: 700;
 
   transition: 0.2s ease;
 }
 
-.view-all-button:hover {
+/* .view-all-button:hover {
   background: #052f67;
-}
+} */
 
 
 /* =========================================
@@ -262,7 +274,7 @@
 
   margin: 0 auto;
 
-  padding-top: 74px;
+  padding-top: 14px;
   padding-bottom: 80px;
 }
 
@@ -433,22 +445,23 @@
   .darshan-header {
     height: auto;
 
-    padding-bottom: 25px;
+    padding-bottom: 10px;
   }
 
   .darshan-header-inner {
     width: calc(100% - 40px);
+    padding-top: 30px;
   }
 
   .darshan-header h1 {
-    font-size: 34px;
+    font-size: 25px;
   }
 
   .darshan-content,
   .darshan-detail-content {
     width: calc(100% - 30px);
 
-    padding-top: 40px;
+    padding-top: 15px;
   }
 
   .darshan-tabs {
@@ -464,7 +477,8 @@
   }
 
   .section-title {
-    font-size: 30px;
+    font-size: 20px;
+    margin-bottom: 25px;
   }
 
   .darshan-grid,
@@ -472,16 +486,16 @@
     grid-template-columns: 1fr;
   }
 
-  .darshan-card-footer {
+  /* .darshan-card-footer {
     padding: 0 15px;
-  }
+  } */
 
   .darshan-date {
     font-size: 16px;
   }
 
   .view-all-button {
-    min-width: 90px;
+    /* min-width: 90px; */
 
     padding: 0 15px;
   }
@@ -570,4 +584,433 @@
   color: #b42318;
 
   font-size: 18px;
+}
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.lightbox-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.lightbox-counter {
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  letter-spacing: 1px;
+}
+
+.lightbox-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.lightbox-actions button,
+.lightbox-actions a {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.lightbox-actions button:hover,
+.lightbox-actions a:hover {
+  opacity: 0.7;
+}
+
+.lightbox-main-viewport {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.lightbox-image-container {
+  position: relative;
+  max-width: 80vw;
+  max-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.lightbox-image-container.zoomed {
+  transform: scale(1.6);
+  cursor: zoom-out;
+}
+
+.lightbox-image-container img {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-watermark {
+  position: absolute;
+  bottom: 10px;
+  left: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.lightbox-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.lightbox-nav-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.lightbox-nav-btn.left {
+  left: 20px;
+}
+
+.lightbox-nav-btn.right {
+  right: 20px;
+}
+
+.lightbox-thumbnails {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  overflow-x: auto;
+}
+
+.lightbox-thumb-item {
+  width: 60px;
+  height: 45px;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.5;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.lightbox-thumb-item.active {
+  opacity: 1;
+  border-color: #e3aa46;
+}
+
+.lightbox-thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* styles for uploading darshan */
+/* =========================================
+   UPLOAD DARSHAN PAGE STYLES
+========================================= */
+
+.upload-container {
+  width: calc(100% - 40px);
+  max-width: 650px;
+  margin: 40px auto 80px auto;
+}
+
+.upload-card {
+  background: white;
+  border: 1px solid #e9b04d;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(9, 47, 97, 0.06);
+  padding: 35px;
+}
+
+.upload-card-header {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.upload-card-header h2 {
+  margin: 0 0 8px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  color: #092f61;
+}
+
+.upload-card-header p {
+  margin: 0;
+  color: #666;
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #102d5a;
+  font-family: Arial, sans-serif;
+}
+
+.upload-dropzone {
+  border: 2px dashed #e3aa46;
+  border-radius: 12px;
+  background: #fdfbf7;
+  padding: 35px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-dropzone:hover {
+  background: #fcf6ed;
+  border-color: #0750aa;
+}
+
+.dropzone-icon {
+  color: #d48100;
+  margin-bottom: 4px;
+}
+
+.dropzone-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #092f61;
+}
+
+.dropzone-hint {
+  font-size: 13px;
+  color: #888;
+}
+
+.preview-container {
+  position: relative;
+  width: 100%;
+  max-height: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-image {
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  display: block;
+}
+
+.remove-preview-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.remove-preview-btn:hover {
+  background: rgba(220, 38, 38, 0.9);
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #0750aa;
+  box-shadow: 0 0 0 3px rgba(7, 80, 170, 0.1);
+}
+
+.status-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-banner.success {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.status-banner.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.status-banner.info {
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.upload-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 48px;
+  background: #073f87;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s;
+}
+
+.upload-submit-btn:hover {
+  background: #052f67;
+}
+
+.upload-submit-btn:active {
+  transform: scale(0.99);
+}
+
+.upload-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .upload-card {
+    padding: 20px;
+  }
+  .upload-card-header h2 {
+    font-size: 24px;
+  }
+}
+
+/* =========================================
+   MULTI-IMAGE PREVIEW STYLES
+========================================= */
+
+.multi-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px;
+  margin-top: 15px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.preview-thumb-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid #e3aa46;
+}
+
+.preview-thumb-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-thumb-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.remove-thumb-btn:hover {
+  background: rgba(220, 38, 38, 0.9);
 }
