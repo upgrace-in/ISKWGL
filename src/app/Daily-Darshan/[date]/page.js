@@ -13,9 +13,9 @@ import {
 } from "lucide-react";
 
 import "../Darshan.css";
-import Header from "../../Components/Header"
-import SideNav from "../../Components/SideNav"
-import Foooter from "../../Components/footter"
+import Header from "../../../Components/Header"
+import SideNav from "../../../Components/SideNav"
+import Foooter from "../../../Components/footter"
 import Floating from "@/Components/Floating";
 
 function dateToSlug(date) {
