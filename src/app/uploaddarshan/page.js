@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import { upload } from "@vercel/blob/client";
 import { Upload, CheckCircle2, AlertCircle, X, Loader2 } from "lucide-react";
 import "../Daily-Darshan/Darshan.css";
 import Header from "../../Components/Header"
@@ -41,32 +42,26 @@ export default function UploadDarshan() {
     }
 
     setUploading(true);
-    setStatusMessage({ type: "info", text: `Compressing and uploading ${imageFiles.length} darshan(s)...` });
-
-    const formData = new FormData();
-    // Append each file with the same key (e.g., 'images' or 'image' depending on your backend API)
-    imageFiles.forEach((file) => {
-      formData.append("images", file);
-    });
-    formData.append("caption", caption);
+    setStatusMessage({ type: "info", text: `Uploading ${imageFiles.length} photos together...` });
 
     try {
-      const res = await fetch("/api/upload-darshan", {
-        method: "POST",
-        body: formData,
-      });
+      // Upload all selected files concurrently directly from the browser to Vercel Blob
+      const uploadPromises = imageFiles.map((file) =>
+        upload(file.name, file, {
+          access: "public",
+          handleUploadUrl: "/api/upload-darshan",
+        })
+      );
 
-      const data = await res.json();
-      if (res.ok) {
-        setStatusMessage({ type: "success", text: "Darshans uploaded successfully!" });
-        setImageFiles([]);
-        setCaption("");
-        if (fileInputRef.current) fileInputRef.current.value = "";
-      } else {
-        setStatusMessage({ type: "error", text: data.error || "Failed to upload." });
-      }
+      await Promise.all(uploadPromises);
+
+      setStatusMessage({ type: "success", text: "All darshan photos uploaded successfully!" });
+      setImageFiles([]);
+      setCaption("");
+      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (err) {
-      setStatusMessage({ type: "error", text: "Network error. Upload failed." });
+      console.error("Upload error:", err);
+      setStatusMessage({ type: "error", text: "Failed to upload images. Please try again." });
     } finally {
       setUploading(false);
     }

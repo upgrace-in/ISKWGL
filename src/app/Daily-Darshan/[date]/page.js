@@ -296,7 +296,6 @@ export default function DarshanDatePage({ params }) {
                   src={currentDarshan.photos[lightboxIndex].url}
                   alt="Enlarged Darshan"
                 />
-                <div className="lightbox-watermark">© ISKCON Attapur</div>
               </div>
 
               <button
