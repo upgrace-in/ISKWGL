@@ -12,6 +12,7 @@
 @media (max-width: 700px) {
   .darshan-page {
     margin-top: 40px;
+    min-height: auto;
   }
 }
 
@@ -290,7 +291,7 @@
 
   justify-content: space-between;
 
-  margin-bottom: 42px;
+  margin-bottom: 25px;
 }
 
 .detail-date {
@@ -434,7 +435,7 @@
 
     align-items: flex-start;
 
-    gap: 25px;
+    gap: 15px;
   }
 
 }

@@ -9,6 +9,49 @@ import SideNav from "../../Components/SideNav"
 import Foooter from "../../Components/footter"
 import Floating from "@/Components/Floating";
 
+// Helper function to compress and resize images on the client side
+async function compressImage(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+
+        // Max width limit to keep file sizes tiny (e.g., 1200px)
+        const maxWidth = 1200;
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Convert to compressed WebP or JPEG blob (quality 0.8)
+        canvas.toBlob(
+          (blob) => {
+            const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".webp", {
+              type: "image/webp",
+              lastModified: Date.now(),
+            });
+            resolve(compressedFile);
+          },
+          "image/webp",
+          0.8
+        );
+      };
+    };
+  });
+}
+
 export default function UploadDarshan() {
   const [imageFiles, setImageFiles] = useState([]);
   const [caption, setCaption] = useState("");
@@ -18,11 +61,15 @@ export default function UploadDarshan() {
   const fileInputRef = useRef(null);
   const [navOpen, setNavOpen] = useState(false)
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
-      // Append new files to existing selection or replace them
-      setImageFiles((prev) => [...prev, ...files]);
+      setStatusMessage({ type: "info", text: "Optimizing images for fast loading..." });
+      
+      // Compress each selected image instantly
+      const compressedFiles = await Promise.all(files.map((file) => compressImage(file)));
+      
+      setImageFiles((prev) => [...prev, ...compressedFiles]);
       setStatusMessage({ type: "", text: "" });
     }
   };
