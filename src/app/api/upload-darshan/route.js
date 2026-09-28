@@ -43,7 +43,6 @@ export async function GET(request) {
         const darshans = rawDarshans.map(darshan => ({
             ...darshan,
             _id: darshan._id.toString(),
-            // If your photos array also contains objects with ObjectIds, map them too:
             photos: darshan.photos?.map(photo => ({
                 ...photo,
                 ...(photo._id && { _id: photo._id.toString() })
@@ -58,38 +57,46 @@ export async function GET(request) {
 }
 
 // ----------------------------------------------------
-// 2. POST: Admin uploads photo (Compress -> Blob -> MongoDB)
+// 2. POST: Admin uploads multiple photos (Compress -> Blob -> MongoDB)
 // ----------------------------------------------------
 export async function POST(request) {
     try {
         const formData = await request.formData();
-        const file = formData.get('image');
+        const files = formData.getAll('images'); // Fetches all files sent under the 'images' key
         const caption = formData.get('caption') || 'Daily Darshan';
 
-        if (!file) {
-            return NextResponse.json({ error: 'No image file uploaded' }, { status: 400 });
+        if (!files || files.length === 0) {
+            return NextResponse.json({ error: 'No image files uploaded' }, { status: 400 });
         }
 
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
+        const photoItems = [];
 
-        // --- COMPRESS & CONVERT TO WEBP ---
-        const compressedBuffer = await sharp(buffer)
-            .resize({ width: 1200, withoutEnlargement: true })
-            .webp({ quality: 80 })
-            .toBuffer();
+        // Process each image file
+        for (const file of files) {
+            const bytes = await file.arrayBuffer();
+            const buffer = Buffer.from(bytes);
 
-        // --- GENERATE SECURE UNGUESSABLE FILENAME ---
-        const secureHash = randomBytes(8).toString('hex');
-        const fileName = `darshan-${Date.now()}-${secureHash}.webp`;
+            // --- COMPRESS & CONVERT TO WEBP ---
+            const compressedBuffer = await sharp(buffer)
+                .resize({ width: 1200, withoutEnlargement: true })
+                .webp({ quality: 80 })
+                .toBuffer();
 
-        // --- UPLOAD TO VERCEL BLOB ---
-        const blob = await put(fileName, compressedBuffer, {
-            access: 'public',
-            contentType: 'image/webp',
-        });
+            // --- GENERATE SECURE UNGUESSABLE FILENAME ---
+            const secureHash = randomBytes(8).toString('hex');
+            const fileName = `darshan-${Date.now()}-${secureHash}.webp`;
 
-        const imageUrl = blob.url;
+            // --- UPLOAD TO VERCEL BLOB ---
+            const blob = await put(fileName, compressedBuffer, {
+                access: 'public',
+                contentType: 'image/webp',
+            });
+
+            photoItems.push({
+                url: blob.url,
+                caption: caption
+            });
+        }
 
         // --- SAVE TO MONGODB ---
         const db = await getDatabase();
@@ -101,28 +108,28 @@ export async function POST(request) {
             year: 'numeric'
         });
 
-        const photoItem = {
-            url: imageUrl,
-            caption: caption
-        };
-
         const existingDay = await collection.findOne({ date: todayDateStr });
 
         if (existingDay) {
+            // Append multiple new photos to today's existing array
             await collection.updateOne(
                 { date: todayDateStr },
-                { $push: { photos: photoItem } }
+                { $push: { photos: {$each: photoItems } } }
             );
         } else {
+            // Create a new document for today with the uploaded batch
             await collection.insertOne({
                 date: todayDateStr,
-                mainImage: imageUrl,
-                photos: [photoItem],
+                mainImage: photoItems[0].url,
+                photos: photoItems,
                 createdAt: new Date()
             });
         }
 
-        return NextResponse.json({ status: 'success', message: 'Darshan uploaded successfully!' });
+        return NextResponse.json({ 
+            status: 'success', 
+            message: `${photoItems.length} darshan photo(s) uploaded successfully!` 
+        });
     } catch (error) {
         console.error('Upload error:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });
