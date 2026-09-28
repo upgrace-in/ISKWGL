@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
-import { put } from '@vercel/blob';
-import sharp from 'sharp';
-import { randomBytes } from 'crypto';
+import { handleUpload } from '@vercel/blob/client';
 
 const uri = process.env.MONGODB_URI;
 let client;
@@ -29,7 +27,7 @@ async function getDatabase() {
 }
 
 // ----------------------------------------------------
-// 1. GET: Frontend fetches all darshans for the gallery
+// GET: Fetch all darshans
 // ----------------------------------------------------
 export async function GET(request) {
     try {
@@ -39,7 +37,6 @@ export async function GET(request) {
             .sort({ _id: -1 })
             .toArray();
 
-        // Convert MongoDB ObjectId to string for safe JSON serialization
         const darshans = rawDarshans.map(darshan => ({
             ...darshan,
             _id: darshan._id.toString(),
@@ -57,81 +54,63 @@ export async function GET(request) {
 }
 
 // ----------------------------------------------------
-// 2. POST: Admin uploads multiple photos (Compress -> Blob -> MongoDB)
+// POST: Handle Client Upload Authorization & MongoDB Saving
 // ----------------------------------------------------
 export async function POST(request) {
+    const body = await request.json();
+
     try {
-        const formData = await request.formData();
-        const files = formData.getAll('images'); // Fetches all files sent under the 'images' key
-        const caption = formData.get('caption') || 'Daily Darshan';
+        // If it's a Vercel Blob client upload handshake
+        const jsonResponse = await handleUpload({
+            body,
+            request,
+            onBeforeGenerateToken: async (pathname) => {
+                return {
+                    allowedContentTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'],
+                    addRandomSuffix: true,
+                };
+            },
+            onUploadCompleted: async ({ blob, tokenPayload }) => {
+                // This triggers automatically on Vercel once an image is successfully uploaded
+                try {
+                    const db = await getDatabase();
+                    const collection = db.collection('darshans');
 
-        if (!files || files.length === 0) {
-            return NextResponse.json({ error: 'No image files uploaded' }, { status: 400 });
-        }
+                    const todayDateStr = new Date().toLocaleDateString('en-GB', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
 
-        const photoItems = [];
+                    // You can pass custom caption via client payload if needed, or default it
+                    const photoItem = {
+                        url: blob.url,
+                        caption: 'Daily Darshan'
+                    };
 
-        // Process each image file
-        for (const file of files) {
-            const bytes = await file.arrayBuffer();
-            const buffer = Buffer.from(bytes);
+                    const existingDay = await collection.findOne({ date: todayDateStr });
 
-            // --- COMPRESS & CONVERT TO WEBP ---
-            const compressedBuffer = await sharp(buffer)
-                .resize({ width: 1200, withoutEnlargement: true })
-                .webp({ quality: 80 })
-                .toBuffer();
-
-            // --- GENERATE SECURE UNGUESSABLE FILENAME ---
-            const secureHash = randomBytes(8).toString('hex');
-            const fileName = `darshan-${Date.now()}-${secureHash}.webp`;
-
-            // --- UPLOAD TO VERCEL BLOB ---
-            const blob = await put(fileName, compressedBuffer, {
-                access: 'public',
-                contentType: 'image/webp',
-            });
-
-            photoItems.push({
-                url: blob.url,
-                caption: caption
-            });
-        }
-
-        // --- SAVE TO MONGODB ---
-        const db = await getDatabase();
-        const collection = db.collection('darshans');
-
-        const todayDateStr = new Date().toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
+                    if (existingDay) {
+                        await collection.updateOne(
+                            { date: todayDateStr },
+                            { $push: { photos: photoItem } }
+                        );
+                    } else {
+                        await collection.insertOne({
+                            date: todayDateStr,
+                            mainImage: blob.url,
+                            photos: [photoItem],
+                            createdAt: new Date()
+                        });
+                    }
+                } catch (dbError) {
+                    console.error('Failed to update MongoDB after blob upload:', dbError);
+                }
+            },
         });
 
-        const existingDay = await collection.findOne({ date: todayDateStr });
-
-        if (existingDay) {
-            // Append multiple new photos to today's existing array
-            await collection.updateOne(
-                { date: todayDateStr },
-                { $push: { photos: {$each: photoItems } } }
-            );
-        } else {
-            // Create a new document for today with the uploaded batch
-            await collection.insertOne({
-                date: todayDateStr,
-                mainImage: photoItems[0].url,
-                photos: photoItems,
-                createdAt: new Date()
-            });
-        }
-
-        return NextResponse.json({ 
-            status: 'success', 
-            message: `${photoItems.length} darshan photo(s) uploaded successfully!` 
-        });
+        return NextResponse.json(jsonResponse);
     } catch (error) {
-        console.error('Upload error:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: error.message }, { status: 400 });
     }
 }
