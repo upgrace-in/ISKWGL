@@ -34,10 +34,21 @@ async function getDatabase() {
 export async function GET(request) {
     try {
         const db = await getDatabase();
-        const darshans = await db.collection('darshans')
+        const rawDarshans = await db.collection('darshans')
             .find({})
             .sort({ _id: -1 })
             .toArray();
+
+        // Convert MongoDB ObjectId to string for safe JSON serialization
+        const darshans = rawDarshans.map(darshan => ({
+            ...darshan,
+            _id: darshan._id.toString(),
+            // If your photos array also contains objects with ObjectIds, map them too:
+            photos: darshan.photos?.map(photo => ({
+                ...photo,
+                ...(photo._id && { _id: photo._id.toString() })
+            })) || []
+        }));
 
         return NextResponse.json(darshans);
     } catch (error) {

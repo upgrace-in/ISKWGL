@@ -17,7 +17,7 @@ function dateToSlug(date) {
 }
 
 export default function DarshanPage() {
-  // const [darshans, setDarshans] = useState([]);
+  const [darshans, setDarshans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
       const [navOpen, setNavOpen] = useState(false)
@@ -52,6 +52,7 @@ export default function DarshanPage() {
     async function fetchDarshans() {
       try {
         const response = await fetch("/api/upload-darshan");
+        console.log(response);
 
         if (!response.ok) {
           throw new Error("Failed to fetch Darshan");
@@ -74,8 +75,8 @@ export default function DarshanPage() {
   return (
     <>
     
-      {/* <Header handleNav={() => setNavOpen(!navOpen)} />
-      <SideNav openNav={navOpen ? "open-nav" : ""} handleNav={() => setNavOpen(!navOpen)} /> */}
+      <Header handleNav={() => setNavOpen(!navOpen)} />
+      <SideNav openNav={navOpen ? "open-nav" : ""} handleNav={() => setNavOpen(!navOpen)} />
       <div className="darshan-page">
 
         {/* HEADER */}
@@ -87,7 +88,7 @@ export default function DarshanPage() {
             <div className="header-line"></div>
 
             <div className="breadcrumb">
-              <span>Home</span>
+              <a href="/">Home</a>
 
               <ChevronRight size={15} />
 
@@ -167,7 +168,7 @@ export default function DarshanPage() {
 
 
                     <a
-                      href={`/darshan/${dateToSlug(
+                      href={`/Daily-Darshan/${dateToSlug(
                         darshan.date
                       )}`}
                       className="view-all-button"

@@ -1,80 +1,196 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from "react";
+import { Upload, CheckCircle2, AlertCircle, X, Loader2 } from "lucide-react";
+import "../Daily-Darshan/Darshan.css";
+import Header from "../../Components/Header"
+import SideNav from "../../Components/SideNav"
+import Foooter from "../../Components/footter"
+import Floating from "@/Components/Floating";
 
 export default function UploadDarshan() {
-  const [imageFile, setImageFile] = useState(null);
-  const [caption, setCaption] = useState('');
+  const [imageFiles, setImageFiles] = useState([]);
+  const [caption, setCaption] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setStatusMessage] = useState({ type: "", text: "" });
+
+  const fileInputRef = useRef(null);
+  const [navOpen, setNavOpen] = useState(false)
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      // Append new files to existing selection or replace them
+      setImageFiles((prev) => [...prev, ...files]);
+      setStatusMessage({ type: "", text: "" });
+    }
+  };
+
+  const handleRemoveImage = (indexToRemove) => {
+    setImageFiles((prev) => prev.filter((_, index) => index !== indexToRemove));
+    if (fileInputRef.current && imageFiles.length <= 1) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!imageFile) return alert('Please select an image');
+    if (imageFiles.length === 0) {
+      setStatusMessage({ type: "error", text: "Please select at least one image." });
+      return;
+    }
 
     setUploading(true);
-    setMessage('Compressing and uploading...');
+    setStatusMessage({ type: "info", text: `Compressing and uploading ${imageFiles.length} darshan(s)...` });
 
     const formData = new FormData();
-    formData.append('image', imageFile);
-    formData.append('caption', caption);
+    // Append each file with the same key (e.g., 'images' or 'image' depending on your backend API)
+    imageFiles.forEach((file) => {
+      formData.append("images", file);
+    });
+    formData.append("caption", caption);
 
     try {
-      const res = await fetch('/api/upload-darshan', {
-        method: 'POST',
-        body: formData, // Sending multipart form data
+      const res = await fetch("/api/upload-darshan", {
+        method: "POST",
+        body: formData,
       });
 
       const data = await res.json();
       if (res.ok) {
-        setMessage('✅ Darshan uploaded successfully!');
-        setImageFile(null);
-        setCaption('');
+        setStatusMessage({ type: "success", text: "Darshans uploaded successfully!" });
+        setImageFiles([]);
+        setCaption("");
+        if (fileInputRef.current) fileInputRef.current.value = "";
       } else {
-        setMessage(`❌ Error: ${data.error}`);
+        setStatusMessage({ type: "error", text: data.error || "Failed to upload." });
       }
     } catch (err) {
-      setMessage('❌ Upload failed.');
+      setStatusMessage({ type: "error", text: "Network error. Upload failed." });
     } finally {
       setUploading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: '500px', margin: '40px auto', padding: '20px', fontFamily: 'sans-serif' }}>
-      <h2>🙏 Upload Daily Darshan</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <div>
-          <label>Select Darshan Photo:</label>
-          <input 
-            type="file" 
-            accept="image/*" 
-            onChange={(e) => setImageFile(e.target.files[0])} 
-            required
-            style={{ display: 'block', marginTop: '5px' }}
-          />
-        </div>
+    <>
+      <Header handleNav={() => setNavOpen(!navOpen)} />
+      <SideNav openNav={navOpen ? "open-nav" : ""} handleNav={() => setNavOpen(!navOpen)} />
+      <div className="darshan-page">
+        {/* HEADER BANNER */}
+        <section className="darshan-header">
+          <div className="darshan-header-inner">
+            <h1>Upload Daily Darshan</h1>
+            <div className="header-line"></div>
+            <div className="breadcrumb">
+              <a href="/">Home</a>
+              <span>/</span>
+              <span className="breadcrumb-current">Upload Darshan</span>
+            </div>
+          </div>
+        </section>
 
-        <div>
-          <label>Caption (Optional):</label>
-          <input 
-            type="text" 
-            placeholder="e.g. Mangala Aarti Darshan" 
-            value={caption} 
-            onChange={(e) => setCaption(e.target.value)}
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-          />
-        </div>
+        {/* UPLOAD FORM CONTAINER */}
+        <main className="upload-container">
+          <div className="upload-card">
+            <div className="upload-card-header">
+              <h2>🙏 Upload Daily Darshan</h2>
+              <p>Select multiple Sringar Darshan photos and add an optional caption.</p>
+            </div>
 
-        <button 
-          type="submit" 
-          disabled={uploading}
-          style={{ padding: '10px', background: '#ff9933', color: '#fff', border: 'none', fontWeight: 'bold', cursor: 'pointer' }}
-        >
-          {uploading ? 'Processing...' : 'Upload Darshan'}
-        </button>
-      </form>
-      {message && <p style={{ marginTop: '15px', fontWeight: 'bold' }}>{message}</p>}
-    </div>
+            <form onSubmit={handleSubmit} className="upload-form">
+              {/* FILE DROPZONE / PICKER */}
+              <div className="form-group">
+                <label className="form-label">Darshan Photos</label>
+
+                <div 
+                  className="upload-dropzone"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Upload size={38} className="dropzone-icon" />
+                  <span className="dropzone-text">Click to browse or select images</span>
+                  <span className="dropzone-hint">You can select multiple files at once</span>
+                </div>
+
+                <input 
+                  type="file" 
+                  ref={fileInputRef}
+                  accept="image/*" 
+                  multiple 
+                  onChange={handleFileChange} 
+                  style={{ display: "none" }}
+                />
+
+                {/* MULTI-IMAGE PREVIEW GRID */}
+                {imageFiles.length > 0 && (
+                  <div className="multi-preview-grid">
+                    {imageFiles.map((file, index) => (
+                      <div className="preview-thumb-card" key={index}>
+                        <img 
+                          src={URL.createObjectURL(file)} 
+                          alt={`Preview ${index + 1}`} 
+                        />
+                        <button 
+                          type="button" 
+                          className="remove-thumb-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemoveImage(index);
+                          }}
+                          title="Remove image"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* CAPTION INPUT */}
+              <div className="form-group">
+                <label className="form-label">Caption (Optional)</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. Mangala Aarti Darshan - Sri Sri Radha Madhava" 
+                  value={caption} 
+                  onChange={(e) => setCaption(e.target.value)}
+                  className="form-input"
+                />
+              </div>
+
+              {/* STATUS MESSAGE */}
+              {message.text && (
+                <div className={`status-banner ${message.type}`}>
+                  {message.type === "success" && <CheckCircle2 size={18} />}
+                  {message.type === "error" && <AlertCircle size={18} />}
+                  {message.type === "info" && <Loader2 size={18} className="loading-spinner" />}
+                  <span>{message.text}</span>
+                </div>
+              )}
+
+              {/* SUBMIT BUTTON */}
+              <button 
+                type="submit" 
+                disabled={uploading}
+                className="upload-submit-btn"
+              >
+                {uploading ? (
+                  <>
+                    <Loader2 size={18} className="loading-spinner" />
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  <span>Publish {imageFiles.length > 0 ? `${imageFiles.length} Photos` : "Darshans"}</span>
+                )}
+              </button>
+            </form>
+          </div>
+        </main>
+      </div>
+      <Floating />
+      
+      <Foooter />
+    </>
   );
 }
