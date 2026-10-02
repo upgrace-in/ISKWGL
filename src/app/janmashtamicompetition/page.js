@@ -10,7 +10,7 @@ const competitionImages = [
 
 export default function Page({ params }) {
     return (
-        <suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Loading...</div>}>
         <CompetitionRegisterForm
             {...params}
             heading={"JANMASHTAMI COMPETITIONS"}
@@ -31,6 +31,6 @@ export default function Page({ params }) {
                 'address'
             ]}
         />
-        </suspense>
+        </Suspense>
     )
 }
