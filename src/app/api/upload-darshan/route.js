@@ -31,22 +31,45 @@ async function getDatabase() {
 // ----------------------------------------------------
 export async function GET(request) {
     try {
+        const { searchParams } = new URL(request.url);
+        const targetDate = searchParams.get('date');
         const db = await getDatabase();
-        const rawDarshans = await db.collection('darshans')
-            .find({})
+        const collection = db.collection('darshans');
+
+        // CASE 1: Fetch full photos for a single specific date when clicked
+        if (targetDate) {
+            const darshan = await collection.findOne({ date: targetDate });
+            if (!darshan) {
+                return NextResponse.json({ error: 'Darshan not found' }, { status: 404 });
+            }
+
+            const formattedDarshan = {
+                ...darshan,
+                _id: darshan._id.toString(),
+                photos: darshan.photos?.map(photo => ({
+                    ...photo,
+                    ...(photo._id && { _id: photo._id.toString() })
+                })) || []
+            };
+
+            return NextResponse.json(formattedDarshan);
+        } 
+
+        // CASE 2: Fetch lightweight summary (Date & Main Image only) for the latest 15 dates
+        const rawSummaries = await collection
+            .find({}, { projection: { date: 1, mainImage: 1, createdAt: 1 } })
             .sort({ _id: -1 })
+            .limit(15)
             .toArray();
 
-        const darshans = rawDarshans.map(darshan => ({
-            ...darshan,
-            _id: darshan._id.toString(),
-            photos: darshan.photos?.map(photo => ({
-                ...photo,
-                ...(photo._id && { _id: photo._id.toString() })
-            })) || []
+        const summaries = rawSummaries.map(item => ({
+            _id: item._id.toString(),
+            date: item.date,
+            mainImage: item.mainImage
         }));
 
-        return NextResponse.json(darshans);
+        return NextResponse.json(summaries);
+
     } catch (error) {
         console.error('Database fetch error:', error);
         return NextResponse.json({ error: 'Failed to load darshans' }, { status: 500 });

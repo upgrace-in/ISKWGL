@@ -1,7 +1,7 @@
 'use client'
 
 import CompetitionRegisterForm from "@/Components/CompetitionRegisterForm"
-
+import { Suspense } from "react";
 const competitionImages = [
     '/headerImages/janmashtami1.jpeg',
     '/headerImages/janmashtami2.jpeg',
@@ -10,6 +10,7 @@ const competitionImages = [
 
 export default function Page({ params }) {
     return (
+        <Suspense fallback={<div>Loading...</div>}>
         <CompetitionRegisterForm
             {...params}
             heading={"JANMASHTAMI COMPETITIONS"}
@@ -30,5 +31,6 @@ export default function Page({ params }) {
                 'address'
             ]}
         />
+        </Suspense>
     )
 }

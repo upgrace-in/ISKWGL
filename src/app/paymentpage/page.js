@@ -317,6 +317,7 @@ export default function DonationCheckoutTest() {
             fontWeight: 'bold',
         }
     };
+    const [wantsDob, setWantsDob] = useState(false);
 
     return (
         <>
@@ -327,7 +328,7 @@ export default function DonationCheckoutTest() {
             <div className="checkout-container">
                 
                 {/* Left Side: Summary & Image */}
-                <div className="summary-section" style={{ backgroundImage: `url('/images/srimati-radharani-1.png')` }}>
+                <div className="summary-section" style={{ backgroundImage: `url('/assets/k1.jpeg')` }}>
                     <div className="summary-overlay">
                         {/* <img src="/logo.png" alt="ISKCON Logo" className="checkout-logo" /> */}
                         <div className="summary-content">
@@ -354,7 +355,50 @@ export default function DonationCheckoutTest() {
                         <div className="form-row">
                             <input type="tel" name="phone" placeholder="Mobile Number" onChange={handlePhoneChange} required />
                             {error && <p style={{ color: "red" }}>{error}</p>}
-                            <input type="date" name="dob" placeholder="Date of Birth (optional)" onChange={handleChange} className="date-input"/>
+                        </div>
+
+                        {/* Checkbox 2 & Section 3: Date of Birth */}
+                        <div className="checkout-form" style={{ marginTop: "15px" }}>
+                            <div
+                                className="checkbox-item"
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "8px",
+                                    marginBottom: "8px",
+                                }}
+                            >
+                                <input
+                                    type="checkbox"
+                                    id="includeDob"
+                                    checked={wantsDob}
+                                    onChange={(e) => setWantsDob(e.target.checked)}
+                                />
+
+                                <label htmlFor="includeDob">
+                                    I would like to provide my Date of Birth
+                                </label>
+                            </div>
+
+                            {wantsDob && (
+                                <div
+                                    className="checkout-form"
+                                    style={{ marginBottom: "15px" }}
+                                >
+                                    <div className="form-group-title">
+                                        2. Date of Birth
+                                    </div>
+
+                                    <input
+                                        type="date"
+                                        name="dob"
+                                        value={formData.dob ?? ""}
+                                        onChange={handleChange}
+                                        className="date-input"
+                                        required={wantsDob}
+                                    />
+                                </div>
+                            )}
                         </div>
 
                         {/* Checkbox 1 & Section 2: Tax Benefits */}

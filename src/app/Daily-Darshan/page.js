@@ -7,8 +7,7 @@ import Header from "../../Components/Header"
 import SideNav from "../../Components/SideNav"
 import Foooter from "../../Components/footter"
 import Floating from "@/Components/Floating";
-import DirectDonation from "@/Components/Direct_donation_and_80G"
-
+import Image from "next/image";
 function dateToSlug(date) {
   return date
     .toLowerCase()
@@ -148,15 +147,15 @@ export default function DarshanPage() {
                 >
 
                   {/* MAIN IMAGE */}
-                  <div className="darshan-image-wrapper">
-
-                    <img
+                  <div className="darshan-image-wrapper" style={{ position: "relative", width: "100%", height: "260px" }}>
+                    <Image
                       src={darshan.mainImage}
                       alt={`Sringar Darshan ${darshan.date}`}
-                      className="darshan-card-image"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      style={{ objectFit: "cover" }}
                       loading="lazy"
                     />
-
                   </div>
 
 

@@ -1,9 +1,11 @@
 'use client'
 import UniversalDonateForm from "@/Components/UniversalDonateForm"
-
+import { Suspense } from "react";
 export default function Page({ params }) {
 
-    return <UniversalDonateForm
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+        <UniversalDonateForm
 
         {...params}
 
@@ -25,4 +27,6 @@ export default function Page({ params }) {
             ['amount', 'name', 'phone', 'email', 'dob', 'pan', 'pin', 'address']
         }
     />
+    </Suspense>
+    );
 }
