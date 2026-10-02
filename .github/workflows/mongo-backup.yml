@@ -25,8 +25,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y wget gnupg
           curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
-          echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/software-sources.list.d/mongodb-org-7.0.list
-          # Simpler built-in alternative for ubuntu-latest:
+          echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+          sudo apt-get update
           sudo apt-get install -y mongodb-database-tools
 
       - name: Run mongodump
@@ -46,4 +46,4 @@ jobs:
         with:
           name: mongodb-backup-${{ env.BACKUP_FILE }}
           path: ${{ env.BACKUP_FILE }}
-          retention-days: 14 # Keeps the backup file stored on GitHub for 14 days for free
+          retention-days: 14
