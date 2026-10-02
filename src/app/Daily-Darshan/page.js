@@ -147,15 +147,14 @@ export default function DarshanPage() {
                 >
 
                   {/* MAIN IMAGE */}
-                  <div className="darshan-image-wrapper" style={{ position: "relative", width: "100%", height: "260px" }}>
-                    <Image
+                  <div className="darshan-image-wrapper">
+
+                    <img
                       src={darshan.mainImage}
                       alt={`Sringar Darshan ${darshan.date}`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      style={{ objectFit: "cover" }}
-                      loading="lazy"
+                      className="darshan-card-image"
                     />
+
                   </div>
 
 
