@@ -1,6 +1,6 @@
 'use client'
 import './rathyatrastyles.css'
-import React, { useState, useRef, useEffect } from 'react';
+import React, { Suspense, useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useDonation } from '@/Helpers/DonationContext';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -572,7 +572,7 @@ const SevaCard = ({ plan, onDonate, cardType, gifts, isPremium,initiallyExpanded
 };
 
 // 3. MAIN RATHYATRA COMPONENT
-export default function Rathyatra() {
+function RathyatraContent() {
     const router = useRouter();
     const { handleDonateClick } = useDonate();
     const [navOpen, setNavOpen] = useState(false)
@@ -952,5 +952,13 @@ export default function Rathyatra() {
             <Floating />
             <Foooter />
         </>
+    );
+}
+
+export default function Rathyatra() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <RathyatraContent />
+        </Suspense>
     );
 }
