@@ -13,17 +13,10 @@ import {
 } from "lucide-react";
 
 import "../Darshan.css";
-import Header from "../../../Components/Header"
-import SideNav from "../../../Components/SideNav"
-import Foooter from "../../../Components/footter"
+import Header from "../../../Components/Header";
+import SideNav from "../../../Components/SideNav";
+import Foooter from "../../../Components/footter";
 import Floating from "@/Components/Floating";
-
-function dateToSlug(date) {
-  return date
-    .toLowerCase()
-    .replace(/,/g, "")
-    .replace(/\s+/g, "-");
-}
 
 function slugToDate(slug) {
   return slug
@@ -35,50 +28,56 @@ function slugToDate(slug) {
 }
 
 export default function DarshanDatePage({ params }) {
-  const [darshans, setDarshans] = useState([]);
   const [currentDarshan, setCurrentDarshan] = useState(null);
+  const [navigationDates, setNavigationDates] = useState({ prev: null, next: null });
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [navOpen, setNavOpen] = useState(false)
+  const [navOpen, setNavOpen] = useState(false);
 
   // Lightbox State
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [isZoomed, setIsZoomed] = useState(false);
 
+  const requestedDateStr = slugToDate(params.date);
+
   useEffect(() => {
-    async function fetchDarshans() {
+    async function fetchDarshanDetails() {
       try {
-        const response = await fetch("/api/upload-darshan");
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch Darshan");
+        setLoading(true);
+        // 1. Fetch exact photos for the requested date
+        const res = await fetch(`/api/upload-darshan?date=${encodeURIComponent(requestedDateStr)}`);
+        
+        if (!res.ok) {
+          throw new Error("Darshan not found");
         }
 
-        const data = await response.json();
-        setDarshans(data);
+        const darshanData = await res.json();
+        setCurrentDarshan(darshanData);
 
-        const requestedDate = slugToDate(params.date);
-        const found = data.find(
-          (item) =>
-            item.date.toLowerCase() === requestedDate.toLowerCase()
-        );
-
-        if (!found) {
-          setError("Darshan not found for this date.");
-        } else {
-          setCurrentDarshan(found);
+        // 2. Fetch lightweight summary list to calculate Previous/Next navigation links
+        const listRes = await fetch("/api/upload-darshan");
+        if (listRes.ok) {
+          const listData = await listRes.json();
+          const currentIndex = listData.findIndex((item) => item.date.toLowerCase() === requestedDateStr.toLowerCase());
+          
+          if (currentIndex !== -1) {
+            setNavigationDates({
+              prev: currentIndex < listData.length - 1 ? listData[currentIndex + 1] : null,
+              next: currentIndex > 0 ? listData[currentIndex - 1] : null,
+            });
+          }
         }
-      } catch (error) {
-        console.error("Failed to fetch Darshans:", error);
-        setError("Failed to load Darshan photos.");
+      } catch (err) {
+        console.error("Failed to load darshan details:", err);
+        setError("Darshan not found for this date.");
       } finally {
         setLoading(false);
       }
     }
 
-    fetchDarshans();
-  }, [params.date]);
+    fetchDarshanDetails();
+  }, [params.date, requestedDateStr]);
 
   // Handle keyboard navigation for Lightbox
   useEffect(() => {
@@ -108,10 +107,6 @@ export default function DarshanDatePage({ params }) {
     );
   };
 
-  /* ---------------------------------------
-     LOADING
-  --------------------------------------- */
-
   if (loading) {
     return (
       <div className="darshan-loading-page">
@@ -120,10 +115,6 @@ export default function DarshanDatePage({ params }) {
       </div>
     );
   }
-
-  /* ---------------------------------------
-     ERROR
-  --------------------------------------- */
 
   if (error || !currentDarshan) {
     return (
@@ -134,24 +125,12 @@ export default function DarshanDatePage({ params }) {
     );
   }
 
-  const currentIndex = darshans.findIndex(
-    (item) => item._id === currentDarshan._id
-  );
-
-  const previousDarshan =
-    currentIndex < darshans.length - 1 ? darshans[currentIndex + 1] : null;
-
-  const nextDarshan = currentIndex > 0 ? darshans[currentIndex - 1] : null;
-
   return (
     <>
-    
       <Header handleNav={() => setNavOpen(!navOpen)} />
       <SideNav openNav={navOpen ? "open-nav" : ""} handleNav={() => setNavOpen(!navOpen)} />
       <div className="darshan-page">
-        {/* =====================================
-            HEADER
-        ====================================== */}
+        {/* HEADER */}
         <section className="darshan-header">
           <div className="darshan-header-inner">
             <h1>SRINGAR DARSHAN</h1>
@@ -166,11 +145,8 @@ export default function DarshanDatePage({ params }) {
           </div>
         </section>
 
-        {/* =====================================
-            DETAIL CONTENT
-        ====================================== */}
+        {/* DETAIL CONTENT */}
         <main className="darshan-detail-content">
-          {/* DATE + NAVIGATION */}
           <div className="detail-top">
             <h2 className="detail-date">
               <span>-</span> {currentDarshan.date}
@@ -178,9 +154,9 @@ export default function DarshanDatePage({ params }) {
 
             {/* NAVIGATION */}
             <div className="date-navigation">
-              {previousDarshan ? (
+              {navigationDates.prev ? (
                 <a
-                  href={`/Daily-Darshan/${dateToSlug(previousDarshan.date)}`}
+                  href={`/Daily-Darshan/${navigationDates.prev.date.toLowerCase().replace(/,/g, "").replace(/\s+/g, "-")}`}
                   className="navigation-link"
                 >
                   <ChevronLeft size={18} />
@@ -190,9 +166,9 @@ export default function DarshanDatePage({ params }) {
                 <div className="navigation-placeholder"></div>
               )}
 
-              {nextDarshan ? (
+              {navigationDates.next ? (
                 <a
-                  href={`/Daily-Darshan/${dateToSlug(nextDarshan.date)}`}
+                  href={`/Daily-Darshan/${navigationDates.next.date.toLowerCase().replace(/,/g, "").replace(/\s+/g, "-")}`}
                   className="navigation-link"
                 >
                   <span>NEXT</span>
@@ -204,9 +180,7 @@ export default function DarshanDatePage({ params }) {
             </div>
           </div>
 
-          {/* =====================================
-              PHOTOS GRID
-          ====================================== */}
+          {/* PHOTOS GRID */}
           <div className="detail-image-grid">
             {currentDarshan.photos &&
               currentDarshan.photos.map((photo, index) => (
@@ -228,12 +202,9 @@ export default function DarshanDatePage({ params }) {
           </div>
         </main>
 
-        {/* =====================================
-            LIGHTBOX MODAL
-        ====================================== */}
+        {/* LIGHTBOX MODAL */}
         {lightboxIndex !== null && currentDarshan.photos && (
           <div className="lightbox-overlay">
-            {/* Top Bar Controls */}
             <div className="lightbox-top-bar">
               <span className="lightbox-counter">
                 {lightboxIndex + 1} / {currentDarshan.photos.length}
@@ -279,7 +250,6 @@ export default function DarshanDatePage({ params }) {
               </div>
             </div>
 
-            {/* Main Display Area */}
             <div className="lightbox-main-viewport">
               <button
                 className="lightbox-nav-btn left"
@@ -308,7 +278,6 @@ export default function DarshanDatePage({ params }) {
               </button>
             </div>
 
-            {/* Bottom Thumbnails Carousel */}
             <div className="lightbox-thumbnails">
               {currentDarshan.photos.map((photo, idx) => (
                 <div
