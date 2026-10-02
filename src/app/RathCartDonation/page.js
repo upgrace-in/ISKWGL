@@ -7,8 +7,44 @@ import SideNav from "../../Components/SideNav"
 import Floating from "@/Components/Floating";
 import Foooter from "../../Components/footter"
 import DirectDonation from "@/Components/Direct_donation_and_80G"
+import confetti from 'canvas-confetti';
+import './GiftBox.css';
 import './donation.css';
 export default function RathDonation() {
+    const [isShaking, setIsShaking] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
+  // Sample list of gifts
+  const gifts = [
+    "🎁 1 Month Free Subscription",
+    "🎧 Wireless Headphones",
+    "👕 Exclusive Merchandise",
+    "⭐ 500 Bonus Points"
+  ];
+
+  const handleGiftClick = () => {
+    // 1. Trigger the shaking animation
+    setIsShaking(true);
+
+    // 2. Wait for the shake to finish, then explode and show popup
+    setTimeout(() => {
+      // Trigger confetti explosion
+      confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 }, // Starts slightly below the top of the screen
+        colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00']
+      });
+
+      // Stop shaking and show the modal
+      setIsShaking(false);
+      setShowPopup(true);
+    }, 600); // 600ms matches the CSS animation duration
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+  };
     const [data, setData] = useState()
     const [navOpen, setNavOpen] = useState(false)
     const { setDonationData } = useDonation();
@@ -48,24 +84,24 @@ export default function RathDonation() {
 
         router.push('/payment-page');
     };
-    const [currentFunding, setCurrentFunding] = useState(0);
-    useEffect(() => {
-        const fetchTotal = async () => {
-            try {
-                const response = await fetch('/api/donationforrathcart');
-                const data = await response.json();
-                setCurrentFunding(data.totalRaised);
-            } catch (error) {
-                console.error("Error fetching total:", error);
-            }
-        };
+    // const [currentFunding, setCurrentFunding] = useState(0);
+    // useEffect(() => {
+    //     const fetchTotal = async () => {
+    //         try {
+    //             const response = await fetch('/api/donationforrathcart');
+    //             const data = await response.json();
+    //             setCurrentFunding(data.totalRaised);
+    //         } catch (error) {
+    //             console.error("Error fetching total:", error);
+    //         }
+    //     };
 
-        fetchTotal();
-    }, []);
+    //     fetchTotal();
+    // }, []);
 
     
     // Mock current funding - in a real app, fetch this from your MongoDB
-    // const currentFunding = 0; 
+    const currentFunding = 0; 
     const goal = 1000000;
     const progressPercent = (currentFunding / goal) * 100;
 
@@ -84,32 +120,33 @@ export default function RathDonation() {
             </section> */}
 
             <section className="rath-hero-container">
-    <picture>
-        {/* MOBILE IMAGE: Shown when screen is 768px or less */}
-        <source 
-            media="(max-width: 768px)" 
-            srcSet="/images/rath-mobile-2.png" 
-        />
-        {/* DESKTOP IMAGE: Default shown for larger screens */}
-        <img 
-            src="/images/rath-6.png" 
-            alt="Rath Construction" 
-            className="hero-image" 
-        />
-    </picture>
+                <picture>
+                    {/* MOBILE IMAGE: Shown when screen is 768px or less */}
+                    <source 
+                        media="(max-width: 768px)" 
+                        srcSet="/images/rath-mobile-2.png" 
+                    />
+                    {/* DESKTOP IMAGE: Default shown for larger screens */}
+                    <img 
+                        src="/images/rath-6.png" 
+                        alt="Rath Construction" 
+                        className="hero-image" 
+                    />
+                </picture>
 
-    <div className="hero-overlay-text">
-        <h2 className="year-tag">THIS YEAR 2026</h2>
-        <h1>{"Let\'s"} build our <span className="gold-text">NEW RATH</span></h1>
-        <p>For Jagannath, Baladev & Subhadra Maharani</p>
-    </div>
-</section>
+                <div className="hero-overlay-text">
+                    <h2 className="year-tag">THIS YEAR 2026</h2>
+                    <h1>{"Let\'s"} build our <span className="gold-text">NEW RATH</span></h1>
+                    <p>For Jagannath, Baladev & Subhadra Maharani</p>
+                </div>
+            </section>
+            
 
             {/* PROGRESS TRACKER */}
             <section className="progress-container">
                 <div className="progress-header">
-                    <span class="label-target">Target: ₹10,00,000</span>
-                    <span class="label-raised">Raised: ₹{currentFunding.toLocaleString()}</span>
+                    <span className="label-target">Target: ₹10,00,000</span>
+                    <span className="label-raised">Raised: ₹{currentFunding.toLocaleString()}</span>
                 </div>
                 <div className="progress-bar-bg">
                     <div className="progress-fill" style={{ width: `${progressPercent}%` }}>
@@ -130,8 +167,38 @@ export default function RathDonation() {
                         <div key={index} className={`seva-card ${gridClass}`}>
                             {/* {plan.badge && <span className="maha-badge">{plan.badge}</span>} */}
                             <div className="seva-icon"><img src={plan.icon} width="70" height="70"/></div>
-                            <h3>{plan.title}</h3>
+                            <h3>{plan.title}</h3>   
                             <p className="seva-price">₹{plan.price.toLocaleString()}</p>
+                            <div className="gift-container">
+                                    {/* The Gift Icon */}
+                                {!showPopup && (
+                                    <div 
+                                    className={`gift-icon ${isShaking ? 'shaking' : 'pulsing'}`} 
+                                    onClick={handleGiftClick}
+                                    role="button"
+                                    aria-label="Open Gift"
+                                    >
+                                    🎁
+                                    </div>
+                                )}
+
+                                {/* The Popup Modal */}
+                                {showPopup && (
+                                    <div className="popup-overlay" onClick={closePopup}>
+                                    <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+                                        <h2>Surprise! Here are your gifts:</h2>
+                                        <ul className="gift-list">
+                                        {gifts.map((gift, index) => (
+                                            <li key={index}>{gift}</li>
+                                        ))}
+                                        </ul>
+                                        <button className="close-btn" onClick={closePopup}>
+                                        Awesome!
+                                        </button>
+                                    </div>
+                                    </div>
+                                )}
+                                </div>
                             <button onClick={() => handleDonate(plan)} className="contribute-btn">
                                 Contribute Seva
                             </button>

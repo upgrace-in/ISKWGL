@@ -132,12 +132,7 @@ export default function Page({ }) {
                                     <figure className="up-right">
                                         <img src={`/headerImages/balaram-purnima-2026.jpeg`} alt="" /></figure>
                                 </div>
-                                {/* <div className="form-part mt-4 me-lg-2">
-                                    <div className="notes-wrap mt-0">
-                                        <p className="text-center"><span> Please Note:</span> Complete Address with PIN-Code
-                                            and PAN is mandatory for an 80G Receipt.</p>
-                                    </div>
-                                </div> */}
+                                {/*  */}
                             </div>
                             <div className="col-lg-8 mt-lg-0 mt-4 ">
                                 <div className="row">

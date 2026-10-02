@@ -13,7 +13,7 @@ export async function GET() {
             return NextResponse.json({ role: null }, { status: 401 });
         }
 
-        const secret = new TextEncoder().encode(JWT_SECRET);
+        const secret = new TextEncoder().encode('JWT_SECRET');
         const { payload } = await jwtVerify(token, secret);
 
         return NextResponse.json({ role: payload.role });

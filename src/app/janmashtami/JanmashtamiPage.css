@@ -10,17 +10,95 @@
   line-height: 1.6;
 }
 
-/* HERO SECTION */
+/* HERO SECTION OVERRIDES */
 .hero-section {
   position: relative;
-  z-index:1;
+  z-index: 1;
   display: flex;
-  flex-direction: column; /* Ensure vertical stack layout */
-  justify-content: flex-end; /* Pushes flex items to the bottom */
-  align-items: center; /* Keeps content horizontally centered */
-  padding-bottom: 1rem; /* Prevents text from sticking to the absolute bottom edge */
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  
+  padding: 2rem 1.5rem;
+}
+
+/* HERO LAYOUT CONTAINER */
+.hero-layout-grid {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 2rem;
+}
+
+/* LEFT SIDE IMAGE */
+.hero-left-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 320px;
+}
+
+.hero-left-image img {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: contain;
+  /* Optional drop shadow glow effect */
+  filter: drop-shadow(0 8px 20px rgba(244, 196, 48, 0.25));
+  transition: transform 0.3s ease;
+}
+
+/* DESKTOP LAYOUT ADJUSTMENT (min-width: 992px) */
+@media (min-width: 992px) {
+  .hero-section {
+    height: 60vh;
+    min-height: 60vh;
+    padding: 0 2rem;
+  }
+
+  .hero-layout-grid {
+    flex-direction: row; /* Aligns Image Left & Text Right */
+    justify-content: center;
+    align-items: center;
+    text-align: left; /* Left align text content on desktop */
+    gap: 3.5rem;
+  }
+
+  .hero-left-image {
+    max-width: 380px;
+    flex-shrink: 0;
+  }
+
+  .hero-left-image img {
+    max-height: 420px;
+  }
+
+  .hero-content {
+    max-width: 650px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns titles & badges to the left */
+  }
+
+  .hero-title {
+    text-align: left;
+  }
+
+  .hero-buttons-container {
+    align-items: flex-start;
+  }
+
+  .hero-primary-actions,
+  .hero-secondary-actions {
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 768px) {
@@ -29,12 +107,12 @@
 
   }
 }
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   .hero-section {
     height: 60vh;
-    min-height: 60vh; /* Ensures it smoothly stretches if content is taller */
+    min-height: 60vh; 
   }
-}
+} */
 
 
 /* HERO BACKGROUND SLIDESHOW */
