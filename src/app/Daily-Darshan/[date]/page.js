@@ -39,9 +39,23 @@ export default function DarshanDatePage({ params }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  const requestedDateStr = slugToDate(params.date);
+  // Safely unwrap params if it's a promise or handle if it's an object
+  const [dateSlug, setDateSlug] = useState("");
 
   useEffect(() => {
+    // Resolve params safely (handles Next.js 15 asynchronous params or normal objects)
+    Promise.resolve(params).then((resolvedParams) => {
+      if (resolvedParams?.date) {
+        setDateSlug(resolvedParams.date);
+      }
+    });
+  }, [params]);
+
+  useEffect(() => {
+    if (!dateSlug) return;
+
+    const requestedDateStr = slugToDate(dateSlug);
+
     async function fetchDarshanDetails() {
       try {
         setLoading(true);
@@ -55,7 +69,7 @@ export default function DarshanDatePage({ params }) {
         const darshanData = await res.json();
         setCurrentDarshan(darshanData);
 
-        // 2. Fetch lightweight summary list to calculate Previous/Next navigation links
+        // 2. Fetch lightweight summary list for Previous/Next navigation links
         const listRes = await fetch("/api/upload-darshan");
         if (listRes.ok) {
           const listData = await listRes.json();
@@ -77,7 +91,7 @@ export default function DarshanDatePage({ params }) {
     }
 
     fetchDarshanDetails();
-  }, [params.date, requestedDateStr]);
+  }, [dateSlug]);
 
   // Handle keyboard navigation for Lightbox
   useEffect(() => {
