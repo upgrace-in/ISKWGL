@@ -11,9 +11,9 @@ export async function POST(request) {
 
         let role = null;
 
-        if (password === dashboardadminPassword) {
+        if (password === 'dashboardadminPassword') {
             role = "admin";
-        } else if (password === dashboardviewerPassword) {
+        } else if (password === 'dashboardviewerPassword') {
             role = "viewer";
         }
 
@@ -25,7 +25,7 @@ export async function POST(request) {
         }
 
         // Create a signed JWT containing the user's role
-        const secret = new TextEncoder().encode(JWT_SECRET);
+        const secret = new TextEncoder().encode('JWT_SECRET');
         const token = await new SignJWT({ role })
             .setProtectedHeader({ alg: "HS256" })
             .setIssuedAt()

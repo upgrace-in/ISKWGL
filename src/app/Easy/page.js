@@ -129,6 +129,18 @@ export default function DonationEntryForm() {
         }
     }
 
+    // Popup Modal State
+    const [popup, setPopup] = useState({ isOpen: false, title: '', message: '' });
+
+    const showErrorPopup = (message, title = "Technical Issue") => {
+        setPopup({ isOpen: true, title, message });
+    };
+
+    const closePopup = () => {
+        setPopup({ isOpen: false, title: '', message: '' });
+        window.location.reload(); // Refreshes the page automatically
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -153,7 +165,8 @@ export default function DonationEntryForm() {
             amount: formData.amount, // From your Context
             donationType: formData.seva,
             seva: formData.seva,
-            fulladdress: address_split
+            fulladdress: address_split,
+            orderId: ''
         };
         console.log("Passing this to the final function:", submissionData);
 
@@ -170,9 +183,30 @@ export default function DonationEntryForm() {
             // }, 500)
             // save the data with an orderID
             console.log("Saving donation data to the database with orderId...");
-            const donationdata = await axios.post(`/api/createDonation/`, finalData)
-            finalData['orderId'] = donationdata.data.orderId
-            console.log("Donation data saved with orderId:", donationdata.data.orderId);
+
+            let donationRes;
+            // Step 1: Create donation order in database
+            try {
+                donationRes = await axios.post('/api/createDonation/', submissionData);
+            } catch (err) {
+                // Check if server responded with status code 500
+                if (err.response && err.response.status === 500) {
+                    showErrorPopup("Some technical issue was faced, please refresh and try again.");
+                }else {
+                    showErrorPopup(err.response?.data?.error || "Failed to create donation record. Please try again.");
+                }
+                
+                setIsSubmitting(false);
+                return; // Stop further execution
+            }
+            const orderId = donationRes?.data?.orderId;
+            if (!orderId) {
+                showErrorPopup("Some technical issue was faced, please refresh and try again.");
+                setIsSubmitting(false);
+                return;
+            }
+            console.log("Donation data saved with orderId:", orderId);
+            finalData.orderId = orderId;
             const response = await fetch('/api/payment_testing', {
                 method: 'POST',
                 headers: {
@@ -198,21 +232,15 @@ export default function DonationEntryForm() {
                 window.location.href = redirectUrl;
                 
             } else {
-                console.error("Payment failed to initiate:", data1);
-                setStatus({ message: "Payment initialization failed", disabled: false });
+                showErrorPopup("Payment initialization failed. Please refresh and try again.");
+                setIsSubmitting(false);
             }
 
         } catch (e) {
-            
-        } finally {
+            console.error("Unexpected error submitting form:", error);
+            showErrorPopup("An unexpected error occurred. Please try again.");
             setIsSubmitting(false);
         }
-
-
-
-
-
-
 
         // setMessage({ text: '', type: '' });
 
@@ -356,6 +384,52 @@ export default function DonationEntryForm() {
     };
     
     const [navOpen, setNavOpen] = useState(false)
+
+    // Inline Styles for Quick Integration (Can be replaced with Tailwind CSS)
+    const modalStyles = {
+        overlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+        },
+        modal: {
+            backgroundColor: '#fff',
+            padding: '24px',
+            borderRadius: '8px',
+            maxWidth: '400px',
+            width: '90%',
+            textAlign: 'center',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+        },
+        title: {
+            margin: '0 0 12px 0',
+            color: '#d9534f',
+            fontSize: '20px',
+        },
+        message: {
+            margin: '0 0 20px 0',
+            color: '#333',
+            fontSize: '15px',
+            lineHeight: '1.4',
+        },
+        button: {
+            backgroundColor: '#d9534f',
+            color: '#fff',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: 'bold',
+        }
+    };
 
     return (
         <>
@@ -535,6 +609,18 @@ export default function DonationEntryForm() {
                     </button>
                 </div>
             </form>
+            {/* Custom Modal Popup */}
+            {popup.isOpen && (
+                <div style={modalStyles.overlay}>
+                    <div style={modalStyles.modal}>
+                        <h3 style={modalStyles.title}>{popup.title}</h3>
+                        <p style={modalStyles.message}>{popup.message}</p>
+                        <button style={modalStyles.button} onClick={closePopup}>
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
 
         <Floating />

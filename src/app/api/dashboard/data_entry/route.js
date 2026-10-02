@@ -30,7 +30,7 @@ export async function POST() {
     let itemsWithTempIds = data.map((item) => {
       let tempId;
       do {
-        tempId = `order_${crypto.randomInt(100000, 1000000)}`;
+        tempId = `order_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}_${Math.floor(1000 + Math.random() * 9000)}`
       } while (generatedIdsSet.has(tempId)); // Ensures no intra-batch duplicates
 
       generatedIdsSet.add(tempId);
@@ -58,7 +58,7 @@ export async function POST() {
       // Check if it exists in the DB
       if (existingDocs.some((doc) => doc.orderId === finalOrderId)) {
         do {
-          finalOrderId = `order_${crypto.randomInt(100000, 1000000)}`;
+          finalOrderId = `order_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}_${Math.floor(1000 + Math.random() * 9000)}`;
         } while (takenIdsSet.has(finalOrderId)); // Must check against ALL taken IDs
 
         takenIdsSet.add(finalOrderId);
@@ -103,7 +103,7 @@ export async function POST() {
     itemsWithTempIds = data.map((item) => {
       let tempId;
       do {
-        tempId = `order_${crypto.randomInt(100000, 1000000)}`;
+        tempId = `order_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}_${Math.floor(1000 + Math.random() * 9000)}`;
       } while (generatedIdsSet.has(tempId)); // Ensures no intra-batch duplicates
 
       generatedIdsSet.add(tempId);
@@ -130,7 +130,7 @@ export async function POST() {
       // Check if it exists in the DB
       if (existingDocs.some((doc) => doc.orderId === finalOrderId)) {
         do {
-          finalOrderId = `order_${crypto.randomInt(100000, 1000000)}`;
+          finalOrderId = `order_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}_${Math.floor(1000 + Math.random() * 9000)}`;
         } while (takenIdsSet.has(finalOrderId)); // Must check against ALL taken IDs
 
         takenIdsSet.add(finalOrderId);
@@ -175,7 +175,7 @@ export async function POST() {
     itemsWithTempIds = data.map((item) => {
       let tempId;
       do {
-        tempId = `order_${crypto.randomInt(100000, 1000000)}`;
+        tempId = `order_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}_${Math.floor(1000 + Math.random() * 9000)}`;
       } while (generatedIdsSet.has(tempId)); // Ensures no intra-batch duplicates
 
       generatedIdsSet.add(tempId);
@@ -202,7 +202,7 @@ export async function POST() {
       // Check if it exists in the DB
       if (existingDocs.some((doc) => doc.orderId === finalOrderId)) {
         do {
-          finalOrderId = `order_${crypto.randomInt(100000, 1000000)}`;
+          finalOrderId = `order_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}_${Math.floor(1000 + Math.random() * 9000)}`;
         } while (takenIdsSet.has(finalOrderId)); // Must check against ALL taken IDs
 
         takenIdsSet.add(finalOrderId);
