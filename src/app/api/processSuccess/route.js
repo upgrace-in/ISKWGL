@@ -4,8 +4,9 @@ import TotalDonations from '@/models/TotalDonations';
 import { generatePDF } from '../handleWebhook/pdfHelper';
 import { uploadToS3 } from '../../../Helpers/awsHelper';
 import { sendWhatsAppMessage } from '../handleWebhook/whatsappHelper';
+import { withApiLogging } from '@/app/lib/apiLogger';
 
-export async function POST(req) {
+export const POST = withApiLogging(async function (req) {
   try {
     const { orderId } = await req.json();
     if (!orderId) return Response.json({ error: 'orderId required' }, { status: 400 });
@@ -40,4 +41,4 @@ export async function POST(req) {
     console.error('processSuccess error', err);
     return Response.json({ error: String(err) }, { status: 500 });
   }
-}
+});
