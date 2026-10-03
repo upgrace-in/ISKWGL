@@ -14,10 +14,10 @@ export default function Page({ }) {
     const [data, setData] = useState()
 
     const payForData = [
-        { title: "Pitrupaksha Go Seva - Feed 2 cows (1 Day)", amount: 250},
-        { title: "Pitrupaksha Go Seva - Feed 2 cows (3 Day)", amount: 750},
-        { title: "Pitrupaksha Go Seva - Feed 2 cows (7 Day)", amount: 1750},
-        { title: "Pitrupaksha Go Seva - Feed 2 cows (15 Day)", amount: 3750},
+        { title: "Feed 2 cows (1 Day)", amount: 250},
+        { title: "Feed 2 cows (3 Day)", amount: 750},
+        { title: "Feed 2 cows (7 Day)", amount: 1750},
+        { title: "Feed 2 cows (15 Day)", amount: 3750},
         { title: "Custom" , amount: 0},
     ]
 
@@ -121,7 +121,7 @@ export default function Page({ }) {
                                 : {};
 
                             const title = selectedOption?.title || "Custom";
-                            handleDonateClick(e.target.amount.value, "Pitrupaksha Go Seva-"+title, "Pitrupaksha Go Seva");
+                            handleDonateClick(e.target.amount.value, "Pitrupaksha Go Seva - "+title, "Pitrupaksha Go Seva");
                         }}>
                         <div className="row align-items-start">
                             <div className="col-lg-4 pe-xl-4">
