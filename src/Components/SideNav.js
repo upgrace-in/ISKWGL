@@ -91,9 +91,9 @@ export default function SideNav({ openNav = "", handleNav = () => {} }) {
                 Home
               </a>
             </li>
-            <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }} >
-              <a className="main-anc" href="/#gallery">
-                Gallery
+            <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px"}} >
+              <a className="main-anc" href="/Daily-Darshan" style={buttonStyle}>
+                Daily Darshan
               </a>
             </li>
             <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }} >
@@ -123,7 +123,7 @@ export default function SideNav({ openNav = "", handleNav = () => {} }) {
             </li>
             <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px"  }}>
               <a className="main-anc" href="/templerenovation" style={buttonStyle}>
-                <FaHandsHelping size={18}/> Help Temple Renovate
+                <FaHandsHelping size={18}/> Help Temple Renovation
               </a>
             </li>
             <li className="side-nav-social-links">
