@@ -2,6 +2,7 @@
 import crypto from 'node:crypto'
 import dbConnect from '@/app/lib/dbConnect';
 import Donation from '@/models/Donation';
+import { withApiLogging } from '@/app/lib/apiLogger';
 
 const clientID = process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? process.env.CASHFREE_TEST_ID : process.env.CASHFREE_ID;
 const clientSECRET = process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? process.env.CASHFREE_TEST_SECRET : process.env.CASHFREE_SECRET;
@@ -34,7 +35,7 @@ async function generateUniqueOrderId() {
     return orderId;
 }
 
-export async function POST(request) {
+export const POST = withApiLogging(async function (request) {
 
     try {
 
@@ -110,4 +111,4 @@ export async function POST(request) {
         }, { status: 500 })
     }
 
-}
+});
