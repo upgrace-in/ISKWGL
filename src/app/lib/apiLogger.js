@@ -58,7 +58,7 @@ export function withApiLogging(handler) {
               path,
               status,
               duration_ms: duration,
-              message: JSON.stringify(logs) // Stores all console logs as a JSON array string
+              message: logs // Stores all console logs as a JSON array string
             })
           }).catch(() => {});
         }

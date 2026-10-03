@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation';
 import TotalDonations from '@/models/TotalDonations';
+import { withApiLogging } from '@/app/lib/apilogger';
 
 function parseCompactTimestamp(rawTime) {
   if (!rawTime) return new Date();
@@ -20,7 +21,7 @@ function parseCompactTimestamp(rawTime) {
   return isNaN(parsed.getTime()) ? new Date() : parsed;
 }
 // The bank sends a POST request to this URL
-export async function POST(request) {
+export const POST = withApiLogging(async function (request) {
     try {
         // 1. Get the payload from the bank
         // Payment gateways usually send data as "application/x-www-form-urlencoded"
@@ -103,13 +104,13 @@ export async function POST(request) {
         console.error("Error processing bank callback:", error);
         return NextResponse.redirect(new URL('/payment/error', request.url));
     }
-}
+});
 
 // Just in case the bank uses a GET request redirect instead of POST
-export async function GET(request) {
+export const GET = withApiLogging(async function (request) {
     const url = new URL(request.url);
     console.log("--- BANK RETURN QUERY PARAMS ---", url.searchParams.toString());
     
     // Handle similarly to POST, but extract data from searchParams
     return NextResponse.redirect(new URL('/payment/error', request.url)); 
-}
+});

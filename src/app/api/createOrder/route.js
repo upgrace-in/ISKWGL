@@ -1,10 +1,11 @@
 import { Cashfree } from "cashfree-pg";
+import { withApiLogging } from '@/app/lib/apilogger';
 
 Cashfree.XClientId = process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? process.env.CASHFREE_TEST_ID : process.env.CASHFREE_ID;
 Cashfree.XClientSecret = process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? process.env.CASHFREE_TEST_SECRET : process.env.CASHFREE_SECRET;
 Cashfree.XEnvironment = process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? Cashfree.Environment.SANDBOX : Cashfree.Environment.PRODUCTION
 
-export async function POST(request) {
+export const POST = withApiLogging(async function (request) {
 
     try {
 
@@ -46,4 +47,4 @@ export async function POST(request) {
         }, { status: 404 })
     }
 
-}
+});
