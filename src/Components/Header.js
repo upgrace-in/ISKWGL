@@ -153,11 +153,24 @@ export default function Header() {
 
                 {/* Left Nav */}
                 <nav style={{ flex: '2' }}>
-                    <ul style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0, gap: '25px', justifyContent: 'center', alignItems: 'center' }}>
-                        <li><a href="/" style={navLinkStyle}>HOME</a></li>
-                        <li><a href="/#gallery" style={navLinkStyle}>GALLERY</a></li>
-                        <li><a href="/#about-us" style={navLinkStyle}>ABOUT US</a></li>
-                        <li><a href="/#founder" style={navLinkStyle}>FOUNDER</a></li>
+                    <ul style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0, gap: '15px', justifyContent: 'center', alignItems: 'center' }}>
+                        <li><a href="/" style={navLinkStyle}>Home</a></li>
+                        <li>
+                            <a
+                                href="/Daily-Darshan"
+                                style={{
+                                    ...navLinkStyle,
+                                    background: 'linear-gradient(135deg, #d4a054, #eec48c)',
+                                    color: '#5a0209',
+                                    padding: '5px 5px',
+                                    borderRadius: '12px',
+                                }}
+                            >
+                                Daily Darshan
+                            </a>
+                        </li>
+                        <li><a href="/#about-us" style={navLinkStyle}>About Us</a></li>
+                        <li><a href="/#founder" style={navLinkStyle}>Founder</a></li>
                     </ul>
                 </nav>
 
@@ -170,7 +183,7 @@ export default function Header() {
                 <nav style={{ flex: '1.5' }}>
                     <ul style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0, gap: '25px', justifyContent: 'center', alignItems: 'center' }}>
                         <li><a href="/AnnaDaan" style={navLinkStyle}>Donation Options</a></li>
-                        <li><a href="/#contact-us" style={navLinkStyle}>CONTACT</a></li>
+                        <li><a href="/#contact-us" style={navLinkStyle}>Contact</a></li>
                     </ul>
                 </nav>
 
@@ -187,7 +200,7 @@ export default function Header() {
                         <FaHeart /> Donate Now
                     </button>
                     <button style={buttonStyle} onClick={() => window.location.href='/templerenovation'}>
-                        <FaHandsHelping size={18} /> Help Temple Renovate
+                        <FaHandsHelping size={18} /> Help Temple Renovation
                     </button>
                 </div>
             </div>
