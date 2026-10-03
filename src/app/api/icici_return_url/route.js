@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation';
 import TotalDonations from '@/models/TotalDonations';
-import { withApiLogging } from '@/app/lib/apilogger';
+import { withApiLogging } from '@/app/lib/apiLogger';
 
 function parseCompactTimestamp(rawTime) {
   if (!rawTime) return new Date();

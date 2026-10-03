@@ -4,7 +4,7 @@ import TotalDonations from '@/models/TotalDonations';
 import { generatePDF } from '../handleWebhook/pdfHelper';
 import { uploadToS3 } from '../../../Helpers/awsHelper';
 import { sendWhatsAppMessage } from '../handleWebhook/whatsappHelper';
-import { withApiLogging } from '@/app/lib/apilogger';
+import { withApiLogging } from '@/app/lib/apiLogger';
 
 export const POST = withApiLogging(async function (req) {
   try {

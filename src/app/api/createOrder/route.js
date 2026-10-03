@@ -1,5 +1,5 @@
 import { Cashfree } from "cashfree-pg";
-import { withApiLogging } from '@/app/lib/apilogger';
+import { withApiLogging } from '@/app/lib/apiLogger';
 
 Cashfree.XClientId = process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? process.env.CASHFREE_TEST_ID : process.env.CASHFREE_ID;
 Cashfree.XClientSecret = process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? process.env.CASHFREE_TEST_SECRET : process.env.CASHFREE_SECRET;
