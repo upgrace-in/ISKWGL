@@ -18,6 +18,7 @@ export async function GET() {
 
         return NextResponse.json({ role: payload.role });
     } catch (error) {
+        console.error("JWT Verification Failed Detail:", error.message);
         return NextResponse.json({ role: null }, { status: 401 });
     }
 }
