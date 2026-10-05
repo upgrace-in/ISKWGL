@@ -211,32 +211,43 @@ export default function DonationCheckout() {
                 increaseDots()
             }, 500)
             // save the data with an orderID
-            let donationRes;
-            // Step 1: Create donation order in database
-            try {
-                donationRes = await axios.post('/api/createDonation/', submissionData);
-            } catch (err) {
-                // Check if server responded with status code 500
-                if (err.response && err.response.status === 500) {
-                    showErrorPopup("Some technical issue was faced, please refresh and try again.");
-                }else {
-                    showErrorPopup(err.response?.data?.error || "Failed to create donation record. Please try again.");
-                }
+            // let donationRes;
+            // // Step 1: Create donation order in database
+            // try {
+            //     donationRes = await axios.post('/api/createDonation/', submissionData);
+            // } catch (err) {
+            //     // Check if server responded with status code 500
+            //     if (err.response && err.response.status === 500) {
+            //         showErrorPopup("Some technical issue was faced, please refresh and try again.");
+            //     }else {
+            //         showErrorPopup(err.response?.data?.error || "Failed to create donation record. Please try again.");
+            //     }
                 
-                setIsSubmitting(false);
-                return; // Stop further execution
-            }
-            const orderId = donationRes?.data?.orderId;
-            if (!orderId) {
-                showErrorPopup("Some technical issue was faced, please refresh and try again.");
-                setIsSubmitting(false);
-                return;
-            }
-            console.log("Donation data saved with orderId:", orderId);
-            finalData.orderId = orderId;
+            //     setIsSubmitting(false);
+            //     return; // Stop further execution
+            // }
+            // const orderId = donationRes?.data?.orderId;
+            // if (!orderId) {
+            //     showErrorPopup("Some technical issue was faced, please refresh and try again.");
+            //     setIsSubmitting(false);
+            //     return;
+            // }
+            // console.log("Donation data saved with orderId:", orderId);
+            // finalData.orderId = orderId;
             const response = await axios.post(`/api/createOrder/`, finalData)
             clearInterval(intern)
             if (response?.status !== 200) throw { error: "Unable to save data, please try again later !!!" }
+
+            const myOrderId = response?.data?.response?.orderId;
+            console.log("Order ID from createOrder API:", myOrderId);
+            finalData.orderId = myOrderId; // Assign the orderId to finalData
+
+            fetch('/api/createDonation/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(finalData),
+                keepalive: true // Crucial: allows request to complete even after page unloads
+            });
 
             // pass the orderID with data to HandlePayment
             setData(response.data)
