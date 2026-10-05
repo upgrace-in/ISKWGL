@@ -5,7 +5,6 @@ import crypto from "crypto"; // Native Node.js module
 import { withApiLogging } from '@/app/lib/apiLogger';
 import { randomUUID } from 'crypto';
 
-
 // Your hashing function
 function hmacDigest(msg, keyString) {
     const hmac = crypto.createHmac('sha256', keyString);
