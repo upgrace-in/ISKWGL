@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import { handleUpload } from '@vercel/blob/client';
+import { withApiLogging } from '@/app/lib/apiLogger';
 
 const uri = process.env.MONGODB_URI;
 let client;
@@ -29,7 +30,7 @@ async function getDatabase() {
 // ----------------------------------------------------
 // GET: Fetch all darshans
 // ----------------------------------------------------
-export async function GET(request) {
+export const GET = withApiLogging(async function (request) {
     try {
         const { searchParams } = new URL(request.url);
         const targetDate = searchParams.get('date');
@@ -74,12 +75,12 @@ export async function GET(request) {
         console.error('Database fetch error:', error);
         return NextResponse.json({ error: 'Failed to load darshans' }, { status: 500 });
     }
-}
+});
 
 // ----------------------------------------------------
 // POST: Handle Client Upload Authorization & MongoDB Saving
 // ----------------------------------------------------
-export async function POST(request) {
+export const POST = withApiLogging(async function (request) {
     const body = await request.json();
 
     try {
@@ -136,4 +137,4 @@ export async function POST(request) {
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
-}
+});
