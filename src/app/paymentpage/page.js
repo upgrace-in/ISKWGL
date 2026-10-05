@@ -210,21 +210,21 @@ export default function DonationCheckoutTest() {
                 increaseDots()
             }, 500)
             // save the data with an orderID
-            let donationRes;
+            // let donationRes;
             // Step 1: Create donation order in database
-            try {
-                donationRes = await axios.post('/api/createDonation/', submissionData);
-            } catch (err) {
-                // Check if server responded with status code 500
-                if (err.response && err.response.status === 500) {
-                    showErrorPopup("Some technical issue was faced, please refresh and try again.");
-                }else {
-                    showErrorPopup(err.response?.data?.error || "Failed to create donation record. Please try again.");
-                }
+            // try {
+            //     donationRes = await axios.post('/api/createDonation/', submissionData);
+            // } catch (err) {
+            //     // Check if server responded with status code 500
+            //     if (err.response && err.response.status === 500) {
+            //         showErrorPopup("Some technical issue was faced, please refresh and try again.");
+            //     }else {
+            //         showErrorPopup(err.response?.data?.error || "Failed to create donation record. Please try again.");
+            //     }
                 
-                setIsSubmitting(false);
-                return; // Stop further execution
-            }
+            //     setIsSubmitting(false);
+            //     return; // Stop further execution
+            // }
             // const orderId = donationRes?.data?.orderId;
             // if (!orderId) {
             //     showErrorPopup("Some technical issue was faced, please refresh and try again.");
