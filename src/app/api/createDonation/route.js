@@ -43,7 +43,7 @@ export const POST = withApiLogging(async function (request) {
 
         await dbConnect();
 
-        let { name, email, donationType,seva, phone, address,fulladdress, pin, amount, pan, memoryOfSomeoneName, abhishekamTimeSlot, dob, redirectedFrom } = await request.json()
+        let { name, email, orderId, donationType,seva, phone, address,fulladdress, pin, amount, pan, memoryOfSomeoneName, abhishekamTimeSlot, dob, redirectedFrom } = await request.json()
 
         if(dob){
             dob = Number(new Date(dob))
@@ -51,7 +51,7 @@ export const POST = withApiLogging(async function (request) {
 
         // console.log("Abhishekam Timeslot: ", abhishekamTimeSlot);
         // 1. Generate guaranteed unique order ID
-        const orderId = await generateUniqueOrderId();
+        // const orderId = await generateUniqueOrderId();
 
         let formData = {
             "customerName": name,
@@ -73,7 +73,7 @@ export const POST = withApiLogging(async function (request) {
 
             "appId": clientID,
             "notifyUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/api/handleWebhook`,
-            "returnUrl": `${process.env.NEXT_PUBLIC_DOMAIN}/radhashtami`,
+            "returnUrl": `${process.env.NEXT_PUBLIC_DOMAIN}`,
         }
 
         const signature = generateSignature(formData);
