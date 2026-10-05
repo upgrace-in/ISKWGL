@@ -1,6 +1,7 @@
 import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation';
 import TotalDonations from '@/models/TotalDonations';
+import { withApiLogging } from '@/app/lib/apiLogger';
 
 import { generatePDF } from './pdfHelper';
 import { uploadToS3 } from '../../../Helpers/awsHelper';
@@ -10,7 +11,7 @@ export async function GET(req) {
     return Response.json({ status: 'Webhook endpoint is active' }, { status: 200 });
 }
 
-export async function POST(req) {
+export const POST = withApiLogging(async function (req) {
     try {
         await dbConnect();
 
@@ -81,7 +82,7 @@ export async function POST(req) {
         console.log(error);
         return Response.json({ msg: error }, { status: 404 });
     }
-}
+});
 
 // Process expensive operations in background
 // async function processSuccessPayment(dict, donation) {

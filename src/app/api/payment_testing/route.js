@@ -2,6 +2,7 @@
 import hmacSHA256 from 'crypto-js/hmac-sha256';
 import { NextResponse } from "next/server";
 import crypto from "crypto"; // Native Node.js module
+import { withApiLogging } from '@/app/lib/apiLogger';
 
 // Your hashing function
 function hmacDigest(msg, keyString) {
@@ -10,7 +11,7 @@ function hmacDigest(msg, keyString) {
     return hmac.digest('hex');
 }
 
-export async function POST(req) {
+export const POST = withApiLogging(async function (req) {
     const crypto = require('crypto');
     function generateRandomDigits(length = 16) {
         let result = (Math.floor(Math.random() * 9) + 1).toString(); // Ensure non-zero start
@@ -49,41 +50,42 @@ export async function POST(req) {
             "txnDate": currentFormatted,
         }
 
-    const msg = "addlParam1addlParam2aggregatorIDamountcurrencyCodecustomerEmailIDcustomerMobileNocustomerNamemerchantIdmerchantTxnNopayTypereturnURLtransactionTypetxnDate"
+        const msg = "addlParam1addlParam2aggregatorIDamountcurrencyCodecustomerEmailIDcustomerMobileNocustomerNamemerchantIdmerchantTxnNopayTypereturnURLtransactionTypetxnDate"
 
-    const stringvalue = orderId + "111" + "100000000478571" + amount.toString() + "356"+email+phone+name+"100000000478572" + paydata.merchantTxnNo + "0https://www.iskconwarangal.in/api/icici_return_urlSALE" + paydata.txnDate
+        const stringvalue = orderId + "111" + "100000000478571" + amount.toString() + "356"+email+phone+name+"100000000478572" + paydata.merchantTxnNo + "0https://www.iskconwarangal.in/api/icici_return_urlSALE" + paydata.txnDate
 
-    const hashvalue = hmacDigest(stringvalue, '6ab59c07-fa70-4a8a-ba8d-c8bd6943d113');
-    console.log("Hash Value:", hashvalue);
-    
+        const hashvalue = hmacDigest(stringvalue, '6ab59c07-fa70-4a8a-ba8d-c8bd6943d113');
+        console.log("Hash Value:", hashvalue);
+        
 
-    paydata["secureHash"] = hashvalue
+        paydata["secureHash"] = hashvalue
 
-    const url = "https://pgpay.icicibank.com/pg/api/v2/initiateSale"
-    const headers = {
-        'Content-Type': 'application/json'
+        const url = "https://pgpay.icicibank.com/pg/api/v2/initiateSale"
+        const headers = {
+            'Content-Type': 'application/json'
+        }
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(paydata)
+        })
+        const data = await response.json();
+        console.log("\n--- 4. RESPONSE FROM ICICI BANK ---");
+        console.log("Status Code:", response.status);
+        console.log(data);
+
+        // 4. Send the bank's response back to your frontend
+        return NextResponse.json(data, { status: response.status });
+        
+        // Attempt to parse and print the response as JSON
+        // console.log("Response : ", response);
     }
-
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(paydata)
-    })
-    const data = await response.json();
-    console.log("\n--- 4. RESPONSE FROM ICICI BANK ---");
-    console.log("Status Code:", response.status);
-    console.log(data);
-
-    // 4. Send the bank's response back to your frontend
-    return NextResponse.json(data, { status: response.status });
-    
-    // Attempt to parse and print the response as JSON
-    // console.log("Response : ", response);
-}catch (error) {
+    catch (error) {
         console.error("Error connecting to ICICI API:", error);
         return NextResponse.json(
             { success: false, message: "Internal Server Error" }, 
             { status: 500 }
         );
     }
-}
+});
