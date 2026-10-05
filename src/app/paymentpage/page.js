@@ -225,14 +225,14 @@ export default function DonationCheckoutTest() {
                 setIsSubmitting(false);
                 return; // Stop further execution
             }
-            const orderId = donationRes?.data?.orderId;
-            if (!orderId) {
-                showErrorPopup("Some technical issue was faced, please refresh and try again.");
-                setIsSubmitting(false);
-                return;
-            }
-            console.log("Donation data saved with orderId:", orderId);
-            finalData.orderId = orderId;
+            // const orderId = donationRes?.data?.orderId;
+            // if (!orderId) {
+            //     showErrorPopup("Some technical issue was faced, please refresh and try again.");
+            //     setIsSubmitting(false);
+            //     return;
+            // }
+            // console.log("Donation data saved with orderId:", orderId);
+            // finalData.orderId = orderId;
             const response = await fetch('/api/payment_testing', {
                 method: 'POST',
                 headers: {
@@ -244,6 +244,17 @@ export default function DonationCheckoutTest() {
 
             if (response.ok) {
                 console.log("Success! Bank says:", data1);
+
+                const myOrderId = data1.orderId; 
+                console.log("Retrieved orderId from response:", myOrderId);
+                finalData.orderId = myOrderId;
+
+                fetch('/api/createDonation/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(finalData),
+                    keepalive: true // Crucial: allows request to complete even after page unloads
+                });
                 
                 // 1. Extract the transaction context/token from the bank's response.
                 // NOTE: Check your terminal logs to see exactly what ICICI calls this field! 

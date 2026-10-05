@@ -182,7 +182,7 @@ export default function Header() {
                 {/* Right Nav */}
                 <nav style={{ flex: '1.5' }}>
                     <ul style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0, gap: '25px', justifyContent: 'center', alignItems: 'center' }}>
-                        <li><a href="/AnnaDaan" style={navLinkStyle}>Donation Options</a></li>
+                        <li><a href="/donationOptions" style={navLinkStyle}>Donation Options</a></li>
                         <li><a href="/#contact-us" style={navLinkStyle}>Contact</a></li>
                     </ul>
                 </nav>

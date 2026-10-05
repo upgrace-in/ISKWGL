@@ -107,7 +107,7 @@ export default function SideNav({ openNav = "", handleNav = () => {} }) {
               </a>
             </li>
             <li className="main-list" onClick={() => handleNav()} style={{ border: "1px solid #ddd", borderRadius: "12px" }}>
-              <a className="main-anc" href="/AnnaDaan">
+              <a className="main-anc" href="/donationOptions" style={buttonStyle}>
                 Donation Options
               </a>
             </li>
