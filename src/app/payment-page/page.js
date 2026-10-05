@@ -238,7 +238,7 @@ export default function DonationCheckout() {
             clearInterval(intern)
             if (response?.status !== 200) throw { error: "Unable to save data, please try again later !!!" }
 
-            const myOrderId = response?.data?.response?.orderId;
+            const myOrderId = response?.data?.response?.order_id;
             console.log("Order ID from createOrder API:", myOrderId);
             finalData.orderId = myOrderId; // Assign the orderId to finalData
 
