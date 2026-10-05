@@ -17,21 +17,21 @@ export default function NewsArticles() {
 
     return (
         <>
-            <section class="campaign-news">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 mx-auto">
-                            <div class="dual-heading center">
+            <section className="campaign-news">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-8 mx-auto">
+                            <div className="dual-heading center">
                                 <h2>ISKCON <span>In The news</span></h2>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-5">
-                        <div class="col-lg-10 mx-auto">
-                            <div class="live-video-wrap">
+                    <div className="row mt-5">
+                        <div className="col-lg-10 mx-auto">
+                            <div className="live-video-wrap">
                                 <iframe src="https://www.youtube.com/embed/tR8Zl7XhDU0" allowFullScreen=""></iframe>
-                                <div class="news-details">
-                                    <div class="news-details-wrap">
+                                <div className="news-details">
+                                    <div className="news-details-wrap">
                                         <h4>ISKCON lends a helping hand to the needy</h4>
                                         <p>ISKCON lends a helping hand to the needy</p>
                                     </div>
@@ -42,11 +42,11 @@ export default function NewsArticles() {
                 </div>
             </section>
 
-            <section class="compaign-articles" id="articles">
-                <div class="container">
-                    <div class="video-wrap">
-                        <div class="row my-5">
-                            {/* <div class="owl-carousel owl-carousel2"> */}
+            <section className="compaign-articles" id="articles">
+                <div className="container">
+                    <div className="video-wrap">
+                        <div className="row my-5">
+                            {/* <div className="owl-carousel owl-carousel2"> */}
                             <OwlCarousel
                                 className="owl-theme"
                                 loop
@@ -72,25 +72,25 @@ export default function NewsArticles() {
                                     },
                                 }}
                                 margin={10}>
-                                <div class="video-holder vh2 vh3 item">
+                                <div className="video-holder vh2 vh3 item">
                                     <a data-fancybox="video" href="#">
-                                        <figure class="mb-0">
+                                        <figure className="mb-0">
                                             <img src="/index_files/campaignArticles-166281121940454146.webp" alt="" />
                                         </figure>
                                     </a>
                                 </div>
 
-                                <div class="video-holder vh2 vh3 item">
+                                <div className="video-holder vh2 vh3 item">
                                     <a data-fancybox="video" href="#">
-                                        <figure class="mb-0">
+                                        <figure className="mb-0">
                                             <img src="/index_files/campaignArticles-166281121940556922.webp" alt="" />
                                         </figure>
                                     </a>
                                 </div>
 
-                                <div class="video-holder vh2 vh3 item">
+                                <div className="video-holder vh2 vh3 item">
                                     <a data-fancybox="video" href="#">
-                                        <figure class="mb-0">
+                                        <figure className="mb-0">
                                             <img src="/index_files/campaignArticles-166281121940610331.webp" alt="" />
                                         </figure>
                                     </a>
