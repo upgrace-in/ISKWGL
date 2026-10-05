@@ -18,7 +18,7 @@ export default function DonatePage({}) {
             id: 1, 
             title: 'Indira Ekadasi', 
             subtitle: '06 Oct 2026', 
-            image: '/images/Sri-Radha-Nilamadhava-2.jpeg',
+            image: '/images/Ekadasi/indira-ekadasi.jpeg',
             pagelink: '/Ekadasi' 
         },
         { 
