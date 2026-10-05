@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function GET() {
     try {
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
         const token = cookieStore.get("dashboard_session")?.value;
 
         if (!token) {
@@ -18,6 +18,7 @@ export async function GET() {
 
         return NextResponse.json({ role: payload.role });
     } catch (error) {
+        console.error("JWT Verification Failed Detail:", error.message);
         return NextResponse.json({ role: null }, { status: 401 });
     }
 }
