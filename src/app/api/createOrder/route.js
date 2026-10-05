@@ -1,15 +1,26 @@
 import { Cashfree } from "cashfree-pg";
 import { withApiLogging } from '@/app/lib/apiLogger';
+import { randomUUID } from 'crypto';
 
 Cashfree.XClientId = process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? process.env.CASHFREE_TEST_ID : process.env.CASHFREE_ID;
 Cashfree.XClientSecret = process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? process.env.CASHFREE_TEST_SECRET : process.env.CASHFREE_SECRET;
 Cashfree.XEnvironment = process.env.NEXT_PUBLIC_GATEWAY_TYPE === '1' ? Cashfree.Environment.SANDBOX : Cashfree.Environment.PRODUCTION
 
+// Helper function to generate a unique orderId
+function generateUniqueOrderId() {
+    // Generates a clean, highly unique order ID instantly without a database lookup
+    const dateStr = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+    const uniqueSuffix = randomUUID().slice(0, 8);
+    return `ORD_${dateStr}_${uniqueSuffix}`;
+}
+
 export const POST = withApiLogging(async function (request) {
 
     try {
 
-        let { name, email, phone, address, pin, amount, pan, orderId } = await request.json()
+        let { name, email, phone, address, pin, amount, pan } = await request.json()
+
+        const orderId = await generateUniqueOrderId();
 
         var rst = {
             "order_amount": parseFloat(amount),
