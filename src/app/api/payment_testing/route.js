@@ -12,12 +12,6 @@ function hmacDigest(msg, keyString) {
     return hmac.digest('hex');
 }
 
-function generateUniqueOrderId() {
-    // Generates a clean, highly unique order ID instantly without a database lookup
-    const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const uniqueSuffix = randomUUID().slice(0, 8);
-    return `order_${dateStr}_${uniqueSuffix}`;
-}
 // Helper function to generate a unique orderId
 // async function generateUniqueOrderId() {
 //     let orderId;
@@ -37,6 +31,12 @@ function generateUniqueOrderId() {
 
 //     return orderId;
 // }
+function generateUniqueOrderId() {
+    // Generates a clean, highly unique order ID instantly without a database lookup
+    const dateStr = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+    const uniqueSuffix = randomUUID().slice(0, 8);
+    return `ORD_${dateStr}_${uniqueSuffix}`;
+}
 
 export const POST = withApiLogging(async function (req) {
     const crypto = require('crypto');
