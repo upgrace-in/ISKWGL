@@ -3,7 +3,7 @@ import hmacSHA256 from 'crypto-js/hmac-sha256';
 import { NextResponse } from "next/server";
 import crypto from "crypto"; // Native Node.js module
 import { withApiLogging } from '@/app/lib/apiLogger';
-import Donation from '@/models/Donation';
+import { randomUUID } from 'crypto';
 
 // Your hashing function
 function hmacDigest(msg, keyString) {
@@ -12,25 +12,31 @@ function hmacDigest(msg, keyString) {
     return hmac.digest('hex');
 }
 
-// Helper function to generate a unique orderId
-async function generateUniqueOrderId() {
-    let orderId;
-    let isUnique = false;
-
-    while (!isUnique) {
-        // Generate orderId (e.g., order_1710000000000_1234)
-        orderId = `order_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}_${Math.floor(1000 + Math.random() * 9000)}`
-
-        // Check if the orderId already exists in MongoDB
-        const existingDonation = await Donation.findOne({ orderId }).lean();
-        
-        if (!existingDonation) {
-            isUnique = true; // Unique ID found, exit loop
-        }
-    }
-
-    return orderId;
+function generateUniqueOrderId() {
+    // Generates a clean, highly unique order ID instantly without a database lookup
+    const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const uniqueSuffix = randomUUID().slice(0, 8);
+    return `order_${dateStr}_${uniqueSuffix}`;
 }
+// Helper function to generate a unique orderId
+// async function generateUniqueOrderId() {
+//     let orderId;
+//     let isUnique = false;
+
+//     while (!isUnique) {
+//         // Generate orderId (e.g., order_1710000000000_1234)
+//         orderId = `order_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}_${Math.floor(1000 + Math.random() * 9000)}`
+
+//         // Check if the orderId already exists in MongoDB
+//         const existingDonation = await Donation.findOne({ orderId }).lean();
+        
+//         if (!existingDonation) {
+//             isUnique = true; // Unique ID found, exit loop
+//         }
+//     }
+
+//     return orderId;
+// }
 
 export const POST = withApiLogging(async function (req) {
     const crypto = require('crypto');
