@@ -5,10 +5,9 @@ import { NextResponse } from 'next/server';
 export async function GET(req, { params }) {
     try {
         await dbConnect();
-        const phone = params.phone;
+        const { phone } = await params;
 
-        console.log(typeof params.phone);
-        console.log(phone);
+        console.log("Phone:", phone);
 
         // Find all donations by this exact phone number
         const donations = await TotalDonations.find({ phone: phone }).sort({ createdAt: -1 });
