@@ -15,7 +15,7 @@ import './HeroSection.css';
 import './LeafyDivider.css';
 import './FestivalInfo.css';
 import './LotusHighlights.css';
-import { useDonate } from "@/Helpers/PaymentPageHandler";
+import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 
 
 const DonationSuccessModal = ({ gifts, onClose }) => {
@@ -574,7 +574,7 @@ const SevaCard = ({ plan, onDonate, cardType, gifts, isPremium,initiallyExpanded
 // 3. MAIN RATHYATRA COMPONENT
 function RathyatraContent() {
     const router = useRouter();
-    const { handleDonateClick } = useDonate();
+    const { handleDonateClick } = useDonateTest();
     const [navOpen, setNavOpen] = useState(false)
     const [earnedGifts, setEarnedGifts] = useState(null);
     const [isVerifying, setIsVerifying] = useState(false); // Optional: to show a loading spinner if DB is slow

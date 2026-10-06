@@ -4,10 +4,10 @@ import Checkout from '@/Helpers/Checkout'
 import axios from 'axios'
 import { useRouter } from "next/navigation"
 import HandlePayment from "@/Helpers/HandlePayment"
-import { useDonate } from "@/Helpers/PaymentPageHandler";
+import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 
 export default function Page({ }) {
-    const { handleDonateClick } = useDonate();
+    const { handleDonateClick } = useDonateTest();
 
     const router = useRouter()
 

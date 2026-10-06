@@ -1,8 +1,8 @@
 import AccordionItem from "./AccordionItem"
-import { useDonate } from "@/Helpers/PaymentPageHandler";
+import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 
 export default function DonateCategories() {
-    const { handleDonateClick } = useDonate();
+    const { handleDonateClick } = useDonateTest();
 
     return (
         <>
