@@ -36,6 +36,21 @@ export default function DonationCheckoutTest() {
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+
+    useEffect(() => {
+        // Reset form data on page load/refresh
+        setFormData({
+            name: '', email: '', phone: '', pan: '', dob: '',
+            flatNo: '', street: '', landmark: '', pin: '', city: '', state: '', district: '', memoryOfSomeoneName: ''
+        });
+        setWantsTaxBenefit(false);
+        setWantsPrasadam(false);
+        setWantsDob(false);
+        setMemoryStatus(false);
+        setError("");
+        setPinError("");
+    }, []);
+
     // Function to handle changes and restrict phone to digits only
     const handlePhoneChange = (e) => {
         const value = e.target.value;
