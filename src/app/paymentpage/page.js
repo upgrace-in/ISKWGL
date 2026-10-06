@@ -554,6 +554,8 @@ export default function DonationCheckoutTest() {
                                 "COMPLETE DONATION & GET 80G RECEIPT"
                             )}
                         </button>
+
+                        <p><b>Note:</b> If you face any issues while making the donation, please contact on <a href="https://wa.me/919121630614" target="_blank" style={{color:"blue"}}>+919121630614</a></p>
                     </form>
                 </div>
 
