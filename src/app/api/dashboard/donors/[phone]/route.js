@@ -7,8 +7,13 @@ export async function GET(req, { params }) {
         await dbConnect();
         const phone = params.phone;
 
+        console.log(typeof params.phone);
+        console.log(phone);
+
         // Find all donations by this exact phone number
         const donations = await TotalDonations.find({ phone: phone }).sort({ createdAt: -1 });
+
+        console.log("donations:",donations);
 
         if (!donations || donations.length === 0) {
             return NextResponse.json({ success: false, message: "Donor not found" }, { status: 404 });
