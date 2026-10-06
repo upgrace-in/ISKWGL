@@ -51,6 +51,20 @@ export default function DonationCheckoutTest() {
         setPinError("");
     }, []);
 
+    useEffect(() => {
+        const handlePageShow = (event) => {
+            // event.persisted is true if the page was loaded from the browser's cache (Back button)
+            if (event.persisted) {
+                window.location.reload();
+            }
+        };
+
+        window.addEventListener('pageshow', handlePageShow);
+        return () => {
+            window.removeEventListener('pageshow', handlePageShow);
+        };
+    }, []);
+
     // Function to handle changes and restrict phone to digits only
     const handlePhoneChange = (e) => {
         const value = e.target.value;
