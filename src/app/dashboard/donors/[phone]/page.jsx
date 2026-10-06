@@ -81,6 +81,7 @@ export default function DonorProfile() {
 
         const fetchProfile = async () => {
             try {
+                console.log(phoneParam);
                 const res = await fetch(`/api/dashboard/donors/${phoneParam}`);
                 const result = await res.json();
                 
