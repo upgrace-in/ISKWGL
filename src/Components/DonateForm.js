@@ -5,12 +5,12 @@ import axios from 'axios'
 import { useRouter } from "next/navigation"
 import HandlePayment from "@/Helpers/HandlePayment"
 import Image from "next/image"
-import { useDonate } from "@/Helpers/PaymentPageHandler";
+import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 
 export default function DonateForm(props) {
 
     const router = useRouter()
-    const { handleDonateClick } = useDonate();
+    const { handleDonateClick } = useDonateTest();
 
     const [data, setData] = useState()
 

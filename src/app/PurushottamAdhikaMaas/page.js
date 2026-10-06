@@ -9,7 +9,7 @@ import Floating from "@/Components/Floating";
 import DirectDonation from "@/Components/Direct_donation_and_80G"
 import Header from "../../Components/Header"
 import "./adhikamaas.css"
-import { useDonate } from "@/Helpers/PaymentPageHandler";
+import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 import { 
   FaLeaf, 
   FaCow, 
@@ -21,7 +21,7 @@ import {
 export default function AdhikaMaasPage({}) {
     const [navOpen, setNavOpen] = useState(false)
     const [amount, setAmount] = useState();
-    const { handleDonateClick } = useDonate();
+    const { handleDonateClick } = useDonateTest();
     
     const scrollToDonation = () => {
         donationRef.current?.scrollIntoView({ behavior: 'smooth' });

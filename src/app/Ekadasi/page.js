@@ -12,7 +12,6 @@ import { FiCopy, FiCheck } from "react-icons/fi";
 import DirectDonation from "@/Components/Direct_donation_and_80G"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
-// import { useDonate } from "@/Helpers/PaymentPageHandler";
 import { useDonateTest } from "@/Helpers/PaymentPageHandler-copy";
 // Import Swiper styles
 import 'swiper/css';
