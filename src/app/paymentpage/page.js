@@ -52,16 +52,27 @@ export default function DonationCheckoutTest() {
     }, []);
 
     useEffect(() => {
-        const handlePageShow = (event) => {
-            // event.persisted is true if the page was loaded from the browser's cache (Back button)
-            if (event.persisted) {
-                window.location.reload();
-            }
+        // Check if the user is coming back from an external page/refresh session
+        const isReturningFromGateway = sessionStorage.getItem('visited_checkout');
+
+        if (isReturningFromGateway) {
+            // Clear the flag and force a full clean reload so the cache isn't used
+            sessionStorage.removeItem('visited_checkout');
+            window.location.reload();
+        } else {
+            // Mark that the user has loaded this page normally
+            sessionStorage.setItem('visited_checkout', 'true');
+        }
+
+        // Clean up session storage if they leave normally
+        const handlePageHide = () => {
+            // Keep the flag if they are going to the payment gateway
+            // (Optional: clear it if they navigate away to a different internal page)
         };
 
-        window.addEventListener('pageshow', handlePageShow);
+        window.addEventListener('pagehide', handlePageHide);
         return () => {
-            window.removeEventListener('pageshow', handlePageShow);
+            window.removeEventListener('pagehide', handlePageHide);
         };
     }, []);
 
