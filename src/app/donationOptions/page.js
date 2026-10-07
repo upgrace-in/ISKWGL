@@ -14,13 +14,13 @@ export default function DonatePage({}) {
     const [navOpen, setNavOpen] = useState(false)
     
     const donationOptions = [
-        { 
-            id: 1, 
-            title: 'Indira Ekadasi', 
-            subtitle: '06 Oct 2026', 
-            image: '/images/Ekadasi/indira-ekadasi.jpeg',
-            pagelink: '/Ekadasi' 
-        },
+        // { 
+        //     id: 1, 
+        //     title: 'Indira Ekadasi', 
+        //     subtitle: '06 Oct 2026', 
+        //     image: '/images/Ekadasi/indira-ekadasi.jpeg',
+        //     pagelink: '/Ekadasi' 
+        // },
         { 
             id: 2, 
             title: 'Pitru Paksha Go Seva', 
