@@ -106,27 +106,24 @@ export const POST = withApiLogging(async function (request) {
                         year: 'numeric'
                     });
 
-                    // You can pass custom caption via client payload if needed, or default it
                     const photoItem = {
                         url: blob.url,
                         caption: 'Daily Darshan'
                     };
 
-                    const existingDay = await collection.findOne({ date: todayDateStr });
+                    // Atomic upsert: Updates the document if it exists, or creates it if it doesn't
+                    await collection.updateOne(
+                        { date: todayDateStr },
+                        {
+                            $push: { photos: photoItem },
+                            $setOnInsert: {
+                                mainImage: blob.url, // Sets mainImage to the first photo if created
+                                createdAt: new Date()
+                            }
+                        },
+                        { upsert: true }
+                    );
 
-                    if (existingDay) {
-                        await collection.updateOne(
-                            { date: todayDateStr },
-                            { $push: { photos: photoItem } }
-                        );
-                    } else {
-                        await collection.insertOne({
-                            date: todayDateStr,
-                            mainImage: blob.url,
-                            photos: [photoItem],
-                            createdAt: new Date()
-                        });
-                    }
                 } catch (dbError) {
                     console.error('Failed to update MongoDB after blob upload:', dbError);
                 }
