@@ -1,0 +1,403 @@
+/* =========================================
+   MAIN
+========================================= */
+body {
+  /* font-family: 'Open Sans', sans-serif; */
+  font-family: Georgia, "Times New Roman", serif;
+}
+.darshan-page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #102d5a;
+  margin-top:60px;
+}
+
+@media (max-width: 700px) {
+  .darshan-page {
+    margin-top: 40px;
+    min-height: auto;
+  }
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.darshan-header {
+  /* height: 158px; */
+
+  background:
+    linear-gradient(
+      105deg,
+      #8d1117 0%,
+      #651b46 35%,
+      #25376f 70%,
+      #104e9c 100%
+    );
+
+  color: white;
+}
+
+.darshan-header-inner {
+  width: calc(100% - 15.5%);
+  max-width: 1650px;
+  margin: auto;
+  padding-top: 30px;
+}
+
+.darshan-header h1 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 30px;
+  line-height: 1.1;
+
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.header-line {
+  width: 930px;
+  max-width: 100%;
+
+  height: 1px;
+
+  background: #e1a020;
+
+  margin-top: 12px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 10px;
+
+  font-size: 13px;
+  font-family: Arial, sans-serif;
+}
+
+.breadcrumb a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.breadcrumb-current {
+  color: #d8c6ce;
+}
+
+.deityseva-content{
+  width: calc(100% - 15.5%);
+  max-width: 1650px;
+
+  margin: 0 auto;
+
+  padding-top: 25px;
+  padding-bottom: 40px;
+  color: black;
+}
+
+@media (min-width: 700px) {
+  .deityseva-content{
+    font-size: 18px;
+  }
+}
+
+/* =========================
+   Donation Grid
+========================= */
+.donate-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 25px;
+  width: 84.5%;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* =========================
+   Donation Card
+========================= */
+.donate-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  box-sizing: border-box;
+}
+
+.donate-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   Card Image
+========================= */
+.card-image-wrapper {
+  width: 100%;
+  /* aspect-ratio: 1 / 1; */
+  overflow: hidden;
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.card-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+  transition: transform 0.3s ease;
+}
+
+.donate-card:hover .card-image {
+  transform: scale(1.03);
+}
+
+/* =========================
+   Card Content
+========================= */
+.card-content {
+  padding: 14px 12px 16px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  box-sizing: border-box;
+}
+
+/* Title */
+.card-content h3 {
+  margin: 0 0 5px;
+
+  font-size: 1.15rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: #222;
+
+  min-height: 2.7em;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Subtitle */
+.card-subtitle {
+  margin: 0 0 12px;
+
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.4;
+
+  min-height: 1.4em;
+}
+
+/* =========================
+   Donate Button
+========================= */
+.action-btn {
+  width: 100%;
+  min-height: 42px;
+
+  padding: 9px 12px;
+  margin-top: auto;
+
+  border: 1px solid #d4a054;
+  border-radius: 22px;
+
+  background: #d4a054;
+  color: #ffffff;
+
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.action-btn b {
+  font-family: Arial, sans-serif;
+  font-weight: 600;
+}
+
+.action-btn:hover {
+  /* background: #bd8840; */
+  border-color: #bd8840;
+  color:#102d5a;
+  box-shadow: 0 4px 10px rgba(212, 160, 84, 0.3);
+}
+
+.action-btn:active {
+  transform: scale(0.97);
+}
+
+.action-btn:focus-visible {
+  outline: 3px solid rgba(212, 160, 84, 0.35);
+  outline-offset: 2px;
+}
+
+/* =========================
+   Tablet
+========================= */
+@media (max-width: 992px) {
+  .donate-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 90%;
+    gap: 20px;
+  }
+
+  .card-content h3 {
+    font-size: 1.05rem;
+  }
+
+  .action-btn {
+    font-size: 0.95rem;
+  }
+}
+
+/* =========================
+   Small Tablet / Mobile
+========================= */
+@media (max-width: 768px) {
+  .donate-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 94%;
+    gap: 16px;
+  }
+
+  .card-content {
+    padding: 12px 10px 14px;
+  }
+
+  .card-content h3 {
+    font-size: 1rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .action-btn {
+    min-height: 40px;
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .donate-header h1 {
+    font-size: 2rem;
+  }
+}
+
+/* =========================
+   Mobile
+========================= */
+@media (max-width: 480px) {
+  .donate-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 96%;
+    gap: 12px;
+  }
+
+  .donate-card {
+    border-radius: 8px;
+  }
+
+  .card-content {
+    padding: 10px 8px 12px;
+  }
+
+  .card-content h3 {
+    font-size: 0.9rem;
+    line-height: 1.3;
+    min-height: 2.6em;
+  }
+
+  .card-subtitle {
+    margin-bottom: 9px;
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .action-btn {
+    min-height: 36px;
+    padding: 7px 5px;
+    border-radius: 18px;
+    font-size: 0.78rem;
+  }
+
+  .donate-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .gita-quote {
+    font-size: 0.9rem;
+  }
+}
+
+/* =========================
+   Very Small Screens
+========================= */
+@media (max-width: 360px) {
+  .donate-grid {
+    gap: 8px;
+    width: 97%;
+  }
+
+  .card-content {
+    padding: 8px 6px 10px;
+  }
+
+  .card-content h3 {
+    font-size: 0.82rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.7rem;
+  }
+
+  .action-btn {
+    min-height: 34px;
+    font-size: 0.7rem;
+    padding: 6px 3px;
+  }
+}
+
+.custom-donation{
+  width: calc(100% - 15.5%);
+  margin:auto;
+  margin-top: 40px;
+}
+.custom-donation h3{
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
