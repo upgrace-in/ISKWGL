@@ -35,14 +35,21 @@ export default function DonatePage({}) {
             subtitle: '26 Sep - 10 Oct 2026', 
             pagelink: '/pitrapakshaAnnadan'
         },
-        { 
+        {
             id: 4, 
+            title: 'Nitya Seva', 
+            image: '/images/radhaastami_mobile.png' ,
+            subtitle: 'Daily Deity Seva', 
+            pagelink: '/nityaseva'
+        },
+        { 
+            id: 5, 
             title: 'Anna Daan', 
             image: '/donateForIMGs/ffl.png' ,
             pagelink: '/AnnaDaan'
         },
         { 
-            id: 5, 
+            id: 6, 
             title: 'Tula Daan', 
             image: '/donateForIMGs/Tula_Dan/tula_danam-warangal.jpeg' ,
             pagelink: '/TulaDanSeva'
