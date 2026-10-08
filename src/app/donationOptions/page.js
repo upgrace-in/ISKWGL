@@ -40,7 +40,7 @@ export default function DonatePage({}) {
             title: 'Nitya Seva', 
             image: '/images/radhaastami_mobile.png' ,
             subtitle: 'Daily Deity Seva', 
-            pagelink: '/nityaseva'
+            pagelink: '/nityaSeva'
         },
         { 
             id: 5, 
