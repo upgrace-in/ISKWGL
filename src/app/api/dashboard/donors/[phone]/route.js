@@ -40,7 +40,7 @@ export async function GET(req, { params }) {
 export async function PUT(request, { params }) {
     try {
         await dbConnect();
-        const { phone } = params;
+        const { phone } = await params;
         const body = await request.json();
         const { email, pan, dob, address } = body;
 
