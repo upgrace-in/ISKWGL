@@ -15,7 +15,7 @@ export async function POST(request) {
         } = body;
 
         // 3. Basic backend validation for required fields
-        if (!phone || !amount || !seva || !state || !donationDate) {
+        if (!phone || !amount || !seva || !donationDate) {
             return NextResponse.json(
                 { success: false, message: "Missing required fields (phone, amount, seva, state, city, donationDate)." },
                 { status: 400 }
@@ -76,7 +76,7 @@ export async function POST(request) {
     } catch (error) {
         console.error("Error saving contribution:", error);
         return NextResponse.json(
-            { success: false, message: "Database server error while saving entry." },
+            { success: false, message: `Database server error  - ${error}` },
             { status: 500 }
         );
     }
