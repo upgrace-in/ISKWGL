@@ -21,20 +21,20 @@ export default function DonatePage({}) {
         //     image: '/images/Ekadasi/indira-ekadasi.jpeg',
         //     pagelink: '/Ekadasi' 
         // },
-        { 
-            id: 2, 
-            title: 'Pitru Paksha Go Seva', 
-            image: '/donateForIMGs/GoSevaPitrapaksha2026.jpeg' ,
-            subtitle: '26 Sep - 10 Oct 2026', 
-            pagelink: '/pitrupaksha'
-        },
-        { 
-            id: 3, 
-            title: 'Pitru Paksha AnnaDaan Seva', 
-            image: '/donateForIMGs/PPAnnadan2026.jpeg' ,
-            subtitle: '26 Sep - 10 Oct 2026', 
-            pagelink: '/pitrapakshaAnnadan'
-        },
+        // { 
+        //     id: 2, 
+        //     title: 'Pitru Paksha Go Seva', 
+        //     image: '/donateForIMGs/GoSevaPitrapaksha2026.jpeg' ,
+        //     subtitle: '26 Sep - 10 Oct 2026', 
+        //     pagelink: '/pitrupaksha'
+        // },
+        // { 
+        //     id: 3, 
+        //     title: 'Pitru Paksha AnnaDaan Seva', 
+        //     image: '/donateForIMGs/PPAnnadan2026.jpeg' ,
+        //     subtitle: '26 Sep - 10 Oct 2026', 
+        //     pagelink: '/pitrapakshaAnnadan'
+        // },
         {
             id: 4, 
             title: 'Nitya Seva', 
@@ -48,8 +48,14 @@ export default function DonatePage({}) {
             image: '/donateForIMGs/ffl.png' ,
             pagelink: '/AnnaDaan'
         },
-        { 
+        {
             id: 6, 
+            title: 'Go Seva', 
+            image: '/images/cow.png' ,
+            pagelink: '/go-seva'
+        },
+        { 
+            id: 7, 
             title: 'Tula Daan', 
             image: '/donateForIMGs/Tula_Dan/tula_danam-warangal.jpeg' ,
             pagelink: '/TulaDanSeva'
