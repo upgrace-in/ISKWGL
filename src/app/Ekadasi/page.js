@@ -28,7 +28,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Indira";
+    const ekadasi_name = "Pasankusa";
 
     const [amount, setAmount] = useState();
 
@@ -81,12 +81,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">6 October 2026</div>
+                <div className="date-badge">22 October 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadasi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 7 October 2026, 6:16 AM to 10:05 AM for Warangal.
+                        Fast breaking parana time: 23 October 2026, 6:07 AM to 10:00 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -98,10 +98,10 @@ export default function Ekadasi() {
                 <p className="hero-description">
                     <b style={{ color: '#d4a054'}}>Lork Krishna Said to Maharaj Yudhisthir : </b>
                     {/* <br/> */}
-If a person fasts on this day, all his sins are eradicated and his forefathers who have fallen into hell are liberated. One who simply hears about this sacred Ekadasi achieves the great merit earned by performing a horse sacrifice.
+One who strictly observes this Pasankusa or Papankusa Ekadasi then all his sinful reactions are eradicated and at the end of hislife he reaturns to the abode of Lord Vishnu.
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/indira-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/pasankusa-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
