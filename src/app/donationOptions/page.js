@@ -21,20 +21,13 @@ export default function DonatePage({}) {
         //     image: '/images/Ekadasi/pasankusa-ekadasi.jpeg',
         //     pagelink: '/Ekadasi' 
         // },
-        // { 
-        //     id: 2, 
-        //     title: 'Pitru Paksha Go Seva', 
-        //     image: '/donateForIMGs/GoSevaPitrapaksha2026.jpeg' ,
-        //     subtitle: '26 Sep - 10 Oct 2026', 
-        //     pagelink: '/pitrupaksha'
-        // },
-        // { 
-        //     id: 3, 
-        //     title: 'Pitru Paksha AnnaDaan Seva', 
-        //     image: '/donateForIMGs/PPAnnadan2026.jpeg' ,
-        //     subtitle: '26 Sep - 10 Oct 2026', 
-        //     pagelink: '/pitrapakshaAnnadan'
-        // },
+        { 
+            id: 2, 
+            title: 'Kartik Month Seva', 
+            image: '/donateForIMGs/Kartik_month/yashoda-krishna.webp' ,
+            subtitle: '26 Oct - 24 Nov 2026', 
+            pagelink: '/kartikMonth'
+        },
         {
             id: 4, 
             title: 'Nitya Seva', 
