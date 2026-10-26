@@ -472,7 +472,7 @@ const { handleDonateClick } = useDonateTest();
               Scan using any UPI app (GPay, PhonePe, Paytm, BHIM) to directly contribute to Kartik Seva.
             </p>
             <div className="text-xs text-amber-300 font-mono bg-amber-950/60 p-2 rounded-xl border border-amber-700/60 inline-block">
-              UPI ID: <span className="font-bold text-amber-100">iskcon.warangal@upi</span>
+              UPI ID: <span className="font-bold text-amber-100">donate.iskcon@icici</span>
             </div>
           </div>
 
