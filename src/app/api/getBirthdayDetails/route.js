@@ -24,6 +24,7 @@
 //         return Response.json({}, { status: 404 })
 //     }
 // }
+
 import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation';
 import TotalDonations from '@/models/TotalDonations';
@@ -36,27 +37,53 @@ export async function GET(request) {
         const currentMonth = today.getMonth() + 1; // MongoDB $month is 1-indexed (1 = January)
         const currentDay = today.getDate();
 
-        // 1. Fetch only today's birthdays from Donation model using MongoDB operators
+        // Helper expression to safely convert timestamp to date and check month & day
+        const birthdayMatchExpr = {
+            $and: [
+                {
+                    $eq: [
+                        {
+                            $month: {
+                                $convert: {
+                                    input: "$dob",
+                                    to: "date",
+                                    onError: null,
+                                    onNull: null
+                                }
+                            }
+                        },
+                        currentMonth
+                    ]
+                },
+                {
+                    $eq: [
+                        {
+                            $dayOfMonth: {
+                                $convert: {
+                                    input: "$dob",
+                                    to: "date",
+                                    onError: null,
+                                    onNull: null
+                                }
+                            }
+                        },
+                        currentDay
+                    ]
+                }
+            ]
+        };
+
+        // 1. Fetch from Donation model
         const donations = await Donation.find({
             status: "SUCCESS",
             phone: { $ne: null, $exists: true },
-            $expr: {
-                $and: [
-                    { $eq: [{ $month: { $toDate: "$dob" } }, currentMonth] },
-                    { $eq: [{ $dayOfMonth: { $toDate: "$dob" } }, currentDay] }
-                ]
-            }
+            $expr: birthdayMatchExpr
         }, { name: 1, phone: 1, dob: 1 }).lean();
 
-        // 2. Fetch only today's birthdays from TotalDonations model
+        // 2. Fetch from TotalDonations model
         const totalDonationsList = await TotalDonations.find({
             phone: { $ne: null, $exists: true },
-            $expr: {
-                $and: [
-                    { $eq: [{ $month: { $toDate: "$dob" } }, currentMonth] },
-                    { $eq: [{ $dayOfMonth: { $toDate: "$dob" } }, currentDay] }
-                ]
-            }
+            $expr: birthdayMatchExpr
         }, { name: 1, phone: 1, dob: 1 }).lean();
 
         // 3. Combine both datasets
