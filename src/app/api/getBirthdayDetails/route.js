@@ -94,10 +94,8 @@ export async function GET(request) {
         for (const item of combinedData) {
             if (item.phone && !uniqueMap.has(item.phone)) {
                 uniqueMap.set(item.phone, {
-                    id: item._id,
                     name: item.name,
-                    phone: item.phone,
-                    dob: item.dob
+                    phone: item.phone
                 });
             }
         }
@@ -105,7 +103,7 @@ export async function GET(request) {
         const todayBirthdays = Array.from(uniqueMap.values());
 
         if (todayBirthdays.length === 0) {
-            return Response.json({ message: "No Birthdays Today Found!!!" }, { status: 404 });
+            return Response.json({ message: "No Birthdays Today Found!!!" }, { status: 200 });
         }
 
         return Response.json({ data: todayBirthdays }, { status: 200 });
