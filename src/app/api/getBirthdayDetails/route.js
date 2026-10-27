@@ -24,32 +24,45 @@
 //         return Response.json({}, { status: 404 })
 //     }
 // }
-
 import dbConnect from "@/app/lib/dbConnect";
 import Donation from '@/models/Donation';
-import TotalDonations from '@/models/TotalDonations'; // Make sure this path/filename matches your model file
+import TotalDonations from '@/models/TotalDonations';
 
 export async function GET(request) {
     try {
         await dbConnect();
 
-        // 1. Fetch from Donation model (SUCCESS status + valid DOB & mobile)
+        const today = new Date();
+        const currentMonth = today.getMonth() + 1; // MongoDB $month is 1-indexed (1 = January)
+        const currentDay = today.getDate();
+
+        // 1. Fetch only today's birthdays from Donation model using MongoDB operators
         const donations = await Donation.find({
-            dob: { $ne: null },
-            status: { $eq: "SUCCESS" },
-            phone: { $ne: null, $exists: true }
+            status: "SUCCESS",
+            phone: { $ne: null, $exists: true },
+            $expr: {
+                $and: [
+                    { $eq: [{ $month: { $toDate: "$dob" } }, currentMonth] },
+                    { $eq: [{ $dayOfMonth: { $toDate: "$dob" } }, currentDay] }
+                ]
+            }
         }, { name: 1, phone: 1, dob: 1 }).lean();
 
-        // 2. Fetch from TotalDonations model (adjust filters as needed)
+        // 2. Fetch only today's birthdays from TotalDonations model
         const totalDonationsList = await TotalDonations.find({
-            dob: { $ne: null },
-            phone: { $ne: null, $exists: true }
+            phone: { $ne: null, $exists: true },
+            $expr: {
+                $and: [
+                    { $eq: [{ $month: { $toDate: "$dob" } }, currentMonth] },
+                    { $eq: [{ $dayOfMonth: { $toDate: "$dob" } }, currentDay] }
+                ]
+            }
         }, { name: 1, phone: 1, dob: 1 }).lean();
 
-        // 3. Combine both datasets into a single array
+        // 3. Combine both datasets
         const combinedData = [...donations, ...totalDonationsList];
 
-        // 4. Deduplicate based on phone number using a Map
+        // 4. Deduplicate based on phone number
         const uniqueMap = new Map();
         for (const item of combinedData) {
             if (item.phone && !uniqueMap.has(item.phone)) {
@@ -62,13 +75,13 @@ export async function GET(request) {
             }
         }
 
-        const uniqueDonors = Array.from(uniqueMap.values());
+        const todayBirthdays = Array.from(uniqueMap.values());
 
-        if (uniqueDonors.length === 0) {
-            return Response.json({ message: "No Birthday Found!!!" }, { status: 404 });
+        if (todayBirthdays.length === 0) {
+            return Response.json({ message: "No Birthdays Today Found!!!" }, { status: 404 });
         }
 
-        return Response.json({ data: uniqueDonors }, { status: 200 });
+        return Response.json({ data: todayBirthdays }, { status: 200 });
 
     } catch (error) {
         console.error("Error fetching birthdays:", error);
