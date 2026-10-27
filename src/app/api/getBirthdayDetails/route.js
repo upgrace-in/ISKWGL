@@ -37,26 +37,26 @@ export async function GET(request) {
         const donations = await Donation.find({
             dob: { $ne: null },
             status: { $eq: "SUCCESS" },
-            mobile: { $ne: null, $exists: true }
-        }, { name: 1, mobile: 1, dob: 1 }).lean();
+            phone: { $ne: null, $exists: true }
+        }, { name: 1, phone: 1, dob: 1 }).lean();
 
         // 2. Fetch from TotalDonations model (adjust filters as needed)
         const totalDonationsList = await TotalDonations.find({
             dob: { $ne: null },
-            mobile: { $ne: null, $exists: true }
-        }, { name: 1, mobile: 1, dob: 1 }).lean();
+            phone: { $ne: null, $exists: true }
+        }, { name: 1, phone: 1, dob: 1 }).lean();
 
         // 3. Combine both datasets into a single array
         const combinedData = [...donations, ...totalDonationsList];
 
-        // 4. Deduplicate based on mobile number using a Map
+        // 4. Deduplicate based on phone number using a Map
         const uniqueMap = new Map();
         for (const item of combinedData) {
-            if (item.mobile && !uniqueMap.has(item.mobile)) {
-                uniqueMap.set(item.mobile, {
+            if (item.phone && !uniqueMap.has(item.phone)) {
+                uniqueMap.set(item.phone, {
                     id: item._id,
                     name: item.name,
-                    mobile: item.mobile,
+                    phone: item.phone,
                     dob: item.dob
                 });
             }
