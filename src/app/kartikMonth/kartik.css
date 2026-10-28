@@ -310,18 +310,22 @@ box-shadow: 0 0 15px rgba(245, 194, 66, 0.4);
 
 /* Seva Options Grid */
 .seva-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-gap: 24px;
-margin-bottom: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 50px;
 }
 
 .seva-card {
-padding: 24px;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 0 1 calc((100% - 48px) / 3);
+  min-width: 320px;
+  box-sizing: border-box;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .seva-card:hover {
