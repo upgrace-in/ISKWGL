@@ -14,11 +14,11 @@ import {
 
 // Predefined Seva Data Tiers
 const LAMP_TIERS = [
-  { id: 1, lamps: 50, price: 250, desc: '50 Deep Daan Lamps in Vrindavan Dham' },
-  { id: 2, lamps: 100, price: 500, desc: '100 Deep Daan Lamps for Lord Damodara' },
-  { id: 3, lamps: 250, price: 1250, desc: '250 Deep Daan Lamps with Special Archana' },
-  { id: 4, lamps: 500, price: 2500, desc: '500 Deep Daan Lamps - Family Sankalpa' },
   { id: 5, lamps: 1000, price: 5000, desc: '1000 Maha Deep Daan Lamps Illumination' },
+  { id: 4, lamps: 500, price: 2500, desc: '500 Deep Daan Lamps - Family Sankalpa' },
+  { id: 3, lamps: 250, price: 1250, desc: '250 Deep Daan Lamps with Special Archana' },
+  { id: 2, lamps: 100, price: 500, desc: '100 Deep Daan Lamps for Lord Damodara' },
+  { id: 1, lamps: 50, price: 250, desc: '50 Deep Daan Lamps in Vrindavan Dham' },
 ];
 
 const Devotee_Prasadam_TIERS = [
