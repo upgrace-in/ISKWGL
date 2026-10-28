@@ -21,16 +21,18 @@ const LAMP_TIERS = [
   { id: 5, lamps: 1000, price: 5000, desc: '1000 Maha Deep Daan Lamps Illumination' },
 ];
 
-const ANNA_DAAN_TIERS = [
-  { id: 1, title: 'Devotee Feast Seva', price: 1100, desc: 'Sponsor Mahaprasadam feast for 25 Vaishnavas' },
-  { id: 2, title: 'Damodar Bhog Seva', price: 2500, desc: 'Special 56 Bhog Offering to Sri Sri Radha Damodara' },
-  { id: 3, title: 'Braj Vasi Feeding', price: 5000, desc: 'Feed 100 Brajvasis and Sadhus during Kartik' },
+const Devotee_Prasadam_TIERS = [
+  { id: 1, count: 100, price: 10116, desc: 'Sponsor Mahaprasadam feast for 25 Vaishnavas' },
+  { id: 2, count: 50, price: 5116, desc: 'Special 56 Bhog Offering to Sri Sri Radha Damodara' },
+  { id: 3, count: 30, price: 3116, desc: 'Feed 100 Brajvasis and Sadhus during Kartik' },
+  { id: 4, count: 15, price: 1516, desc: 'Feed 100 Brajvasis and Sadhus during Kartik' }
 ];
 
-const GO_SEVA_TIERS = [
-  { id: 1, title: 'Cow Grass & Feed', price: 501, desc: 'Provide fresh green fodder for 5 Gaumatas' },
-  { id: 2, title: 'Gau Medical Care', price: 1500, desc: 'Sponsor medical checkup & medicines for sick cows' },
-  { id: 3, title: 'Nandi Care Seva', price: 3000, desc: 'Monthly care and feeding of retired bulls' },
+const Leaf_Cup_Prasadam_TIERS = [
+  { id: 1, count: 500, price: 5116, desc: 'Sponsor Mahaprasadam feast for 25 Vaishnavas' },
+  { id: 2, count: 250, price: 2116, desc: 'Special 56 Bhog Offering to Sri Sri Radha Damodara' },
+  { id: 3, count: 100, price: 1116, desc: 'Feed 100 Brajvasis and Sadhus during Kartik' },
+  { id: 4, count: 50, price: 516, desc: 'Feed 100 Brajvasis and Sadhus during Kartik' }
 ];
 
 const TULASI_DECOR_TIERS = [
@@ -49,7 +51,7 @@ const INITIAL_PRAYERS = [
 export default function App() {
   // Navigation & Category States
   const [navOpen, setNavOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('lamps');
+  const [activeTab, setActiveTab] = useState('Devotee_Prasadam');
   const [customAmount, setCustomAmount] = useState('');
 //   const [cart, setCart] = useState([]);
 //   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -252,23 +254,24 @@ const { handleDonateClick } = useDonateTest();
             {/* Navigation Category Tabs */}
             <nav className="navigation-tabs">
             <button
+                className={`tab-btn ${activeTab === 'Devotee_Prasadam' ? 'active' : ''}`}
+                onClick={() => setActiveTab('Devotee_Prasadam')}
+            >
+                Devotee Prasadam Seva
+            </button>
+            <button
+                className={`tab-btn ${activeTab === 'Leaf_Cup_Prasadam' ? 'active' : ''}`}
+                onClick={() => setActiveTab('Leaf_Cup_Prasadam')}
+            >
+                Leaf Cup Prasadam Distribution
+            </button>
+            <button
                 className={`tab-btn ${activeTab === 'lamps' ? 'active' : ''}`}
                 onClick={() => setActiveTab('lamps')}
             >
-                🪔 Lamp Seva
+                Lamp Seva
             </button>
-            {/* <button
-                className={`tab-btn ${activeTab === 'anna' ? 'active' : ''}`}
-                onClick={() => setActiveTab('anna')}
-            >
-                🍲 Anna Daan
-            </button>
-            <button
-                className={`tab-btn ${activeTab === 'go' ? 'active' : ''}`}
-                onClick={() => setActiveTab('go')}
-            >
-                🐄 Go Seva
-            </button>
+            {/*
             <button
                 className={`tab-btn ${activeTab === 'tulasi' ? 'active' : ''}`}
                 onClick={() => setActiveTab('tulasi')}
@@ -276,6 +279,46 @@ const { handleDonateClick } = useDonateTest();
                 🌿 Tulasi & Decor
             </button> */}
             </nav>
+
+            {/* Anna Daan Section */}
+            {activeTab === 'Devotee_Prasadam' && (
+            <div className="seva-grid">
+                {Devotee_Prasadam_TIERS.map((tier, idx) => (
+                <div key={idx} className="gold-card-frame seva-card">
+                    <div className="seva-card-header">
+                    <h3 className="seva-title">{tier.count} Devotees</h3>
+                    <span className="seva-price">₹{tier.price}</span>
+                    </div>
+                    <button
+                    className="btn-gold-action"
+                    onClick={() => handleDonateClick(tier.price, `Kartik - ${tier.count} Devotee Prasadam Seva`, 'Kartik Seva')}
+                    >
+                    Sponsor Prasadam
+                    </button>
+                </div>
+                ))}
+            </div>
+            )}
+
+            {/* Leaf Cup Prasadam Section */}
+            {activeTab === 'Leaf_Cup_Prasadam' && (
+            <div className="seva-grid">
+                {Leaf_Cup_Prasadam_TIERS.map((tier, idx) => (
+                <div key={idx} className="gold-card-frame seva-card">
+                    <div className="seva-card-header">
+                    <h3 className="seva-title">{tier.count} Leaf Cups</h3>
+                    <span className="seva-price">₹{tier.price}</span>
+                    </div>
+                    <button
+                    className="btn-gold-action"
+                    onClick={() => handleDonateClick(tier.price, `Kartik - ${tier.count} Leaf Cups Seva`, 'Kartik Seva')}
+                    >
+                    Serve Prasadam
+                    </button>
+                </div>
+                ))}
+            </div>
+            )}
 
             {/* Seva Options Grid Display */}
             {activeTab === 'lamps' && (
@@ -294,73 +337,35 @@ const { handleDonateClick } = useDonateTest();
                     Offer {tier.lamps} Lamps
                     </button>
                 </div>
-                ))}
-
-                {/* Custom Amount Card */}
-                <div className="gold-card-frame seva-card">
-                <div className="seva-card-header">
-                    <h3 className="seva-title">Custom Seva</h3>
-                    <span className="seva-price">Any Amount</span>
-                </div>
-                <p className="seva-description">Offer any number of lamps or custom amount for Kartik Month Seva.</p>
-                <div className="custom-amount-box">
-                    <input
-                    type="number"
-                    placeholder="Enter Amount in ₹"
-                    value={customAmount}
-                    onChange={(e) => setCustomAmount(e.target.value)}
-                    className="custom-input"
-                    />
-                    <button
-                    className="btn-gold-action"
-                    onClick={() => customAmount && handleDonateClick(Number(customAmount), 'Kartik Lamp Seva', 'Kartik Seva')}
-                    >
-                    Offer Custom Seva
-                    </button>
-                </div>
-                </div>
+                ))}    
             </div>
             )}
 
-            {/* Anna Daan Section */}
-            {/* {activeTab === 'anna' && (
-            <div className="seva-grid">
-                {ANNA_DAAN_TIERS.map((tier, idx) => (
-                <div key={idx} className="gold-card-frame seva-card">
-                    <div className="seva-card-header">
-                    <h3 className="seva-title">{tier.title}</h3>
-                    <span className="seva-price">₹{tier.price}</span>
-                    </div>
-                    <button
-                    className="btn-gold-action"
-                    onClick={() => handleDonateClick(tier.price, tier.title, 'Kartik Seva')}
-                    >
-                    Sponsor Prasad
-                    </button>
-                </div>
-                ))}
+            
+            {/* Custom Amount Card */}
+            <div className="gold-card-frame seva-card">
+            <div className="seva-card-header">
+                <h3 className="seva-title">Custom Seva</h3>
+                <span className="seva-price">Any Amount</span>
             </div>
-            )} */}
-
-            {/* Go Seva Section */}
-            {/* {activeTab === 'go' && (
-            <div className="seva-grid">
-                {GO_SEVA_TIERS.map((tier, idx) => (
-                <div key={idx} className="gold-card-frame seva-card">
-                    <div className="seva-card-header">
-                    <h3 className="seva-title">{tier.title}</h3>
-                    <span className="seva-price">₹{tier.price}</span>
-                    </div>
-                    <button
-                    className="btn-gold-action"
-                    onClick={() => handleDonateClick(tier.price, tier.title, 'Kartik Seva')}
-                    >
-                    Serve Gaumata
-                    </button>
-                </div>
-                ))}
+            <p className="seva-description">Offer any amount for Kartik Month Seva.</p>
+            <div className="custom-amount-box">
+                <input
+                type="number"
+                placeholder="Enter Amount in ₹"
+                value={customAmount}
+                onChange={(e) => setCustomAmount(e.target.value)}
+                className="custom-input"
+                />
+                <button
+                className="btn-gold-action"
+                onClick={() => customAmount && handleDonateClick(Number(customAmount), 'Kartik Month Seva', 'Kartik Seva')}
+                >
+                Offer Kartik Month Seva
+                </button>
             </div>
-            )} */}
+            </div>
+            
 
             {/* Tulasi & Decor Section */}
             {/* {activeTab === 'tulasi' && (
