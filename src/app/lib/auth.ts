@@ -1,7 +1,5 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import dbConnect from "@/app/lib/dbConnect";
-import User from "@/models/User";
 
 export const { 
   handlers, 
@@ -22,13 +20,16 @@ export const {
       if (!user?.email) return false;
 
       try {
+        // Dynamically import Mongoose/DB only inside the server execution phase
+        const dbConnect = (await import("@/app/lib/dbConnect")).default;
+        const User = (await import("@/models/User")).default;
+
         await dbConnect();
         const email = user.email.toLowerCase().trim();
         const initialAdminEmail = process.env.INITIAL_ADMIN_EMAIL?.toLowerCase().trim();
 
         // Auto-bootstrap initial admin via environment variable
         if (initialAdminEmail && email === initialAdminEmail) {
-          // Use 'as any' to bypass strict Mongoose model union call signatures in TS
           await (User as any).findOneAndUpdate(
             { email },
             { name: user.name || "Admin User", role: "admin" },
@@ -51,34 +52,28 @@ export const {
       }
     },
     async jwt({ token, user }: { token: any; user?: any }) {
-        // 1. On initial sign in, attach email and fetch role from DB
-      if (user) {
-        token.email = user.email;
+      if (user || token?.email) {
         try {
+          const dbConnect = (await import("@/app/lib/dbConnect")).default;
+          const User = (await import("@/models/User")).default;
+
           await dbConnect();
-          const dbUser = await (User as any).findOne({ email: user.email.toLowerCase().trim() });
+          const targetEmail = (user?.email || token.email).toLowerCase().trim();
+          token.email = targetEmail;
+          
+          const dbUser = await (User as any).findOne({ email: targetEmail });
           token.role = dbUser ? dbUser.role : "viewer";
         } catch (error) {
           console.error("[NextAuth] JWT database lookup error:", error);
           token.role = "viewer";
         }
       }
-      
-      try {
-        if (user && token?.email) {
-          await dbConnect();
-          const dbUser = await (User as any).findOne({ email: token.email.toLowerCase().trim() });
-          token.role = dbUser ? dbUser.role : "viewer";
-        }
-      } catch (error) {
-        console.error("[NextAuth] JWT callback error:", error);
-        token.role = "viewer";
-      }
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
       if (token) {
         session.user.role = token.role || "viewer";
+        session.user.email = token.email || session.user.email;
       }
       return session;
     },
