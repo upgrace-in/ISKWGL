@@ -1,40 +1,28 @@
+import NextAuth from "next-auth";
+import authConfig from "@/app/lib/auth.config";
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
-const AUTH_SECRET = process.env.AUTH_SECRET;
 
-export async function middleware(req) {
+const { auth } = NextAuth(authConfig);
+
+export default auth((req) => {
   const { pathname } = req.nextUrl;
-  const sessionToken = await getToken({ 
-    req, 
-    secret: AUTH_SECRET 
-  });
 
-  // -----------------------------
-  // DASHBOARD PROTECTION
-  // -----------------------------
-  if (pathname.startsWith("/dashboard")) {
-    if (!sessionToken) {
-      const url = req.nextUrl.clone();
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
-    return NextResponse.next();
+  const isAuthenticated = !!req.auth?.user?.id;
+
+  if (pathname.startsWith("/dashboard") && !isAuthenticated) {
+    return NextResponse.redirect(
+      new URL("/login", req.url)
+    );
   }
 
-  // -----------------------------
-  // DONATIONS PROTECTION
-  // -----------------------------
-  if (pathname.startsWith("/donations")) {
-    if (!sessionToken) {
-      const url = req.nextUrl.clone();
-      url.pathname = "/login_donations";
-      return NextResponse.redirect(url);
-    }
-    return NextResponse.next();
+  if (pathname.startsWith("/donations") && !isAuthenticated) {
+    return NextResponse.redirect(
+      new URL("/login_donations", req.url)
+    );
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: [
