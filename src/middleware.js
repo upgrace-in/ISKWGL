@@ -1,39 +1,35 @@
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+const AUTH_SECRET = process.env.AUTH_SECRET;
 
-export function middleware(req) {
+export async function middleware(req) {
   const { pathname } = req.nextUrl;
+  const sessionToken = await getToken({ 
+    req, 
+    secret: AUTH_SECRET 
+  });
 
   // -----------------------------
-  // DASHBOARD
+  // DASHBOARD PROTECTION
   // -----------------------------
   if (pathname.startsWith("/dashboard")) {
-    const dashboardToken = req.cookies.get(
-      "dashboard_session"
-    );
-
-    if (!dashboardToken) {
+    if (!sessionToken) {
       const url = req.nextUrl.clone();
       url.pathname = "/login";
       return NextResponse.redirect(url);
     }
-
     return NextResponse.next();
   }
 
   // -----------------------------
-  // DONATIONS
+  // DONATIONS PROTECTION
   // -----------------------------
   if (pathname.startsWith("/donations")) {
-    const donationsToken = req.cookies.get(
-      "donations_session"
-    );
-
-    if (!donationsToken) {
+    if (!sessionToken) {
       const url = req.nextUrl.clone();
       url.pathname = "/login_donations";
       return NextResponse.redirect(url);
     }
-
     return NextResponse.next();
   }
 

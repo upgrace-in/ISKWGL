@@ -9,8 +9,8 @@ export async function GET(req, { params }) {
 
         console.log("Phone:", phone);
 
-        // Find all donations by this exact phone number
-        const donations = await TotalDonations.find({ phone: phone }).sort({ createdAt: -1 });
+        // Find all donations by this exact phone number, sorted by donationDate (newest first)
+        const donations = await TotalDonations.find({ phone: phone }).sort({ donationDate: -1 });
 
         console.log("donations:",donations);
 
@@ -52,19 +52,7 @@ export async function PUT(request, { params }) {
                     email: email,
                     pan: pan ? pan.toUpperCase() : "",
                     dob: dob ? new Date(dob) : null,
-                    // If your schema stores address as an object:
                     address: address
-                    
-                    // Note: If your schema stores address fields as flat properties, 
-                    // un-comment the lines below instead:
-                    /*
-                    "addressLine1": address.addressLine1,
-                    "addressLine2": address.addressLine2,
-                    "city": address.city,
-                    "district": address.district,
-                    "state": address.state,
-                    "pinCode": address.pinCode
-                    */
                 } 
             }
         );

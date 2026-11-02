@@ -1,12 +1,25 @@
-import TotalDonations from '@/models/TotalDonations'; // Ensure this points to your actual Mongoose model
+import TotalDonations from '@/models/TotalDonations'; 
 import dbConnect from "@/app/lib/dbConnect";
 import { NextResponse } from 'next/server';
+import { auth } from "@/app/lib/auth";
+
 
 export async function GET(req) {
     try {
+        // 1. Authenticate user session
+        const session = await auth();
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
         await dbConnect();
         const { searchParams } = new URL(req.url);
         let query = {};
+
+        // 2. Role-Based Access Control: Limit 'friend_raiser' to their assigned records
+        if (session.user.role === 'friend_raiser') {
+            query.assignedTo = session.user.email;
+        }
 
         // --- FILTERS (Stacking multiple conditions) ---
 
@@ -18,15 +31,9 @@ export async function GET(req) {
         const name = searchParams.get('name');
         if (name) query.name = { $regex: name, $options: 'i' };
 
-        // // 3. Filter by PIN (Exact match)
-        // const pin = searchParams.get('pin');
-        // if (pin) query.pin = pin;
-        
-
         // 5. Filter by Message Sent (Boolean)
         const messageSent = searchParams.get('messageSent');
         if (messageSent !== null && messageSent !== '') {
-            // Convert string "true"/"false" to actual boolean for MongoDB
             query.messageSent = messageSent === 'true';
         }
 
@@ -59,14 +66,13 @@ export async function GET(req) {
             }
             
             if (endDate) {
-                // Set the end date to the very last millisecond of that day
                 const end = new Date(endDate);
                 end.setHours(23, 59, 59, 999);
                 query.donationDate.$lte = end;
             }
         }
 
-        // Fetch records, sorted by the 'donationDates' time (newest first)
+        // Fetch records, sorted by the 'donationDate' time (newest first)
         const records = await TotalDonations.find(query).sort({ donationDate: -1 });
 
         return NextResponse.json({ success: true, count: records.length, data: records }, { status: 200 });
