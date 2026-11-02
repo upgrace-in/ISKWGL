@@ -2,6 +2,7 @@ import "@/globals.css";
 import { DonationProvider } from '@/Helpers/DonationContext';
 // import RathYatraPromo from './rathyatrapromo/page.jsx'; // Import the promo component
 import AuthProvider from "@/Components/AuthProvider";
+import Providers from "@/Helpers/sessionprovider";
 import Script from 'next/script';
 export const metadata = {
   title: "ISKCON WARANGAL",
@@ -28,11 +29,13 @@ export default function RootLayout({ children }) {
         `}
       </Script>
       <body>
-        <AuthProvider>
-          <DonationProvider>
-            {children}
-          </DonationProvider>
-        </AuthProvider>
+        <Providers>
+          <AuthProvider>
+            <DonationProvider>
+              {children}
+            </DonationProvider>
+          </AuthProvider>
+        </Providers>
         {/* <RathYatraPromo /> This can remain here if it's positioned absolutely/fixed */}
       </body>
     </html>
