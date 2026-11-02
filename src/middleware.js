@@ -5,6 +5,7 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
   const isAuthenticated = !!req.auth;
 
+  console.log("Middleware Auth check - User:", req.auth?.user);
   // -----------------------------
   // DASHBOARD PROTECTION
   // -----------------------------
@@ -28,6 +29,8 @@ export default auth((req) => {
     }
     return NextResponse.next();
   }
+
+  console.log("Middleware Auth check - User:", req.auth?.user);
 
   return NextResponse.next();
 });
