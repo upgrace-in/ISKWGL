@@ -51,6 +51,19 @@ export const {
       }
     },
     async jwt({ token, user }: { token: any; user?: any }) {
+        // 1. On initial sign in, attach email and fetch role from DB
+      if (user) {
+        token.email = user.email;
+        try {
+          await dbConnect();
+          const dbUser = await (User as any).findOne({ email: user.email.toLowerCase().trim() });
+          token.role = dbUser ? dbUser.role : "viewer";
+        } catch (error) {
+          console.error("[NextAuth] JWT database lookup error:", error);
+          token.role = "viewer";
+        }
+      }
+      
       try {
         if (user && token?.email) {
           await dbConnect();
