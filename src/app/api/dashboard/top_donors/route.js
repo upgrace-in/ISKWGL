@@ -1,7 +1,7 @@
 import TotalDonations from '@/models/TotalDonations';
 import dbConnect from "@/app/lib/dbConnect";
 import { NextResponse } from 'next/server';
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/app/lib/auth";
 
 export const dynamic = 'force-dynamic'; // Ensures the route is always dynamic
 

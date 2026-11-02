@@ -2,7 +2,7 @@ import TotalDonations from '@/models/TotalDonations';
 import DonorFollowUp from '@/models/DonorFollowUp';
 import dbConnect from "@/app/lib/dbConnect";
 import { NextResponse } from 'next/server';
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/app/lib/auth";
 
 export async function GET(req) {
     try {
