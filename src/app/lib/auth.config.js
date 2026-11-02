@@ -17,6 +17,10 @@ const authConfig = {
   },
 
   callbacks: {
+    async jwt({ token }) {
+      return token;
+    },
+    
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id;
