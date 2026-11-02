@@ -1,36 +1,25 @@
-import { auth } from "@/app/lib/auth";
+import NextAuth from "next-auth";
+import authConfig from "@/app/lib/auth.config";
 import { NextResponse } from "next/server";
+
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
-  const isAuthenticated = !!req.auth;
 
-  console.log("Middleware Auth check - User:", req.auth?.user);
-  // -----------------------------
-  // DASHBOARD PROTECTION
-  // -----------------------------
-  if (pathname.startsWith("/dashboard")) {
-    if (!isAuthenticated) {
-      const url = req.nextUrl.clone();
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
-    return NextResponse.next();
+  const isAuthenticated = !!req.auth?.user?.id;
+
+  if (pathname.startsWith("/dashboard") && !isAuthenticated) {
+    return NextResponse.redirect(
+      new URL("/login", req.url)
+    );
   }
 
-  // -----------------------------
-  // DONATIONS PROTECTION
-  // -----------------------------
-  if (pathname.startsWith("/donations")) {
-    if (!isAuthenticated) {
-      const url = req.nextUrl.clone();
-      url.pathname = "/login_donations";
-      return NextResponse.redirect(url);
-    }
-    return NextResponse.next();
+  if (pathname.startsWith("/donations") && !isAuthenticated) {
+    return NextResponse.redirect(
+      new URL("/login_donations", req.url)
+    );
   }
-
-  console.log("Middleware Auth check - User:", req.auth?.user);
 
   return NextResponse.next();
 });
