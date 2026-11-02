@@ -1,16 +1,21 @@
 import TotalDonations from '@/models/TotalDonations';
 import dbConnect from "@/app/lib/dbConnect";
 import { NextResponse } from 'next/server';
+import { auth } from "@/app/api/auth/[...nextauth]/route";
 
 export const dynamic = 'force-dynamic'; // Ensures the route is always dynamic
 
 export async function GET(req) {
     try {
+        // 1. Authenticate user session
+        const session = await auth();
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
         await dbConnect();
         
-        // const { searchParams } = new URL(req.url);
-        
-        // Default to the current year if no year is provided
+        // Default to the current year
         const currentYear = new Date().getFullYear();
         const year = parseInt(currentYear);
 
@@ -18,30 +23,39 @@ export async function GET(req) {
         const startDate = new Date(year, 0, 1); // Jan 1st, 00:00:00
         const endDate = new Date(year + 1, 0, 1); // Jan 1st of NEXT year, 00:00:00
 
+        // 2. Build match conditions (Date range + RBAC check)
+        const matchConditions = {
+            donationDate: {
+                $gte: startDate,
+                $lt: endDate
+            }
+        };
+
+        // If user is 'friend_raiser', restrict matching records to their assigned donors
+        if (session.user.role === 'friend_raiser') {
+            matchConditions.assignedTo = session.user.email;
+        }
+
         const topDonors = await TotalDonations.aggregate([
-            // 1. Match: Filter documents to only include the specified year
+            // 1. Match: Filter by year and assigned caregiver (if friend_raiser)
             {
-                $match: {
-                    donationDate: {
-                        $gte: startDate,
-                        $lt: endDate
-                    }
-                }
+                $match: matchConditions
             },
             // 2. Group: Combine records with the same phone number
             {
                 $group: {
                     _id: "$phone", // Group by phone number
                     name: { $first: "$name" }, // Grab their name
+                    phone: { $first: "$phone" }, // Retain phone for links/keys
                     donationCount: { $sum: 1 }, // Count how many times they appear
-                    totalAmount: { $sum: { $toInt: "$amount" } } // Sum up their total money (optional but helpful)
+                    totalAmount: { $sum: { $toInt: "$amount" } } // Sum up total money
                 }
             },
-            // 3. Sort: Order by donation count, then by total amount for tie-breaking
+            // 3. Sort: Order by donation count, then total amount
             {
                 $sort: { donationCount: -1, totalAmount: -1 }
             },
-            // 4. Limit: Only grab the top 3
+            // 4. Limit: Grab the top 3
             {
                 $limit: 3
             }

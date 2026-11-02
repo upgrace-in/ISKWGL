@@ -1,47 +1,136 @@
 "use client";
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function DonorsDirectoryView() {
+    const { data: session } = useSession();
+    const role = session?.user?.role;
+
+    const [activeTab, setActiveTab] = useState("all");
+
+    // --- TAB 1 STATE (All Donors) ---
     const [donors, setDonors] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Fetch data whenever the searchTerm changes
-    useEffect(() => {
-        const fetchDonors = async () => {
-            setLoading(true);
-            const query = searchTerm ? `?search=${encodeURIComponent(searchTerm)}` : "";
-            const res = await fetch(`/api/dashboard/donors${query}`);
-            const result = await res.json();
-            
-            if (result.success) {
-                setDonors(result.data);
-            }
-            setLoading(false);
-        };
-
-        // Debounce: Wait 300ms after the user stops typing before fetching
-        const timeoutId = setTimeout(() => fetchDonors(), 300);
-        return () => clearTimeout(timeoutId);
-        
-    }, [searchTerm]);
-
-    // Memoize the sorted donors list to prevent re-sorting on every render
-    const sortedDonors = useMemo(() => {
-        // Create a new sorted array to avoid mutating the original state, sort by donationCount descending
-        return [...donors].sort((a, b) => b.donationCount - a.donationCount);
-    }, [donors]);
+    // --- TAB 2 STATE (Date Range Filter + Search) ---
+    const currentYear = new Date().getFullYear();
+    const todayStr = new Date().toISOString().split("T")[0];
+    
+    const [startDate, setStartDate] = useState(`${currentYear}-01-01`);
+    const [endDate, setEndDate] = useState(todayStr);
+    const [rangeSearchTerm, setRangeSearchTerm] = useState("");
+    const [rangeDonors, setRangeDonors] = useState([]);
+    const [rangeLoading, setRangeLoading] = useState(false);
 
     // --- TOP DONORS STATE ---
     const [topDonors, setTopDonors] = useState([]);
-    const currentYear = new Date().getFullYear();
 
-    // 1. Reusable function to fetch top donors, wrapped in useCallback for performance.
+    // --- FRIEND RAISER USERS STATE (For Admin Assignment) ---
+    const [friendRaiserUsers, setFriendRaiserUsers] = useState([]);
+
+    // Fetch Friend Raiser Users if Admin
+    useEffect(() => {
+        if (role === "admin") {
+            fetch("/api/admin/users")
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success && data.users) {
+                        setFriendRaiserUsers(data.users.filter((u) => u.role === "friend_raiser"));
+                    }
+                })
+                .catch((err) => console.error("Failed to load friend raiser users", err));
+        }
+    }, [role]);
+
+    // Fetch All Donors (Tab 1)
+    useEffect(() => {
+        const fetchDonors = async () => {
+            setLoading(true);
+            try {
+                const query = searchTerm ? `?search=${encodeURIComponent(searchTerm)}` : "";
+                const res = await fetch(`/api/dashboard/donors${query}`);
+                const result = await res.json();
+                
+                if (result.success) {
+                    setDonors(result.data);
+                }
+            } catch (error) {
+                console.error("Failed to load donors", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        const timeoutId = setTimeout(() => fetchDonors(), 300);
+        return () => clearTimeout(timeoutId);
+    }, [searchTerm]);
+
+    // Fetch Date Range Donors (Tab 2) with Debounced Search
+    useEffect(() => {
+        if (activeTab === "range") {
+            const fetchRangeDonors = async () => {
+                setRangeLoading(true);
+                try {
+                    let query = `?startDate=${startDate}&endDate=${endDate}`;
+                    if (rangeSearchTerm) {
+                        query += `&search=${encodeURIComponent(rangeSearchTerm)}`;
+                    }
+                    const res = await fetch(`/api/dashboard/donors${query}`);
+                    const result = await res.json();
+                    
+                    if (result.success) {
+                        setRangeDonors(result.data);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch range donors", error);
+                } finally {
+                    setRangeLoading(false);
+                }
+            };
+
+            const timeoutId = setTimeout(() => fetchRangeDonors(), 300);
+            return () => clearTimeout(timeoutId);
+        }
+    }, [activeTab, startDate, endDate, rangeSearchTerm]);
+
+    // Handle Admin Donor Assignment Change
+    const handleAssignChange = async (phone, assignedToEmail) => {
+        const confirmed = confirm(`Are you sure you want to assign this donor to ${assignedToEmail || "Unassigned"}?`);
+        if (!confirmed) return;
+
+        try {
+            const res = await fetch("/api/dashboard/donors", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ phone, assignedToEmail }),
+            });
+            const result = await res.json();
+            if (result.success) {
+                // Refresh data
+                setDonors((prev) => prev.map(d => d.phone === phone ? { ...d, assignedTo: assignedToEmail } : d));
+                setRangeDonors((prev) => prev.map(d => d.phone === phone ? { ...d, assignedTo: assignedToEmail } : d));
+            } else {
+                alert("Failed to update assignment");
+            }
+        } catch (err) {
+            console.error("Error updating assignment", err);
+        }
+    };
+
+    // Memoize sorted lists for performance
+    const sortedDonors = useMemo(() => {
+        return [...donors].sort((a, b) => b.donationCount - a.donationCount);
+    }, [donors]);
+
+    const sortedRangeDonors = useMemo(() => {
+        return [...rangeDonors].sort((a, b) => b.donationCount - a.donationCount);
+    }, [rangeDonors]);
+
+    // Fetch Top Donors
     const fetchTopDonors = useCallback(async () => {
         try {
-            // 2. Added { cache: 'no-store' } to ensure fresh data is always fetched.
             const response = await fetch(`/api/dashboard/top_donors`, { cache: 'no-store' });
             const result = await response.json();
             if (result.success) {
@@ -50,58 +139,88 @@ export default function DonorsDirectoryView() {
         } catch (error) {
             console.error("Failed to load top donors", error);
         }
-    }, []); // No dependencies needed here
+    }, []);
 
-    // 3. useEffect now calls the reusable function on component mount.
     useEffect(() => {
         fetchTopDonors();
     }, [fetchTopDonors]);
 
-    // Add this function inside your component, before the return statement
+    // Dynamic CSV Export
     const downloadCSV = () => {
-        // Different headers tailored for the Donor CRM
-        const headers = ["Name", "Phone", "PAN", "Address", "Total Donations"];
-        const rows = sortedDonors.map(donor => 
-            `"${donor.name}","${donor.phone}","${donor.pan || "N/A"}","${donor.address.addressLine1 + ", " + donor.address.addressLine2 + ", " + donor.address.city + ", " + donor.address.district + ", " + donor.address.state + " (" + donor.address.pinCode + ")"}","${donor.donationCount}"`
+        const dataset = activeTab === "all" ? sortedDonors : sortedRangeDonors;
+        const filename = activeTab === "all" ? "donor_directory_export.csv" : `donors_${startDate}_to_${endDate}.csv`;
+
+        const headers = ["Name", "Phone", "Latest Donation", "Latest Follow-up", "Address", "Total Donations"];
+        const rows = dataset.map(donor => 
+            `"${donor.name}","${donor.phone}","${donor.latestDonationDate || "N/A"}","${donor.latestFollowUp?.text?.replace(/"/g, '""') || "N/A"}","${donor.address?.addressLine1 || ""}, ${donor.address?.city || ""}","${donor.donationCount}"`
         );
         const csvContent = [headers.join(","), ...rows].join("\n");
         
         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = "donor_directory_export.csv"; // Specific file name
+        link.download = filename;
         link.click();
     };
 
-    // Simple local filter for the main search bar
-    // const filteredDonors = donors.filter(donor => 
-    //     donor.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    //     donor.phone?.includes(searchQuery)
-    // );
-
-    // KPI 1: Total Donors (Reflects filtered view)
-    const totalDonors = donors.length;
+    const totalDonors = activeTab === "all" ? donors.length : rangeDonors.length;
+    const colSpanCount = role === "admin" ? 7 : 6;
 
     return (
-        <div>
-            {/* --- KPI CARDS (Place this right below your Top Control Bar) --- */}
+        <div className="p-8 max-w-full mx-auto">
+            {/* --- TABS NAVIGATION BAR --- */}
+            <div className="flex border-b border-gray-200 mb-6 justify-between items-center">
+                <div className="flex">
+                    <button
+                        onClick={() => setActiveTab("all")}
+                        className={`py-3 px-6 text-sm font-semibold border-b-2 transition-colors ${
+                            activeTab === "all"
+                                ? "border-blue-600 text-blue-600"
+                                : "border-transparent text-gray-500 hover:text-gray-700"
+                        }`}
+                    >
+                        {role === "donor_care" ? "My Assigned Donors" : "All-Time Directory"}
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("range")}
+                        className={`py-3 px-6 text-sm font-semibold border-b-2 transition-colors ${
+                            activeTab === "range"
+                                ? "border-blue-600 text-blue-600"
+                                : "border-transparent text-gray-500 hover:text-gray-700"
+                        }`}
+                    >
+                        Date Range Filter ({currentYear})
+                    </button>
+                </div>
+
+                {/* --- DOWNLOAD BUTTON (Admin Only) --- */}
+                {(role === "admin" || role === "manager") && (
+                    <button 
+                        onClick={downloadCSV}
+                        className="bg-green-600 text-white px-4 py-2 text-sm font-medium rounded shadow-sm hover:bg-green-700 transition-colors"
+                    >
+                        Download {activeTab === "all" ? "Directory" : "Range"} CSV
+                    </button>
+                )}
+            </div>
+
+            {/* --- KPI CARDS --- */}
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
-                
-                {/* KPI 1: Total Donors */}
                 <div className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm flex flex-col justify-center">
-                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Total Directory</p>
+                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                        {activeTab === "all" ? (role === "donor_care" ? "My Assigned Count" : "Total Directory") : "Filtered Count"}
+                    </p>
                     <p className="text-3xl font-bold text-blue-600">
                         {totalDonors.toLocaleString('en-IN')} <span className="text-sm font-medium text-gray-500">donors</span>
                     </p>
                 </div>
 
-                {/* KPI 2: Top 3 Frequent Donors (Fetched from DB API) */}
+                {/* Top 3 Supporters KPI Card */}
                 <div className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm lg:col-span-3">
                     <div className="flex justify-between items-end mb-3">
                         <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                             Most Frequent Supporters ({currentYear})
                         </p>
-                        {/* 4. Added a refresh button to manually update the list. */}
                         <button 
                             onClick={fetchTopDonors} 
                             className="text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline focus:outline-none">
@@ -118,8 +237,8 @@ export default function DonorsDirectoryView() {
                                     </div>
                                     <div className="overflow-hidden">
                                         <p className="text-sm font-bold text-gray-900 truncate">
-                                            <Link href={`/dashboard/donors/${donor._id}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
-                                            {donor.name || donor._id} {/* Fallback to phone number if name is blank */}
+                                            <Link href={`/dashboard/donors/${donor.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
+                                                {donor.name || donor._id}
                                             </Link>
                                         </p>
                                         <p className="text-xs text-gray-500 truncate">
@@ -137,65 +256,153 @@ export default function DonorsDirectoryView() {
                         )}
                     </div>
                 </div>
-                
-            </div>
-            {/* Download Button + Search Bar Layout */}
-            <div className="flex flex-col-reverse md:flex-row md:justify-between md:items-end mb-6">
-                
-                {/* Search Bar */}
-                <div className="w-full md:w-1/3 mt-4 md:mt-0">
-                    <label className="block text-xs font-semibold text-gray-600 mb-1">Search Directory</label>
-                    <input 
-                        type="text" 
-                        placeholder="Search by name or phone..." 
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="border border-gray-300 p-2 rounded w-full bg-gray-50 focus:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
-                    />
-                </div>
-
-                {/* Download Button */}
-                <button 
-                    onClick={downloadCSV}
-                    className="bg-blue-600 text-white px-4 py-2 text-sm font-medium rounded shadow-sm hover:bg-blue-700 transition-colors"
-                >
-                    Download Directory CSV
-                </button>
             </div>
 
-            {/* Data Table */}
+            {/* --- CONTROLS BAR --- */}
+            <div className="flex flex-col-reverse md:flex-row md:justify-between md:items-end mb-6 gap-4">
+                {activeTab === "all" && (
+                    <div className="w-full md:w-1/3">
+                        <label className="block text-xs font-semibold text-gray-600 mb-1">Search Directory</label>
+                        <input 
+                            type="text" 
+                            placeholder="Search by name or phone..." 
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="border border-gray-300 p-2 rounded w-full bg-gray-50 focus:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
+                        />
+                    </div>
+                )}
+
+                {activeTab === "range" && (
+                    <div className="flex flex-col md:flex-row gap-3 w-full md:w-4/5 items-end">
+                        <div>
+                            <label className="block text-xs font-semibold text-gray-600 mb-1">Start Date</label>
+                            <input 
+                                type="date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                                className="border border-gray-300 p-2 rounded bg-gray-50 focus:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-semibold text-gray-600 mb-1">End Date</label>
+                            <input 
+                                type="date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                                className="border border-gray-300 p-2 rounded bg-gray-50 focus:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div className="w-full md:flex-1">
+                            <label className="block text-xs font-semibold text-gray-600 mb-1">Search Filter</label>
+                            <input 
+                                type="text"
+                                placeholder="Search by name or phone..."
+                                value={rangeSearchTerm}
+                                onChange={(e) => setRangeSearchTerm(e.target.value)}
+                                className="border border-gray-300 p-2 rounded w-full bg-gray-50 focus:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* --- DATA TABLE --- */}
             <div className="overflow-x-auto overflow-y-auto max-h-[600px] bg-white border border-gray-200 shadow-sm rounded-lg">
-                <table className="min-w-full text-left text-sm whitespace-nowrap">
-                    
-                    {/* The sticky top-0 and z-10 classes lock this to the top! */}
+                <table className="min-w-full table-fixed text-left text-sm whitespace-nowrap">
                     <thead className="bg-gray-100 border-b border-gray-200 sticky top-0 z-10 shadow-sm">
                         <tr>
-                            <th className="p-4 font-semibold text-gray-700">Name</th>
-                            <th className="p-4 font-semibold text-gray-700">Phone (Key)</th>
-                            <th className="p-4 font-semibold text-gray-700">PAN</th>
-                            <th className="p-4 font-semibold text-gray-700">Address</th>
-                            <th className="p-4 font-semibold text-gray-700 text-center">Total Donations</th>
+                            <th className="p-4 font-semibold text-gray-700 w-[150px]">Name</th>
+                            <th className="p-4 font-semibold text-gray-700 w-36 text-center">Phone (Key)</th>
+                            <th className="p-4 font-semibold text-gray-700 w-30 text-center">Latest Donation</th>
+                            <th className="p-4 font-semibold text-gray-700 w-60 text-center">Latest Follow-up</th>
+                            <th className="p-4 font-semibold text-gray-700 w-30 text-center">Address</th>
+                            {role === "admin" && (
+                                <th className="p-4 font-semibold text-gray-700 w-48 text-center">Assigned Caregiver</th>
+                            )}
+                            <th className="p-4 font-semibold text-gray-700 w-28 text-center">
+                                {activeTab === "all" ? "Total Donations" : "Donations in Range"}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {loading ? (
-                            <tr><td colSpan="5" className="p-8 text-center text-gray-500">Loading directory...</td></tr>
-                        ) : sortedDonors.length === 0 ? (
-                            <tr><td colSpan="5" className="p-8 text-center text-gray-500">No donors match your search.</td></tr>
-                        ) : sortedDonors.map((donor) => (
-                            <tr key={donor._id} className="hover:bg-blue-50 border-b border-gray-100 transition-colors">
-                                <td className="p-4 font-medium text-blue-600">
-                                    {/* Link to the dynamic profile page we created earlier */}
-                                    <Link href={`/dashboard/donors/${donor.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
-                                        {donor.name}
-                                    </Link>
-                                </td>
-                                <td className="p-4 text-gray-600">{donor.phone}</td>
-                                <td className="p-4 text-gray-600 font-mono">{donor.pan || "N/A"}</td>
-                                <td className="p-4 text-gray-500 truncate max-w-xs">{donor.address.city}</td>
-                                <td className="p-4 text-gray-600 font-semibold text-center">{donor.donationCount}</td>
-                            </tr>
-                        ))}
+                        {activeTab === "all" ? (
+                            loading ? (
+                                <tr><td colSpan={colSpanCount} className="p-8 text-center text-gray-500">Loading directory...</td></tr>
+                            ) : sortedDonors.length === 0 ? (
+                                <tr><td colSpan={colSpanCount} className="p-8 text-center text-gray-500">No donors match your search.</td></tr>
+                            ) : sortedDonors.map((donor) => (
+                                <tr key={donor._id} className="hover:bg-blue-50 border-b border-gray-100 transition-colors">
+                                    <td className="p-4 font-medium text-blue-600 truncate">
+                                        <Link href={`/dashboard/donors/${donor.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline truncate w-[150px] min-w-[120px] max-w-[150px]">
+                                            {donor.name}
+                                        </Link>
+                                    </td>
+                                    <td className="p-4 text-gray-600 text-center">{donor.phone}</td>
+                                    <td className="p-4 text-gray-600 text-center">{donor.latestDonationDate || "N/A"}</td>
+                                    <td className="p-4 text-gray-600 truncate w-[150px] min-w-[120px] max-w-[150px] text-center">{donor.latestFollowUp ? donor.latestFollowUp.followupDate : "N/A"}</td>
+                                    <td className="p-4 text-gray-500 truncate w-[150px] min-w-[120px] max-w-[150px] text-center">{donor.address?.city || "N/A"}</td>
+                                    
+                                    {/* --- ADMIN ASSIGNMENT DROPDOWN --- */}
+                                    {role === "admin" && (
+                                        <td className="p-4 text-center">
+                                            <select
+                                                value={donor.assignedTo || ""}
+                                                onChange={(e) => handleAssignChange(donor.phone, e.target.value)}
+                                                className="p-1.5 border border-gray-300 rounded text-xs bg-white focus:ring-2 focus:ring-blue-500 outline-none w-full"
+                                            >
+                                                <option value="">-- Unassigned --</option>
+                                                {friendRaiserUsers.map((user) => (
+                                                    <option key={user.email} value={user.email}>
+                                                        {user.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                    )}
+
+                                    <td className="p-4 text-gray-600 font-semibold text-center">{donor.donationCount}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            rangeLoading ? (
+                                <tr><td colSpan={colSpanCount} className="p-8 text-center text-gray-500">Loading filtered donors...</td></tr>
+                            ) : sortedRangeDonors.length === 0 ? (
+                                <tr><td colSpan={colSpanCount} className="p-8 text-center text-gray-500">No donors found matching your criteria.</td></tr>
+                            ) : sortedRangeDonors.map((donor) => (
+                                <tr key={donor._id} className="hover:bg-blue-50 border-b border-gray-100 transition-colors">
+                                    <td className="p-4 font-medium text-blue-600 truncate">
+                                        <Link href={`/dashboard/donors/${donor.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline truncate w-[150px] min-w-[120px] max-w-[150px]">
+                                            {donor.name}
+                                        </Link>
+                                    </td>
+                                    <td className="p-4 text-gray-600 text-center">{donor.phone}</td>
+                                    <td className="p-4 text-gray-600 text-center">{donor.latestDonationDate || "N/A"}</td>
+                                    <td className="p-4 text-gray-600 truncate w-[150px] min-w-[120px] max-w-[150px] text-center">{donor.latestFollowUp ? donor.latestFollowUp.followupDate : "N/A"}</td>
+                                    <td className="p-4 text-gray-500 truncate w-[150px] min-w-[120px] max-w-[150px] text-center">{donor.address?.city || "N/A"}</td>
+                                    
+                                    {/* --- ADMIN ASSIGNMENT DROPDOWN --- */}
+                                    {role === "admin" && (
+                                        <td className="p-4 text-center">
+                                            <select
+                                                value={donor.assignedTo || ""}
+                                                onChange={(e) => handleAssignChange(donor.phone, e.target.value)}
+                                                className="p-1.5 border border-gray-300 rounded text-xs bg-white focus:ring-2 focus:ring-blue-500 outline-none w-full"
+                                            >
+                                                <option value="">-- Unassigned --</option>
+                                                {friendRaiserUsers.map((user) => (
+                                                    <option key={user.email} value={user.email}>
+                                                        {user.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                    )}
+
+                                    <td className="p-4 text-gray-600 font-semibold text-center">{donor.donationCount}</td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>

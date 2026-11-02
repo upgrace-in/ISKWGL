@@ -62,15 +62,21 @@ const donationSchema = new mongoose.Schema({
         type: Boolean, 
         default: false 
     },
+    // --- ADDED FOR Friend Raiser ASSIGNMENT ---
+    assignedTo: {
+        type: String,
+        trim: true,
+        default: ""
+    },
     createdAt: { 
         type: Date, 
         default: Date.now 
     }
 });
 
-// Indexes to optimize your dashboard queries
+// Indexes to optimize performance and queries
 donationSchema.index({ phone: 1 });
+donationSchema.index({ assignedTo: 1 }); // Index for fast filtering by Friend Raiser user
 donationSchema.index({ createdAt: -1 });
-donationSchema.index({ status: 1, createdAt: 1 });
 
 export default mongoose.models.TotalDonations || mongoose.model('TotalDonations', donationSchema);
