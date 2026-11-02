@@ -9,6 +9,15 @@ export default auth((req) => {
 
   const isAuthenticated = !!req.auth?.user?.id;
 
+  console.log("AUTH DEBUG:", {
+    pathname: req.nextUrl.pathname,
+    hasAuth: !!req.auth,
+    hasUser: !!req.auth?.user,
+    hasUserId: !!req.auth?.user?.id,
+    hasEmail: !!req.auth?.user?.email,
+    role: req.auth?.user?.role,
+  });
+
   if (pathname.startsWith("/dashboard") && !isAuthenticated) {
     return NextResponse.redirect(
       new URL("/login", req.url)
