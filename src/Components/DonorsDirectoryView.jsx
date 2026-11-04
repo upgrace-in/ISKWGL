@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import DonorProfileView from "@/Components/DonorProfileView";
 
 export default function DonorsDirectoryView() {
     const { data: session } = useSession();
@@ -29,6 +30,8 @@ export default function DonorsDirectoryView() {
 
     // --- FRIEND RAISER USERS STATE (For Admin Assignment) ---
     const [friendRaiserUsers, setFriendRaiserUsers] = useState([]);
+    
+    const [selectedDonorPhone, setSelectedDonorPhone] = useState(null);
 
     // Fetch Friend Raiser Users if Admin
     useEffect(() => {
@@ -237,9 +240,12 @@ export default function DonorsDirectoryView() {
                                     </div>
                                     <div className="overflow-hidden">
                                         <p className="text-sm font-bold text-gray-900 truncate">
-                                            <Link href={`/dashboard/donors/${donor.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline">
-                                                {donor.name || donor._id}
-                                            </Link>
+                                            <button 
+                                                onClick={() => setSelectedDonorPhone(donor.phone)}
+                                                className="block text-left text-blue-600 hover:text-blue-800 hover:underline truncate w-[150px] min-w-[120px] max-w-[150px] bg-transparent border-none cursor-pointer p-0 font-medium"
+                                            >
+                                                {donor.name}
+                                            </button>
                                         </p>
                                         <p className="text-xs text-gray-500 truncate">
                                             <span className="font-semibold text-gray-700">{donor.donationCount}</span> donations
@@ -334,9 +340,12 @@ export default function DonorsDirectoryView() {
                             ) : sortedDonors.map((donor) => (
                                 <tr key={donor._id} className="hover:bg-blue-50 border-b border-gray-100 transition-colors">
                                     <td className="p-4 font-medium text-blue-600 truncate">
-                                        <Link href={`/dashboard/donors/${donor.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline truncate w-[150px] min-w-[120px] max-w-[150px]">
+                                        <button 
+                                            onClick={() => setSelectedDonorPhone(donor.phone)}
+                                            className="block text-left text-blue-600 hover:text-blue-800 hover:underline truncate w-[150px] min-w-[120px] max-w-[150px] bg-transparent border-none cursor-pointer p-0 font-medium"
+                                        >
                                             {donor.name}
-                                        </Link>
+                                        </button>
                                     </td>
                                     <td className="p-4 text-gray-600 text-center">{donor.phone}</td>
                                     <td className="p-4 text-gray-600 text-center">{donor.latestDonationDate || "N/A"}</td>
@@ -372,9 +381,12 @@ export default function DonorsDirectoryView() {
                             ) : sortedRangeDonors.map((donor) => (
                                 <tr key={donor._id} className="hover:bg-blue-50 border-b border-gray-100 transition-colors">
                                     <td className="p-4 font-medium text-blue-600 truncate">
-                                        <Link href={`/dashboard/donors/${donor.phone}`} className="block text-blue-600 hover:text-blue-800 hover:underline truncate w-[150px] min-w-[120px] max-w-[150px]">
+                                        <button 
+                                            onClick={() => setSelectedDonorPhone(donor.phone)}
+                                            className="block text-left text-blue-600 hover:text-blue-800 hover:underline truncate w-[150px] min-w-[120px] max-w-[150px] bg-transparent border-none cursor-pointer p-0 font-medium"
+                                        >
                                             {donor.name}
-                                        </Link>
+                                        </button>
                                     </td>
                                     <td className="p-4 text-gray-600 text-center">{donor.phone}</td>
                                     <td className="p-4 text-gray-600 text-center">{donor.latestDonationDate || "N/A"}</td>
@@ -406,6 +418,49 @@ export default function DonorsDirectoryView() {
                     </tbody>
                 </table>
             </div>
+            {/* --- FULL-PAGE DONOR PROFILE DRAWER --- */}
+            {selectedDonorPhone && (
+                <div className="fixed inset-0 z-50 overflow-hidden bg-white">
+                    <div className="w-full h-full flex flex-col">
+                        
+                        {/* Sticky Header with Title and Close Button */}
+                        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50 sticky top-0 z-20 shadow-sm">
+                            <div className="flex items-center gap-4">
+                                <button
+                                    onClick={() => setSelectedDonorPhone(null)}
+                                    className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-gray-900 bg-white border border-gray-300 px-3 py-1.5 rounded-lg shadow-xs hover:bg-gray-100 transition-colors"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                    </svg>
+                                    Back to Transactions
+                                </button>
+                                <h2 className="text-xl font-bold text-gray-900 border-l border-gray-300 pl-4">
+                                    Donor Profile & Details
+                                </h2>
+                            </div>
+
+                            <button
+                                onClick={() => setSelectedDonorPhone(null)}
+                                className="rounded-lg p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-200 transition-colors"
+                                title="Close Fullscreen View"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Scrollable Full-Screen Content */}
+                        <div className="flex-1 overflow-y-auto bg-gray-50/50">
+                            <div className="max-w-full mx-auto">
+                                <DonorProfileView phone={selectedDonorPhone} onClose={() => setSelectedDonorPhone(null)} />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
