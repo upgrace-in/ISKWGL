@@ -5,7 +5,7 @@ import {
     PieChart, Pie, Cell, Legend , BarChart, Bar
 } from 'recharts';
 import Link from "next/link";
-import DonorProfile from "@/app/dashboard/donors/[phone]/page";
+import DonorProfileView from "@/Components/DonorProfileView";
 
 export default function TransactionsView({ role }) {
     const [data, setData] = useState([]);
@@ -978,7 +978,7 @@ export default function TransactionsView({ role }) {
                         {/* Scrollable Full-Screen Content */}
                         <div className="flex-1 overflow-y-auto bg-gray-50/50">
                             <div className="max-w-full mx-auto">
-                                <DonorProfile phone={selectedDonorPhone} />
+                                <DonorProfileView phone={selectedDonorPhone} onClose={() => setSelectedDonorPhone(null)} />
                             </div>
                         </div>
 

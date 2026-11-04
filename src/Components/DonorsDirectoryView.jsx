@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import DonorProfile from "@/app/dashboard/donors/[phone]/page";
+import DonorProfileView from "@/Components/DonorProfileView";
 
 export default function DonorsDirectoryView() {
     const { data: session } = useSession();
@@ -454,7 +454,7 @@ export default function DonorsDirectoryView() {
                         {/* Scrollable Full-Screen Content */}
                         <div className="flex-1 overflow-y-auto bg-gray-50/50">
                             <div className="max-w-full mx-auto">
-                                <DonorProfile phone={selectedDonorPhone} />
+                                <DonorProfileView phone={selectedDonorPhone} onClose={() => setSelectedDonorPhone(null)} />
                             </div>
                         </div>
 
