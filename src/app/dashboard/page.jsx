@@ -1,6 +1,6 @@
 "use client";
-export const dynamic = 'force-dynamic'; // <-- ADD THIS LINE
-import { useState, useEffect } from "react";
+export const dynamic = 'force-dynamic';
+import { useState, useEffect, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import TransactionsView from "@/Components/TransactionsView";
 import DonorsDirectoryView from "@/Components/DonorsDirectoryView";
@@ -15,14 +15,38 @@ export default function UnifiedDashboard() {
   // State to track which view is currently selected
   const [activeTab, setActiveTab] = useState("transactions");
 
+  // Track which tabs have been opened at least once to prevent 0x0 chart warnings
+  const [visitedTabs, setVisitedTabs] = useState({ transactions: true });
+
+  // Ref to store independent scroll positions for each tab
+  const scrollPositions = useRef({});
+
+  // Handle switching tabs while saving scroll positions and tracking visits
+  const handleTabChange = (newTab) => {
+    // 1. Save current scroll position of the active tab before leaving
+    scrollPositions.current[activeTab] = window.scrollY;
+    
+    // 2. Mark the new tab as visited so its components mount properly
+    setVisitedTabs((prev) => ({ ...prev, [newTab]: true }));
+
+    // 3. Switch to the new tab
+    setActiveTab(newTab);
+  };
+
+  // Restore the scroll position of the newly selected tab after switching
+  useEffect(() => {
+    const savedPosition = scrollPositions.current[activeTab] || 0;
+    window.scrollTo({ top: savedPosition, behavior: "instant" });
+  }, [activeTab]);
+
   // Redirect users away from restricted tabs if they lack permissions
   useEffect(() => {
     const isManagerOrAdmin = role === "admin" || role === "manager";
     if (!isManagerOrAdmin && activeTab === "new_entry") {
-      setActiveTab("transactions");
+      handleTabChange("transactions");
     }
     if (role !== "admin" && activeTab === "manage_users") {
-      setActiveTab("transactions");
+      handleTabChange("transactions");
     }
   }, [role, activeTab]);
 
@@ -35,9 +59,9 @@ export default function UnifiedDashboard() {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      {/* --- HEADER WITH LOGOUT BUTTON --- */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-200 pb-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      {/* --- NORMAL SCROLLING HEADER WITH LOGOUT BUTTON --- */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-200 pb-4 mb-0">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">
             ISKCON Warangal Dashboard
@@ -58,11 +82,11 @@ export default function UnifiedDashboard() {
         </button>
       </div>
 
-      {/* --- TAB NAVIGATION UI --- */}
-      <div className="border-b border-gray-200 mb-6">
-        <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+      {/* --- STICKY TAB NAVIGATION BAR --- */}
+      <div className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
+        <nav className="flex space-x-8" aria-label="Tabs">
           <button
-            onClick={() => setActiveTab("transactions")}
+            onClick={() => handleTabChange("transactions")}
             className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
               activeTab === "transactions"
                 ? "border-blue-600 text-blue-600"
@@ -73,7 +97,7 @@ export default function UnifiedDashboard() {
           </button>
 
           <button
-            onClick={() => setActiveTab("donors")}
+            onClick={() => handleTabChange("donors")}
             className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
               activeTab === "donors"
                 ? "border-blue-600 text-blue-600"
@@ -86,7 +110,7 @@ export default function UnifiedDashboard() {
           {/* --- Manager & Admin Tab: New Entry --- */}
           {(role === "admin" || role === "manager") && (
             <button
-              onClick={() => setActiveTab("new_entry")}
+              onClick={() => handleTabChange("new_entry")}
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === "new_entry"
                   ? "border-blue-600 text-blue-600"
@@ -100,7 +124,7 @@ export default function UnifiedDashboard() {
           {/* --- Admin Only Tab: Manage Devotee Roles --- */}
           {role === "admin" && (
             <button
-              onClick={() => setActiveTab("manage_users")}
+              onClick={() => handleTabChange("manage_users")}
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === "manage_users"
                   ? "border-blue-600 text-blue-600"
@@ -113,12 +137,29 @@ export default function UnifiedDashboard() {
         </nav>
       </div>
 
-      {/* --- CONDITIONAL RENDERING --- */}
-      <div className="transition-opacity duration-300">
-        {activeTab === "transactions" && <TransactionsView role={role} />}
-        {activeTab === "donors" && <DonorsDirectoryView />}
-        {activeTab === "new_entry" && (role === "admin" || role === "manager") && <DonationEntryForm />}
-        {activeTab === "manage_users" && role === "admin" && <AdminUsersManagement />}
+      {/* --- CONDITIONAL RENDERING (Lazy Load + Preserved State & Scroll) --- */}
+      <div className="transition-opacity duration-300 py-6">
+        <div className={activeTab === "transactions" ? "block" : "hidden"}>
+          <TransactionsView role={role} />
+        </div>
+
+        {visitedTabs.donors && (
+          <div className={activeTab === "donors" ? "block" : "hidden"}>
+            <DonorsDirectoryView />
+          </div>
+        )}
+
+        {(role === "admin" || role === "manager") && visitedTabs.new_entry && (
+          <div className={activeTab === "new_entry" ? "block" : "hidden"}>
+            <DonationEntryForm />
+          </div>
+        )}
+
+        {role === "admin" && visitedTabs.manage_users && (
+          <div className={activeTab === "manage_users" ? "block" : "hidden"}>
+            <AdminUsersManagement />
+          </div>
+        )}
       </div>
     </div>
   );

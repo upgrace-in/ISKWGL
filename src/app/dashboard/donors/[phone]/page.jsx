@@ -5,9 +5,9 @@ import { useParams } from "next/navigation";
 import statesDistrictsDB from '@/Components/states_districts_db.json';
 import { useSession } from "next-auth/react";
 
-export default function DonorProfile() {
+export default function DonorProfile({ phone: propPhone }) {
     const params = useParams();
-    const phoneParam = params?.phone;
+    const phoneParam = propPhone || params?.phone;
     const { data: session } = useSession();
     const role = session?.user?.role;
 
@@ -164,7 +164,7 @@ export default function DonorProfile() {
                         new Set(postOffices.map((po) => po.Name).filter(Boolean))
                     );
 
-                setCitiesList(fetchedCities);
+                    setCitiesList(fetchedCities);
                     
                     setEditForm((prev) => ({
                         ...prev,
@@ -396,22 +396,6 @@ export default function DonorProfile() {
                 </div>
             )}
 
-            {/* Navigation Bar */}
-            <div className="mb-6 flex justify-between items-center">
-                <Link href="/dashboard" className="text-blue-600 hover:underline">
-                    &larr; Back to Directory
-                </Link>
-
-                {!isEditing && (
-                    <button
-                        onClick={() => setIsEditing(true)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
-                    >
-                        Edit Details
-                    </button>
-                )}
-            </div>
-
             {/* --- MAIN TWO-COLUMN GRID LAYOUT --- */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 
@@ -420,7 +404,17 @@ export default function DonorProfile() {
                     
                     {/* Profile Information Card */}
                     <div className="bg-white p-6 border border-gray-200 rounded-lg shadow-sm">
-                        <h1 className="text-3xl font-bold text-gray-900 mb-4">{profile.name}</h1>
+                        <div  className="mb-6 flex justify-between items-center">
+                            <h1 className="text-3xl font-bold text-gray-900 mb-4">{profile.name}</h1>
+                            {!isEditing && (
+                                <button
+                                    onClick={() => setIsEditing(true)}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                                >
+                                    Edit Details
+                                </button>
+                            )}
+                        </div>
 
                         {isEditing ? (
                             <form onSubmit={handleSave} className="space-y-6">
