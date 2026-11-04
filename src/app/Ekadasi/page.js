@@ -28,7 +28,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Pasankusa";
+    const ekadasi_name = "Rama";
 
     const [amount, setAmount] = useState();
 
@@ -81,12 +81,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">22 October 2026</div>
+                <div className="date-badge">05 November 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadasi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 23 October 2026, 6:07 AM to 10:00 AM for Warangal.
+                        Fast breaking parana time: 06 November 2026, 6:17 AM to 10:05 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -98,10 +98,10 @@ export default function Ekadasi() {
                 <p className="hero-description">
                     <b style={{ color: '#d4a054'}}>Lork Krishna Said to Maharaj Yudhisthir : </b>
                     {/* <br/> */}
-One who strictly observes this Pasankusa or Papankusa Ekadasi then all his sinful reactions are eradicated and at the end of hislife he reaturns to the abode of Lord Vishnu.
+Anyone who simply hears this narration of the glories of the sacred day of Ramaa Ekadasi, is freed from all kinds of sin and attains the supreme abode of Lord Vishnu.
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/pasankusa-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/rama-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
