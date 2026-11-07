@@ -47,13 +47,12 @@ export default function DonorsDirectoryView() {
         }
     }, [role]);
 
-    // Fetch All Donors (Tab 1)
+    // Fetch All Donors (Tab 1); search is applied to this data client-side.
     useEffect(() => {
         const fetchDonors = async () => {
             setLoading(true);
             try {
-                const query = searchTerm ? `?search=${encodeURIComponent(searchTerm)}` : "";
-                const res = await fetch(`/api/dashboard/donors${query}`);
+                const res = await fetch("/api/dashboard/donors");
                 const result = await res.json();
                 
                 if (result.success) {
@@ -66,20 +65,16 @@ export default function DonorsDirectoryView() {
             }
         };
 
-        const timeoutId = setTimeout(() => fetchDonors(), 300);
-        return () => clearTimeout(timeoutId);
-    }, [searchTerm]);
+        fetchDonors();
+    }, []);
 
-    // Fetch Date Range Donors (Tab 2) with Debounced Search
+    // Fetch date-range donors when the selected range changes; search is client-side.
     useEffect(() => {
         if (activeTab === "range") {
             const fetchRangeDonors = async () => {
                 setRangeLoading(true);
                 try {
-                    let query = `?startDate=${startDate}&endDate=${endDate}`;
-                    if (rangeSearchTerm) {
-                        query += `&search=${encodeURIComponent(rangeSearchTerm)}`;
-                    }
+                    const query = `?startDate=${startDate}&endDate=${endDate}`;
                     const res = await fetch(`/api/dashboard/donors${query}`);
                     const result = await res.json();
                     
@@ -93,10 +88,9 @@ export default function DonorsDirectoryView() {
                 }
             };
 
-            const timeoutId = setTimeout(() => fetchRangeDonors(), 300);
-            return () => clearTimeout(timeoutId);
+            fetchRangeDonors();
         }
-    }, [activeTab, startDate, endDate, rangeSearchTerm]);
+    }, [activeTab, startDate, endDate]);
 
     // Handle Admin Donor Assignment Change
     const handleAssignChange = async (phone, assignedToEmail) => {
@@ -122,14 +116,28 @@ export default function DonorsDirectoryView() {
         }
     };
 
-    // Memoize sorted lists for performance
+    // Filter the fetched donor lists locally, then sort them for display.
     const sortedDonors = useMemo(() => {
-        return [...donors].sort((a, b) => b.donationCount - a.donationCount);
-    }, [donors]);
+        const search = searchTerm.trim().toLowerCase();
+        return donors
+            .filter((donor) => (
+                !search
+                || String(donor.name || "").toLowerCase().includes(search)
+                || String(donor.phone || "").toLowerCase().includes(search)
+            ))
+            .sort((a, b) => b.donationCount - a.donationCount);
+    }, [donors, searchTerm]);
 
     const sortedRangeDonors = useMemo(() => {
-        return [...rangeDonors].sort((a, b) => b.donationCount - a.donationCount);
-    }, [rangeDonors]);
+        const search = rangeSearchTerm.trim().toLowerCase();
+        return rangeDonors
+            .filter((donor) => (
+                !search
+                || String(donor.name || "").toLowerCase().includes(search)
+                || String(donor.phone || "").toLowerCase().includes(search)
+            ))
+            .sort((a, b) => b.donationCount - a.donationCount);
+    }, [rangeDonors, rangeSearchTerm]);
 
     // Fetch Top Donors
     const fetchTopDonors = useCallback(async () => {
@@ -166,7 +174,7 @@ export default function DonorsDirectoryView() {
         link.click();
     };
 
-    const totalDonors = activeTab === "all" ? donors.length : rangeDonors.length;
+    const totalDonors = activeTab === "all" ? sortedDonors.length : sortedRangeDonors.length;
     const colSpanCount = role === "admin" ? 7 : 6;
 
     return (
