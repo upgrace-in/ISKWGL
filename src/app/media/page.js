@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import './media.css';
+import { selectDestinationAccount } from '@/app/lib/storageAllocation';
 
 /**
  * ============================================================================
@@ -13,16 +14,16 @@ import './media.css';
  * @param {Array} accounts  - List of linked cloud account objects
  * @returns {Object}        - Selected target cloud account
  */
-export function selectDestinationAccount(fileMeta, accounts) {
-  if (!accounts || accounts.length === 0) return null;
+// export function selectDestinationAccount(fileMeta, accounts) {
+//   if (!accounts || accounts.length === 0) return null;
 
-  // Default Policy: Most Free Space (MFS)
-  return [...accounts].sort((a, b) => {
-    const freeA = a.totalGB - a.usedGB;
-    const freeB = b.totalGB - b.usedGB;
-    return freeB - freeA;
-  })[0];
-}
+//   // Default Policy: Most Free Space (MFS)
+//   return [...accounts].sort((a, b) => {
+//     const freeA = a.totalGB - a.usedGB;
+//     const freeB = b.totalGB - b.usedGB;
+//     return freeB - freeA;
+//   })[0];
+// }
 
 // Helper to format bytes cleanly
 function formatBytes(bytes) {
