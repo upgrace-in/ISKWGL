@@ -28,7 +28,7 @@ export default function Ekadasi() {
     // Create a ref for the donation section
     const donationRef = useRef(null);
 
-    const ekadasi_name = "Rama";
+    const ekadasi_name = "Utthana";
 
     const [amount, setAmount] = useState();
 
@@ -81,12 +81,12 @@ export default function Ekadasi() {
             </picture>
             <div className="hero-content-ekadasi">
                 
-                <div className="date-badge">05 November 2026</div>
+                <div className="date-badge">21 November 2026</div>
                 <p className="hero-title-ekadasi">Donate on Auspicious {ekadasi_name} Ekadasi</p>
                 {/* Parana Time Highlight */}
                 <div className="parana-info">
                     <p className="parana-text">
-                        Fast breaking parana time: 06 November 2026, 6:17 AM to 10:05 AM for Warangal.
+                        Fast breaking parana time: 22 November 2026, 6:21 AM to 10:06 AM for Warangal.
                     </p>
                 </div>
             </div>
@@ -96,12 +96,12 @@ export default function Ekadasi() {
             <div className="description-section">
                 {/* Spiritual Significance Paragraph */}
                 <p className="hero-description">
-                    <b style={{ color: '#d4a054'}}>Lork Krishna Said to Maharaj Yudhisthir : </b>
+                    <b style={{ color: '#d4a054'}}>Lord Brahma Said to Narada Muni : </b>
                     {/* <br/> */}
-Anyone who simply hears this narration of the glories of the sacred day of Ramaa Ekadasi, is freed from all kinds of sin and attains the supreme abode of Lord Vishnu.
+Each of the devotional practices on this Ekadasi, is ten million times more beneficial than bathing in all the places of pilgrimage and giving all forms of charity.
                 </p>
                 {/* Read More Button */}
-                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/rama-ekadasi" target="_blank">Read more</a></button>
+                <button className="read-more-btn"><a href="https://iskcondesiretree.com/page/utthana-ekadasi" target="_blank">Read more</a></button>
             </div>
             <div className="donation-container">
                 {/* Sidebar Section */}
