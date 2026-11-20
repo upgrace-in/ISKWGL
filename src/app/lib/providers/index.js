@@ -3,18 +3,27 @@ import { Storage as MegaStorage } from 'megajs';
 import crypto from 'crypto';
 
 const ALGO = 'aes-256-cbc';
-const KEY = Buffer.from(process.env.ENCRYPTION_SECRET, 'utf8').subarray(0, 32);
+
+function getEncryptionKey() {
+  const secret = process.env.ENCRYPTION_SECRET;
+  if (!secret) {
+    throw new Error('ENCRYPTION_SECRET environment variable is not set');
+  }
+  return Buffer.from(secret, 'utf8').subarray(0, 32);
+}
 
 export function encryptCreds(obj) {
+  const key = getEncryptionKey();
   const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv(ALGO, KEY, iv);
+  const cipher = crypto.createCipheriv(ALGO, key, iv);
   const encrypted = Buffer.concat([cipher.update(JSON.stringify(obj)), cipher.final()]);
   return `${iv.toString('hex')}:${encrypted.toString('hex')}`;
 }
 
 export function decryptCreds(str) {
+  const key = getEncryptionKey();
   const [ivHex, dataHex] = str.split(':');
-  const decipher = crypto.createDecipheriv(ALGO, KEY, Buffer.from(ivHex, 'hex'));
+  const decipher = crypto.createDecipheriv(ALGO, key, Buffer.from(ivHex, 'hex'));
   const decrypted = Buffer.concat([
     decipher.update(Buffer.from(dataHex, 'hex')),
     decipher.final(),
