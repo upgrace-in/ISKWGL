@@ -2,7 +2,12 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/app/lib/dbConnect';
 import CloudAccount from '@/models/CloudAccount';
 import VirtualItem from '@/models/VirtualItem';
-import { decryptCreds, encryptCreds } from '@/app/lib/providers';
+import {
+  decryptCreds,
+  encryptCreds,
+  getMegaFileBuffer,
+  getMegaFileWebStream,
+} from '@/app/lib/providers';
 
 const DRIVE_TIMEOUT_MS = 20000;
 
@@ -16,8 +21,39 @@ function isPhotoItem(item, effectiveMime) {
   return /\.(jpe?g|png|gif|webp|bmp|svg|heic|heif|avif)$/i.test(name);
 }
 
-function buildOriginalLink(item, effectiveMime, targetRemoteId) {
+function guessMimeType(fileName = '', fallbackMime = '') {
+  const cleanFallback = String(fallbackMime || '').trim();
+  if (cleanFallback && cleanFallback !== 'application/octet-stream') {
+    return cleanFallback;
+  }
+
+  const lower = String(fileName || '').toLowerCase();
+  if (/\.jpe?g$/i.test(lower)) return 'image/jpeg';
+  if (/\.png$/i.test(lower)) return 'image/png';
+  if (/\.gif$/i.test(lower)) return 'image/gif';
+  if (/\.webp$/i.test(lower)) return 'image/webp';
+  if (/\.bmp$/i.test(lower)) return 'image/bmp';
+  if (/\.svg$/i.test(lower)) return 'image/svg+xml';
+  if (/\.avif$/i.test(lower)) return 'image/avif';
+  if (/\.heic$/i.test(lower)) return 'image/heic';
+  if (/\.pdf$/i.test(lower)) return 'application/pdf';
+  if (/\.mp4$/i.test(lower)) return 'video/mp4';
+  if (/\.webm$/i.test(lower)) return 'video/webm';
+  if (/\.mp3$/i.test(lower)) return 'audio/mpeg';
+  if (/\.wav$/i.test(lower)) return 'audio/wav';
+  if (/\.txt$/i.test(lower)) return 'text/plain; charset=utf-8';
+  if (/\.json$/i.test(lower)) return 'application/json; charset=utf-8';
+  if (/\.csv$/i.test(lower)) return 'text/csv; charset=utf-8';
+  if (/\.zip$/i.test(lower)) return 'application/zip';
+  return 'application/octet-stream';
+}
+
+function buildOriginalLink(provider, item, effectiveMime, targetRemoteId) {
   if (item.webViewLink) return item.webViewLink;
+
+  if (provider !== 'gdrive') {
+    return null;
+  }
 
   const mime = String(effectiveMime || '').toLowerCase();
   if (!targetRemoteId) return null;
@@ -92,10 +128,59 @@ export async function GET(req, context) {
       item.isShortcut && item.targetRemoteId ? item.targetRemoteId : item.remoteId;
     const effectiveMime =
       item.isShortcut && item.targetMimeType ? item.targetMimeType : item.mimeType || '';
+    const isPhoto = isPhotoItem(item, effectiveMime);
 
-    // Everything except photos opens in its original link
-    if (!isPhotoItem(item, effectiveMime)) {
-      const originalUrl = buildOriginalLink(item, effectiveMime, targetRemoteId);
+    // --------------------------------------------------
+    // 1. MEGA Files (Photos & Non-Photos)
+    // --------------------------------------------------
+    if (account.provider === 'mega') {
+      if (isPhoto) {
+        const { buffer, name } = await getMegaFileBuffer(account, targetRemoteId);
+        const resolvedName = (name || item.name || 'photo').replace(/"/g, '');
+        const contentType = guessMimeType(resolvedName, effectiveMime);
+
+        return new NextResponse(buffer, {
+          status: 200,
+          headers: {
+            'Content-Type': contentType,
+            'Content-Disposition': `inline; filename="${resolvedName}"`,
+            'Cache-Control': 'private, max-age=300',
+          },
+        });
+      }
+
+      if (item.webViewLink) {
+        return NextResponse.redirect(item.webViewLink, { status: 302 });
+      }
+
+      const { stream, name, size } = await getMegaFileWebStream(account, targetRemoteId);
+      const resolvedName = (name || item.name || 'file').replace(/"/g, '');
+      const contentType = guessMimeType(resolvedName, effectiveMime);
+
+      const headers = {
+        'Content-Type': contentType,
+        'Content-Disposition': `inline; filename="${resolvedName}"`,
+      };
+      if (size) {
+        headers['Content-Length'] = String(size);
+      }
+
+      return new NextResponse(stream, {
+        status: 200,
+        headers,
+      });
+    }
+
+    // --------------------------------------------------
+    // 2. Non-Photo Files (Redirect to Original Link)
+    // --------------------------------------------------
+    if (!isPhoto) {
+      const originalUrl = buildOriginalLink(
+        account.provider,
+        item,
+        effectiveMime,
+        targetRemoteId
+      );
       if (originalUrl) {
         return NextResponse.redirect(originalUrl, { status: 302 });
       }
@@ -105,7 +190,9 @@ export async function GET(req, context) {
       );
     }
 
-    // Stream photos directly
+    // --------------------------------------------------
+    // 3. Google Drive Photos (Stream Directly)
+    // --------------------------------------------------
     if (account.provider === 'gdrive') {
       let creds = decryptCreds(account.encryptedCredentials);
       creds = await refreshGoogleAccessTokenIfNeeded(account, creds);
@@ -140,7 +227,7 @@ export async function GET(req, context) {
     }
 
     return NextResponse.json(
-      { error: `Provider "${account.provider}" photo open not yet implemented` },
+      { error: `Provider "${account.provider}" open not yet implemented` },
       { status: 501 }
     );
   } catch (err) {

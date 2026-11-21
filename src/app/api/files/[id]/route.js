@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/app/lib/dbConnect';
 import CloudAccount from '@/models/CloudAccount';
 import VirtualItem from '@/models/VirtualItem';
-import { decryptCreds, encryptCreds } from '@/app/lib/providers';
+import {
+  connectMegaStorage,
+  decryptCreds,
+  encryptCreds,
+} from '@/app/lib/providers';
 
 const DRIVE_TIMEOUT_MS = 20000;
 
@@ -47,6 +51,68 @@ async function collectDescendantIds(rootId) {
   }
 
   return toDelete;
+}
+
+function findMegaNodeById(storage, remoteId) {
+  const targetId = String(remoteId || '');
+  if (!targetId) return null;
+
+  if (storage.files && typeof storage.files === 'object') {
+    if (storage.files[targetId]) {
+      return storage.files[targetId];
+    }
+    for (const node of Object.values(storage.files)) {
+      if (!node) continue;
+      const key = String(node.nodeId || node.downloadId || '');
+      if (key === targetId) {
+        return node;
+      }
+    }
+  }
+
+  let matched = null;
+  function walk(node) {
+    if (!node || matched) return;
+    const key = String(node.nodeId || node.downloadId || '');
+    if (key === targetId) {
+      matched = node;
+      return;
+    }
+    if (Array.isArray(node.children)) {
+      for (const child of node.children) {
+        walk(child);
+        if (matched) return;
+      }
+    }
+  }
+
+  walk(storage.root);
+  return matched;
+}
+
+async function deleteFromMega(account, remoteId, moveToTrash) {
+  const storage = await connectMegaStorage(account);
+  try {
+    const node = findMegaNodeById(storage, remoteId);
+    if (!node) {
+      // Already removed remotely; allow local cleanup
+      return;
+    }
+
+    if (typeof node.delete !== 'function') {
+      throw new Error('MEGA node does not support delete()');
+    }
+
+    // permanent = true deletes permanently; permanent = false moves to rubbish bin
+    const permanent = !moveToTrash;
+    await node.delete(permanent);
+  } finally {
+    if (typeof storage.close === 'function') {
+      try {
+        storage.close();
+      } catch {}
+    }
+  }
 }
 
 export async function DELETE(req, context) {
@@ -178,7 +244,9 @@ export async function DELETE(req, context) {
           { status: metaRes.status }
         );
       }
-    } else if (account.provider !== 'gdrive') {
+    } else if (account.provider === 'mega' && cloudTargetId) {
+      await deleteFromMega(account, cloudTargetId, moveToTrash);
+    } else if (account.provider !== 'gdrive' && account.provider !== 'mega') {
       return NextResponse.json(
         { error: `Cloud deletion not yet implemented for provider "${account.provider}"` },
         { status: 501 }

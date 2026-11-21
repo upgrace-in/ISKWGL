@@ -3,28 +3,6 @@ import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import './media.css';
 import { selectDestinationAccount } from '@/app/lib/storageAllocation';
 
-/**
- * ============================================================================
- * PLUGGABLE STORAGE ROUTING ENGINE
- * ============================================================================
- * Replace or extend this function later when you define your custom rules
- * (e.g., routing by file extension, file size thresholds, folder regex, etc.).
- *
- * @param {Object} fileMeta - { name, sizeBytes, mimeType, folderPath }
- * @param {Array} accounts  - List of linked cloud account objects
- * @returns {Object}        - Selected target cloud account
- */
-// export function selectDestinationAccount(fileMeta, accounts) {
-//   if (!accounts || accounts.length === 0) return null;
-
-//   // Default Policy: Most Free Space (MFS)
-//   return [...accounts].sort((a, b) => {
-//     const freeA = a.totalGB - a.usedGB;
-//     const freeB = b.totalGB - b.usedGB;
-//     return freeB - freeA;
-//   })[0];
-// }
-
 // Helper to format bytes cleanly
 function formatBytes(bytes) {
   if (!bytes || bytes === 0) return '0 B';
@@ -52,8 +30,6 @@ const INITIAL_ITEMS = [
   { id: 'file-5', name: 'Cloud_Quota_Tracker.xlsx', type: 'file', sizeBytes: 640000, parentId: null, accountId: 'acc-3', updatedAt: '2026-11-17' },
 ];
 
-
-
 function normalizeAccount(acc) {
   return {
     ...acc,
@@ -63,38 +39,6 @@ function normalizeAccount(acc) {
   };
 }
 
-const WEB_APP_MIME_TYPES = new Set([
-  'application/vnd.google-apps.document',
-  'application/vnd.google-apps.spreadsheet',
-  'application/vnd.google-apps.presentation',
-  'application/vnd.google-apps.form',
-  'application/vnd.google-apps.drawing',
-  'application/vnd.google-apps.site',
-  'application/vnd.google-apps.map',
-]);
-
-function isWebAppFile(item) {
-  const mime = String(item.mimeType || '').toLowerCase();
-  if (WEB_APP_MIME_TYPES.has(mime) || mime.startsWith('application/vnd.google-apps.')) {
-    return Boolean(item.webViewLink || item.remoteId);
-  }
-  return false;
-}
-
-function getWebAppUrl(item) {
-  if (item.webViewLink) return item.webViewLink;
-  if (!item.remoteId) return `/api/files/${item.id}/open`;
-
-  const mime = String(item.mimeType || '').toLowerCase();
-  if (mime === 'application/vnd.google-apps.spreadsheet') {
-    return `https://docs.google.com/spreadsheets/d/${item.remoteId}/edit`;
-  }
-  if (mime === 'application/vnd.google-apps.presentation') {
-    return `https://docs.google.com/presentation/d/${item.remoteId}/edit`;
-  }
-  return `https://docs.google.com/document/d/${item.remoteId}/edit`;
-}
-
 function normalizeItem(item) {
   const rawParentId = item.parentId;
 
@@ -102,6 +46,7 @@ function normalizeItem(item) {
     rawParentId && typeof rawParentId === 'object'
       ? rawParentId._id || rawParentId.id || null
       : rawParentId || null;
+
   return {
     ...item,
     id: String(item._id || item.id),
@@ -166,6 +111,64 @@ function getFileTypeLabel(item) {
   return 'FILE';
 }
 
+function isPhotoFile(item) {
+  const mime = String(
+    item.isShortcut && item.targetMimeType
+      ? item.targetMimeType
+      : item.mimeType || ''
+  ).toLowerCase();
+
+  if (mime.startsWith('image/')) {
+    return true;
+  }
+
+  const name = String(item.name || '').toLowerCase();
+  return /\.(jpe?g|png|gif|webp|bmp|svg|heic|heif|avif)$/i.test(name);
+}
+
+function getOriginalLink(item, provider) {
+  if (item.webViewLink) return item.webViewLink;
+
+  // MEGA and non-GDrive files without a webViewLink stream via the API endpoint
+  if (provider !== 'gdrive') {
+    return `/api/files/${encodeURIComponent(item.id)}/open`;
+  }
+
+  const targetId =
+    item.isShortcut && item.targetRemoteId
+      ? item.targetRemoteId
+      : item.remoteId;
+
+  const mime = String(
+    item.isShortcut && item.targetMimeType
+      ? item.targetMimeType
+      : item.mimeType || ''
+  ).toLowerCase();
+
+  if (!targetId) return `/api/files/${encodeURIComponent(item.id)}/open`;
+
+  if (mime === 'application/vnd.google-apps.document') {
+    return `https://docs.google.com/document/d/${targetId}/edit`;
+  }
+  if (mime === 'application/vnd.google-apps.spreadsheet') {
+    return `https://docs.google.com/spreadsheets/d/${targetId}/edit`;
+  }
+  if (mime === 'application/vnd.google-apps.presentation') {
+    return `https://docs.google.com/presentation/d/${targetId}/edit`;
+  }
+  if (mime === 'application/vnd.google-apps.form') {
+    return `https://docs.google.com/forms/d/${targetId}/edit`;
+  }
+  if (mime === 'application/vnd.google-apps.drawing') {
+    return `https://docs.google.com/drawings/d/${targetId}/edit`;
+  }
+  if (mime === 'application/vnd.google-apps.folder') {
+    return `https://drive.google.com/drive/folders/${targetId}`;
+  }
+
+  return `https://drive.google.com/file/d/${targetId}/view`;
+}
+
 
 export default function Dashboard() {
   const [accounts, setAccounts] = useState(INITIAL_ACCOUNTS);
@@ -177,10 +180,10 @@ export default function Dashboard() {
   const [showSourceBadges, setShowSourceBadges] = useState(true);
   const [activeNav, setActiveNav] = useState('all'); // 'all' | 'recent'
 
-  
   const [itemToDelete, setItemToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
+  const [deleteSuccess, setDeleteSuccess] = useState('');
   const [notOwnedInfo, setNotOwnedInfo] = useState(null); // { ownerEmail, canTrash }
 
   const [removingAccountId, setRemovingAccountId] = useState(null);
@@ -200,6 +203,60 @@ export default function Dashboard() {
 
   const fileInputRef = useRef(null);
   const folderInputRef = useRef(null);
+
+  const folderSizeMap = useMemo(() => {
+    const sourceList = Array.isArray(items) ? items : visibleItems;
+    const childrenByParent = new Map();
+    const fileSizeById = new Map();
+
+    for (const entry of sourceList) {
+      const entryId = String(entry.id || entry._id);
+      if (entry.type === 'file') {
+        fileSizeById.set(entryId, Number(entry.sizeBytes || 0));
+      }
+
+      if (entry.parentId) {
+        const parentKey = String(entry.parentId);
+        if (!childrenByParent.has(parentKey)) {
+          childrenByParent.set(parentKey, []);
+        }
+        childrenByParent.get(parentKey).push(entry);
+      }
+    }
+
+    const memo = new Map();
+
+    function calcFolderBytes(folderId, visited = new Set()) {
+      const key = String(folderId);
+      if (memo.has(key)) return memo.get(key);
+      if (visited.has(key)) return 0; // Guard against any cyclic parent links
+
+      visited.add(key);
+      let total = 0;
+      const directChildren = childrenByParent.get(key) || [];
+
+      for (const child of directChildren) {
+        const childId = String(child.id || child._id);
+        if (child.type === 'file') {
+          total += fileSizeById.get(childId) ?? Number(child.sizeBytes || 0);
+        } else if (child.type === 'folder') {
+          total += calcFolderBytes(childId, visited);
+        }
+      }
+
+      visited.delete(key);
+      memo.set(key, total);
+      return total;
+    }
+
+    for (const entry of sourceList) {
+      if (entry.type === 'folder') {
+        calcFolderBytes(String(entry.id || entry._id));
+      }
+    }
+
+    return memo;
+  }, [items]);
 
   const handleRemoveAccount = async (acc) => {
     if (!acc?.id || removingAccountId) return;
@@ -324,30 +381,24 @@ export default function Dashboard() {
   }, [refreshDashboard]);
 
   // Folder Navigation & Back State
-  
   const handleEnterFolder = useCallback((folderId) => {
     setCurrentFolderId(folderId ? String(folderId) : null);
     setActiveNav('all');
     setSearchQuery('');
   }, []);
 
-
-  
   const handleGoBack = useCallback(() => {
-    // Exit search first
     if (searchQuery.trim()) {
       setSearchQuery('');
       return;
     }
 
-    // Exit Recent view
     if (activeNav !== 'all') {
       setActiveNav('all');
       setCurrentFolderId(null);
       return;
     }
 
-    // Navigate to parent folder
     if (currentFolderId !== null) {
       const currentFolder = items.find(
         (item) => String(item.id) === String(currentFolderId)
@@ -361,7 +412,6 @@ export default function Dashboard() {
     }
   }, [currentFolderId, items, searchQuery, activeNav]);
 
-
   // Open Folder or File
   const handleItemOpen = (item) => {
     if (String(item.type).toLowerCase() === 'folder') {
@@ -369,96 +419,21 @@ export default function Dashboard() {
       return;
     }
 
-    const targetUrl = isPhotoFile(item)
-      ? `/api/files/${item.id}/open`
-      : getOriginalLink(item);
+    const acc = accountMap[item.accountId];
+    const provider = acc?.provider || item.provider || '';
+
+    const targetUrl =
+      isPhotoFile(item) || provider === 'mega'
+        ? `/api/files/${encodeURIComponent(item.id)}/open`
+        : getOriginalLink(item, provider);
 
     window.open(targetUrl, '_blank', 'noopener,noreferrer');
   };
 
   const showBackButton =
-  currentFolderId !== null ||
-  Boolean(searchQuery.trim()) ||
-  activeNav !== 'all';
-
-  const DIRECT_TEXT_EXTENSIONS = new Set([
-  '.txt', '.md', '.markdown', '.csv', '.tsv', '.json', '.xml',
-  '.yaml', '.yml', '.log', '.ini', '.conf', '.env', '.sql',
-  '.js', '.jsx', '.ts', '.tsx', '.css', '.html', '.htm', '.sh',
-]);
-
-function shouldOpenDirectly(item) {
-  const mime = String(item.mimeType || '').toLowerCase();
-  if (
-    mime.startsWith('text/') ||
-    mime.startsWith('video/') ||
-    mime.startsWith('image/')
-  ) {
-    return true;
-  }
-
-  const name = String(item.name || '').toLowerCase();
-  const dotIdx = name.lastIndexOf('.');
-  if (dotIdx !== -1) {
-    const ext = name.slice(dotIdx);
-    if (DIRECT_TEXT_EXTENSIONS.has(ext)) return true;
-  }
-
-  return false;
-}
-
-function isPhotoFile(item) {
-  const mime = String(
-    item.isShortcut && item.targetMimeType
-      ? item.targetMimeType
-      : item.mimeType || ''
-  ).toLowerCase();
-
-  if (mime.startsWith('image/')) {
-    return true;
-  }
-
-  const name = String(item.name || '').toLowerCase();
-  return /\.(jpe?g|png|gif|webp|bmp|svg|heic|heif|avif)$/i.test(name);
-}
-
-function getOriginalLink(item) {
-  if (item.webViewLink) return item.webViewLink;
-
-  const targetId =
-    item.isShortcut && item.targetRemoteId
-      ? item.targetRemoteId
-      : item.remoteId;
-
-  const mime = String(
-    item.isShortcut && item.targetMimeType
-      ? item.targetMimeType
-      : item.mimeType || ''
-  ).toLowerCase();
-
-  if (!targetId) return `/api/files/${item.id}/open`;
-
-  if (mime === 'application/vnd.google-apps.document') {
-    return `https://docs.google.com/document/d/${targetId}/edit`;
-  }
-  if (mime === 'application/vnd.google-apps.spreadsheet') {
-    return `https://docs.google.com/spreadsheets/d/${targetId}/edit`;
-  }
-  if (mime === 'application/vnd.google-apps.presentation') {
-    return `https://docs.google.com/presentation/d/${targetId}/edit`;
-  }
-  if (mime === 'application/vnd.google-apps.form') {
-    return `https://docs.google.com/forms/d/${targetId}/edit`;
-  }
-  if (mime === 'application/vnd.google-apps.drawing') {
-    return `https://docs.google.com/drawings/d/${targetId}/edit`;
-  }
-  if (mime === 'application/vnd.google-apps.folder') {
-    return `https://drive.google.com/drive/folders/${targetId}`;
-  }
-
-  return `https://drive.google.com/file/d/${targetId}/view`;
-}
+    currentFolderId !== null ||
+    Boolean(searchQuery.trim()) ||
+    activeNav !== 'all';
 
   // Handle File / Folder Selection for Upload
   const handleFilesSelected = (fileList) => {
@@ -648,6 +623,8 @@ function getOriginalLink(item) {
 
       setItemToDelete(null);
       setNotOwnedInfo(null);
+      // Show success popup
+      setDeleteSuccess(target.name);
     } catch (err) {
       setDeleteError(err?.message || 'Network error while processing delete.');
     } finally {
@@ -791,7 +768,10 @@ function getOriginalLink(item) {
                   </div>
                 </div>
                 <div className="cu-mini-bar-bg">
-                  <progress className={`cu-mini-bar-fill ${acc.provider}`} value={pct} max="100" />
+                  <div
+                    className={`cu-mini-bar-fill ${acc.provider}`}
+                    style={{ width: `${Math.min(100, Math.max(0, Number(pct) || 0))}%` }}
+                  />
                 </div>
               </div>
             );
@@ -807,7 +787,12 @@ function getOriginalLink(item) {
             </span>
           </div>
           <div className="cu-total-bar-bg">
-            <progress className="cu-total-bar-fill" value={storageStats.percent} max="100" />
+            <div
+              className="cu-total-bar-fill"
+              style={{
+                width: `${Math.min(100, Math.max(0, Number(storageStats?.percent) || 0))}%`,
+              }}
+            />
           </div>
           <div className="cu-storage-subtext">
             {storageStats.freeGB} GB free across {accounts.length} linked accounts
@@ -933,7 +918,6 @@ function getOriginalLink(item) {
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Type</th>
                     {showSourceBadges && <th>Stored In</th>}
                     <th>Size</th>
                     <th>Modified</th>
@@ -945,6 +929,9 @@ function getOriginalLink(item) {
                     const acc = accountMap[item.accountId];
                     const isFolder = item.type === 'folder';
                     const typeLabel = getFileTypeLabel(item);
+                    const displayBytes = isFolder
+                      ? folderSizeMap.get(String(item.id || item._id)) ?? 0
+                      : Number(item.sizeBytes || 0);
                     return (
                       <tr
                         key={item.id}
@@ -957,26 +944,25 @@ function getOriginalLink(item) {
                             <span>{item.name}</span>
                           </div>
                         </td>
-                        <td>
-                          <span className="cu-type-pill">{typeLabel}</span>
-                        </td>
                         {showSourceBadges && (
                           <td>
-                            {acc && (
+                            {acc ? (
                               <span className={`cu-source-badge ${acc.provider}`}>
                                 {acc.alias}
                               </span>
+                            ) : (
+                              <span className="cu-source-badge">Unknown</span>
                             )}
                           </td>
                         )}
-                        <td>{isFolder ? '—' : formatBytes(item.sizeBytes)}</td>
-                        <td>{item.updatedAt}</td>
+                        <td>{formatBytes(displayBytes)}</td>
+                        <td>{item.updatedAt || '—'}</td>
                         <td>
                           <button
                             type="button"
                             className="cu-delete-btn"
-                            title="Delete item"
                             onClick={(e) => handleDeleteItem(e, item)}
+                            title="Delete item"
                           >
                             Delete
                           </button>
@@ -993,6 +979,9 @@ function getOriginalLink(item) {
                 const acc = accountMap[item.accountId];
                 const isFolder = item.type === 'folder';
                 const typeLabel = getFileTypeLabel(item);
+                const displayBytes = isFolder
+                  ? folderSizeMap.get(String(item.id || item._id)) ?? 0
+                  : Number(item.sizeBytes || 0);
                 return (
                   <div
                     key={item.id}
@@ -1011,7 +1000,7 @@ function getOriginalLink(item) {
                     <div className="cu-grid-meta">
                       <span className="cu-grid-meta-info">
                         <span className="cu-type-pill">{typeLabel}</span>
-                        <span>{isFolder ? '' : formatBytes(item.sizeBytes)}</span>
+                        <span>{formatBytes(displayBytes)}</span>
                       </span>
                       <button
                         type="button"
@@ -1029,191 +1018,7 @@ function getOriginalLink(item) {
         </section>
       </main>
 
-      {/* Upload & Smart Distribution Modal */}
-      {isUploadOpen && (
-        <div className="cu-modal-backdrop" onClick={() => setIsUploadOpen(false)}>
-          <div className="cu-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="cu-modal-header">
-              <div className="cu-modal-title">Upload & Distribute to Cloud Pool</div>
-              <button type="button" className="cu-modal-close" onClick={() => setIsUploadOpen(false)}>
-                ✕
-              </button>
-            </div>
-
-            <div className="cu-modal-body">
-              <div
-                className={`cu-dropzone ${isDragging ? 'dragging' : ''}`}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setIsDragging(true);
-                }}
-                onDragLeave={() => setIsDragging(false)}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setIsDragging(false);
-                  if (e.dataTransfer.files?.length) {
-                    handleFilesSelected(e.dataTransfer.files);
-                  }
-                }}
-              >
-                <div className="cu-dropzone-text">Drag & drop files here to stage</div>
-                <div className="cu-dropzone-subtext">
-                  Files are routed automatically via selectDestinationAccount()
-                </div>
-
-                <div className="cu-upload-actions-row">
-                  <button
-                    type="button"
-                    className="cu-secondary-btn"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    Select Files
-                  </button>
-                  <button
-                    type="button"
-                    className="cu-secondary-btn"
-                    onClick={() => folderInputRef.current?.click()}
-                  >
-                    Select Folder
-                  </button>
-                </div>
-
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  multiple
-                  className="cu-hidden-input"
-                  onChange={(e) => handleFilesSelected(e.target.files)}
-                />
-                <input
-                  ref={folderInputRef}
-                  type="file"
-                  webkitdirectory="true"
-                  directory="true"
-                  multiple
-                  className="cu-hidden-input"
-                  onChange={(e) => handleFilesSelected(e.target.files)}
-                />
-              </div>
-
-              {stagedFiles.length > 0 && (
-                <div className="cu-queue-list">
-                  {stagedFiles.map((item) => {
-                    const targetAcc = accountMap[item.targetAccountId];
-                    return (
-                      <div key={item.tempId} className="cu-queue-item">
-                        <span className="cu-queue-file" title={item.relativePath || item.name}>
-                          {item.relativePath || item.name}
-                        </span>
-                        <div className="cu-queue-target">
-                          <span>→</span>
-                          {targetAcc && (
-                            <span className={`cu-source-badge ${targetAcc.provider}`}>
-                              {targetAcc.alias}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            <div className="cu-modal-footer">
-              <button
-                type="button"
-                className="cu-secondary-btn"
-                onClick={() => {
-                  setStagedFiles([]);
-                  setIsUploadOpen(false);
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="cu-primary-btn"
-                disabled={stagedFiles.length === 0}
-                onClick={handleConfirmUpload}
-              >
-                Distribute & Upload ({stagedFiles.length})
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Link Cloud Account Modal */}
-      {isLinkModalOpen && (
-        <div className="cu-modal-backdrop" onClick={() => setIsLinkModalOpen(false)}>
-          <div className="cu-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="cu-modal-header">
-              <div className="cu-modal-title">Link Free-Tier Cloud Account</div>
-              <button type="button" className="cu-modal-close" onClick={() => setIsLinkModalOpen(false)}>
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={handleLinkAccount}>
-              <div className="cu-modal-body">
-                <div className="cu-form-group">
-                  <label className="cu-label">Cloud Provider</label>
-                  <select
-                    className="cu-select"
-                    value={newProvider}
-                    onChange={(e) => setNewProvider(e.target.value)}
-                  >
-                    <option value="mega">MEGA (20 GB Free Tier)</option>
-                    <option value="gdrive">Google Drive (15 GB Free Tier)</option>
-                    <option value="box">Box (10 GB Free Tier)</option>
-                    <option value="pcloud">pCloud (10 GB Free Tier)</option>
-                  </select>
-                </div>
-
-                <div className="cu-form-group">
-                  <label className="cu-label">Account Email</label>
-                  <input
-                    type="email"
-                    required
-                    className="cu-input"
-                    placeholder="e.g. yourname+mega02@gmail.com"
-                    value={newEmail}
-                    onChange={(e) => setNewEmail(e.target.value)}
-                  />
-                </div>
-
-                {newProvider === 'mega' && (
-                  <div className="cu-form-group">
-                    <label className="cu-label">MEGA Password</label>
-                    <input
-                      type="password"
-                      required
-                      className="cu-input"
-                      placeholder="Enter MEGA password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className="cu-modal-footer">
-                <button
-                  type="button"
-                  className="cu-secondary-btn"
-                  onClick={() => setIsLinkModalOpen(false)}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="cu-primary-btn">
-                  Authorize & Link Account
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* Delete Confirmation / Ownership Modal */}
       {/* Delete Confirmation Popup */}
       {itemToDelete && (
         <div className="cu-modal-backdrop" onClick={closeDeleteModal}>
@@ -1302,6 +1107,214 @@ function getOriginalLink(item) {
                 </button>
               )}
             </div>
+            {/* Delete Success Popup */}
+            {deleteSuccess && (
+              <div
+                className="cu-modal-backdrop"
+                onClick={() => setDeleteSuccess('')}
+              >
+                <div
+                  className="cu-success-modal"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="cu-success-icon">
+                    ✓
+                  </div>
+
+                  <h3>Successfully Deleted!</h3>
+
+                  <p>
+                    <strong>{deleteSuccess}</strong> has been
+                    successfully deleted.
+                  </p>
+
+                  <button
+                    type="button"
+                    className="cu-success-btn"
+                    onClick={() => setDeleteSuccess('')}
+                  >
+                    OK
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Upload Modal */}
+      {isUploadOpen && (
+        <div className="cu-modal-backdrop" onClick={() => setIsUploadOpen(false)}>
+          <div className="cu-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="cu-modal-header">
+              <h3>Upload & Auto-Distribute</h3>
+              <button
+                type="button"
+                className="cu-modal-close"
+                onClick={() => setIsUploadOpen(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="cu-modal-body">
+              <div
+                className={`cu-dropzone ${isDragging ? 'dragging' : ''}`}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setIsDragging(true);
+                }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setIsDragging(false);
+                  if (e.dataTransfer?.files?.length) {
+                    handleFilesSelected(e.dataTransfer.files);
+                  }
+                }}
+              >
+                <p>Drag & drop files here or choose below</p>
+                <div className="cu-dropzone-actions">
+                  <button type="button" onClick={() => fileInputRef.current?.click()}>
+                    Select Files
+                  </button>
+                  <button type="button" onClick={() => folderInputRef.current?.click()}>
+                    Select Folder
+                  </button>
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  hidden
+                  onChange={(e) => e.target.files && handleFilesSelected(e.target.files)}
+                />
+                <input
+                  ref={folderInputRef}
+                  type="file"
+                  webkitdirectory=""
+                  directory=""
+                  multiple
+                  hidden
+                  onChange={(e) => e.target.files && handleFilesSelected(e.target.files)}
+                />
+              </div>
+
+              {stagedFiles.length > 0 && (
+                <div className="cu-staged-list">
+                  {stagedFiles.map((f) => (
+                    <div key={f.tempId} className="cu-staged-row">
+                      <span>{f.name}</span>
+                      <span>{formatBytes(f.sizeBytes)}</span>
+                      <select
+                        value={f.targetAccountId || ''}
+                        onChange={(e) =>
+                          setStagedFiles((prev) =>
+                            prev.map((item) =>
+                              item.tempId === f.tempId
+                                ? { ...item, targetAccountId: e.target.value }
+                                : item
+                            )
+                          )
+                        }
+                      >
+                        {accounts.map((acc) => (
+                          <option key={acc.id} value={acc.id}>
+                            {acc.alias} ({(acc.totalGB - acc.usedGB).toFixed(1)} GB free)
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="cu-modal-actions">
+                <button type="button" onClick={() => setIsUploadOpen(false)}>
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={stagedFiles.length === 0}
+                  onClick={handleConfirmUpload}
+                >
+                  Confirm Upload ({stagedFiles.length})
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Link Cloud Account Modal */}
+      {isLinkModalOpen && (
+        <div className="cu-modal-backdrop" onClick={() => setIsLinkModalOpen(false)}>
+          <div className="cu-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="cu-modal-header">
+              <div className="cu-modal-title">Link Free-Tier Cloud Account</div>
+              <button
+                type="button"
+                className="cu-modal-close"
+                onClick={() => setIsLinkModalOpen(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <form onSubmit={handleLinkAccount}>
+              <div className="cu-modal-body">
+                <div className="cu-form-group">
+                  <label className="cu-label">Cloud Provider</label>
+                  <select
+                    className="cu-select"
+                    value={newProvider}
+                    onChange={(e) => setNewProvider(e.target.value)}
+                  >
+                    <option value="mega">MEGA (20 GB Free Tier)</option>
+                    <option value="gdrive">Google Drive (15 GB Free Tier)</option>
+                    <option value="box">Box (10 GB Free Tier)</option>
+                    <option value="pcloud">pCloud (10 GB Free Tier)</option>
+                  </select>
+                </div>
+
+                <div className="cu-form-group">
+                  <label className="cu-label">Account Email</label>
+                  <input
+                    type="email"
+                    required
+                    className="cu-input"
+                    placeholder="e.g. yourname+mega02@gmail.com"
+                    value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                  />
+                </div>
+
+              {newProvider === 'mega' && (
+                  <div className="cu-form-group">
+                    <label className="cu-label">MEGA Password</label>
+                    <input
+                      type="password"
+                      required
+                      className="cu-input"
+                      placeholder="Enter MEGA password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="cu-modal-footer">
+                <button
+                  type="button"
+                  className="cu-secondary-btn"
+                  onClick={() => setIsLinkModalOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="cu-primary-btn">
+                  Authorize & Link Account
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
