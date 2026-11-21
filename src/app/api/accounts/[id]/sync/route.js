@@ -9,6 +9,7 @@ import VirtualItem from '@/models/VirtualItem';
 import {
   decryptCreds,
   encryptCreds,
+  fetchProviderState,
 } from '@/app/lib/providers';
 
 const DRIVE_TIMEOUT_MS = 20000;
@@ -152,7 +153,6 @@ async function fetchChildrenOfSharedFolders(headers, initialFiles) {
 
   const folderQueue = [];
 
-  // 1. Seed with folder shortcuts already present in initialFiles
   for (const f of initialFiles) {
     if (
       f.mimeType === 'application/vnd.google-apps.shortcut' &&
@@ -163,7 +163,6 @@ async function fetchChildrenOfSharedFolders(headers, initialFiles) {
     }
   }
 
-  // 2. Query explicitly shared folders (paginated)
   let sharedPageToken = null;
   do {
     const sharedUrl = new URL('https://www.googleapis.com/drive/v3/files');
@@ -205,7 +204,6 @@ async function fetchChildrenOfSharedFolders(headers, initialFiles) {
 
   const visitedFolders = new Set();
 
-  // 3. BFS in parallel batches with a strict time budget
   while (folderQueue.length > 0) {
     if (Date.now() - crawlStart > SHARED_CRAWL_BUDGET_MS) {
       console.warn('[sync] Shared folder crawl reached time budget; stopping early.');
@@ -303,7 +301,7 @@ function resolveWebViewLink(file, effectiveMime, effectiveTargetId) {
 }
 
 // --------------------------------------------------
-// 6. Normalize Google Drive Data
+// 6. Normalize Drive & Provider Items
 // --------------------------------------------------
 
 function normalizeDriveFiles(rawFiles, accountId, syncBatchId) {
@@ -356,11 +354,32 @@ function normalizeDriveFiles(rawFiles, accountId, syncBatchId) {
   });
 }
 
+function normalizeProviderItems(rawItems, accountId, syncBatchId) {
+  return (rawItems || []).map((item) => ({
+    _id: new mongoose.Types.ObjectId(),
+    remoteId: String(item.remoteId || ''),
+    remoteParentId: item.remoteParentId ? String(item.remoteParentId) : null,
+    remoteParents: item.remoteParentId ? [String(item.remoteParentId)] : [],
+    name: item.name || 'Untitled',
+    type: item.type === 'folder' ? 'folder' : 'file',
+    sizeBytes: Number(item.sizeBytes || 0),
+    mimeType: item.mimeType || '',
+    webViewLink: item.webViewLink || '',
+    isShortcut: Boolean(item.isShortcut),
+    targetRemoteId: item.targetRemoteId || null,
+    targetMimeType: item.targetMimeType || '',
+    parentId: null,
+    accountId,
+    syncBatchId,
+    updatedAtStr: item.updatedAtStr || new Date().toISOString().slice(0, 10),
+  }));
+}
+
 // --------------------------------------------------
 // 7. Save Folders and Build Hierarchy (Single-Pass Insert)
 // --------------------------------------------------
 
-async function saveDriveItems(normalized) {
+async function saveHierarchyItems(normalized) {
   const folders = [];
   const files = [];
 
@@ -372,12 +391,13 @@ async function saveDriveItems(normalized) {
     }
   }
 
-  // Google Drive Folder ID -> pre-generated MongoDB ObjectId
   const folderIdMap = new Map();
   for (const folder of folders) {
-    folderIdMap.set(folder.remoteId, folder._id);
+    if (folder.remoteId) {
+      folderIdMap.set(String(folder.remoteId), folder._id);
+    }
     if (folder.isShortcut && folder.targetRemoteId) {
-      folderIdMap.set(folder.targetRemoteId, folder._id);
+      folderIdMap.set(String(folder.targetRemoteId), folder._id);
     }
   }
 
@@ -387,9 +407,9 @@ async function saveDriveItems(normalized) {
   const foldersToInsert = folders.map((folder) => {
     const mongoParentId =
       (folder.remoteParents || [])
-        .map((pid) => folderIdMap.get(pid))
+        .map((pid) => folderIdMap.get(String(pid)))
         .find(Boolean) ||
-      (folder.remoteParentId ? folderIdMap.get(folder.remoteParentId) : null) ||
+      (folder.remoteParentId ? folderIdMap.get(String(folder.remoteParentId)) : null) ||
       null;
 
     if (mongoParentId) {
@@ -408,9 +428,9 @@ async function saveDriveItems(normalized) {
   const filesToInsert = files.map((file) => {
     const mongoParentId =
       (file.remoteParents || [])
-        .map((pid) => folderIdMap.get(pid))
+        .map((pid) => folderIdMap.get(String(pid)))
         .find(Boolean) ||
-      (file.remoteParentId ? folderIdMap.get(file.remoteParentId) : null) ||
+      (file.remoteParentId ? folderIdMap.get(String(file.remoteParentId)) : null) ||
       null;
 
     if (mongoParentId) {
@@ -460,7 +480,7 @@ export async function POST(req, context) {
 
     await dbConnect();
 
-    const account = await CloudAccount.findById(accountId);
+    const account = await CloudAccount.findById(accountId).select('+encryptedCredentials');;
 
     if (!account) {
       return NextResponse.json(
@@ -469,54 +489,47 @@ export async function POST(req, context) {
       );
     }
 
-    if (account.provider !== 'gdrive') {
+    syncBatchId = randomUUID();
+    let normalized = [];
+    let totalBytes = 0;
+    let usedBytes = 0;
+
+    if (account.provider === 'gdrive') {
+      let creds = decryptCreds(account.encryptedCredentials);
+      creds = await refreshGoogleAccessTokenIfNeeded(account, creds);
+
+      const headers = {
+        Authorization: `Bearer ${creds.access_token}`,
+      };
+
+      const [quota, initialRawFiles] = await Promise.all([
+        fetchDriveQuota(headers),
+        fetchAllDriveFiles(headers),
+      ]);
+
+      const rawFiles = await fetchChildrenOfSharedFolders(headers, initialRawFiles);
+
+      console.log('[sync] Drive data fetched:', {
+        totalFiles: rawFiles.length,
+        elapsedMs: Date.now() - start,
+      });
+
+      totalBytes = Number(quota.limit || 15 * 1024 ** 3);
+      usedBytes = Number(quota.usage || 0);
+      normalized = normalizeDriveFiles(rawFiles, account._id, syncBatchId);
+    } else if (account.provider === 'mega') {
+      const state = await fetchProviderState(account);
+      totalBytes = Number(state.totalGB || 20) * 1024 ** 3;
+      usedBytes = Number(state.usedGB || 0) * 1024 ** 3;
+      normalized = normalizeProviderItems(state.items || [], account._id, syncBatchId);
+    } else {
       return NextResponse.json(
-        { error: 'Unsupported cloud provider' },
+        { error: `Unsupported cloud provider: ${account.provider}` },
         { status: 400 }
       );
     }
 
-    // ----------------------------------------------
-    // Authentication
-    // ----------------------------------------------
-
-    let creds = decryptCreds(account.encryptedCredentials);
-    creds = await refreshGoogleAccessTokenIfNeeded(account, creds);
-
-    const headers = {
-      Authorization: `Bearer ${creds.access_token}`,
-    };
-
-    // ----------------------------------------------
-    // Fetch Drive Data
-    // ----------------------------------------------
-
-    const [quota, initialRawFiles] = await Promise.all([
-      fetchDriveQuota(headers),
-      fetchAllDriveFiles(headers),
-    ]);
-
-    const rawFiles = await fetchChildrenOfSharedFolders(headers, initialRawFiles);
-
-    console.log('[sync] Drive data fetched:', {
-      totalFiles: rawFiles.length,
-      elapsedMs: Date.now() - start,
-    });
-
-    // ----------------------------------------------
-    // Prepare & Save New Sync Batch
-    // ----------------------------------------------
-
-    syncBatchId = randomUUID();
-    const normalized = normalizeDriveFiles(rawFiles, account._id, syncBatchId);
-    const summary = await saveDriveItems(normalized);
-
-    // ----------------------------------------------
-    // Remove Previous Sync & Update Account in Parallel
-    // ----------------------------------------------
-
-    const totalBytes = Number(quota.limit || 15 * 1024 ** 3);
-    const usedBytes = Number(quota.usage || 0);
+    const summary = await saveHierarchyItems(normalized);
 
     account.totalGB = Number((totalBytes / 1024 ** 3).toFixed(3));
     account.usedGB = Number((usedBytes / 1024 ** 3).toFixed(3));
@@ -532,12 +545,13 @@ export async function POST(req, context) {
 
     console.log('[sync] Hierarchy summary:', summary);
     console.log('[sync] Complete:', {
+      provider: account.provider,
       elapsedMs: Date.now() - start,
     });
 
     return NextResponse.json({
       ok: true,
-      message: 'Google Drive synchronized successfully',
+      message: `${account.provider.toUpperCase()} synchronized successfully`,
       syncedAt: account.lastSyncedAt,
       summary,
     });
