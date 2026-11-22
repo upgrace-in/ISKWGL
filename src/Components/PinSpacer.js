@@ -13,7 +13,7 @@ export default function PinSpacer() {
     //                      <img src={src} alt={`Slide ${index + 1}`} className="d-block w-80 pin-spacer__image" />
     //                  </a>
     //              ) : 
-    const imageArray = ["/images/Ekadasi/utthana-ekadasi.jpeg", "/headerImages/volunteer.png", "/headerImages/Chant-and-Be-happy-min.png", "/headerImages/Sunday-Program-min.png"]
+    const imageArray = ["/headerImages/volunteer.png", "/headerImages/Chant-and-Be-happy-min.png", "/headerImages/Sunday-Program-min.png"]
 
     return (
 
@@ -21,11 +21,7 @@ export default function PinSpacer() {
         {imageArray.map((src, index) => (
              <Carousel.Item key={index}>
              <div className="CarouselContainer">
-                 {src === "/images/Ekadasi/utthana-ekadasi.jpeg" ? (
-                     <a href="/Ekadasi">
-                         <img src={src} alt={`Slide ${index + 1}`} className="d-block w-80 pin-spacer__image" />
-                     </a>
-                 ) : src === "/headerImages/annadanam-janmashtami.png" ? (
+                 {src === "/headerImages/annadanam-janmashtami.png" ? (
                      <a href="/#annadan">
                          <img src={src} alt={`Slide ${index + 1}`} className="d-block w-80 pin-spacer__image" />
                      </a>

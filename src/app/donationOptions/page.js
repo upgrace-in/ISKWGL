@@ -14,13 +14,13 @@ export default function DonatePage({}) {
     const [navOpen, setNavOpen] = useState(false)
     
     const donationOptions = [
-        { 
-            id: 1, 
-            title: 'Utthana Ekadasi', 
-            subtitle: '21 Nov 2026', 
-            image: '/images/Ekadasi/utthana-ekadasi.jpeg',
-            pagelink: '/Ekadasi' 
-        },
+        // { 
+        //     id: 1, 
+        //     title: 'Utthana Ekadasi', 
+        //     subtitle: '21 Nov 2026', 
+        //     image: '/images/Ekadasi/utthana-ekadasi.jpeg',
+        //     pagelink: '/Ekadasi' 
+        // },
         { 
             id: 2, 
             title: 'Kartik Month Seva', 
