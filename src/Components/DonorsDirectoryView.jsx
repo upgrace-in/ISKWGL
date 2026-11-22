@@ -163,7 +163,7 @@ export default function DonorsDirectoryView() {
 
         const headers = ["Name", "Phone", "Latest Donation", "Latest Follow-up", "Address", "Total Donations"];
         const rows = dataset.map(donor => 
-            `"${donor.name}","${donor.phone}","${donor.latestDonationDate || "N/A"}","${donor.latestFollowUp?.text?.replace(/"/g, '""') || "N/A"}","${donor.address?.addressLine1 || ""}, ${donor.address?.addressLine2 || ""}, ${donor.address?.city || ""}, ${donor.address?.district || ""}, ${donor.address?.state || ""}, ${donor.address?.pincode || ""}","${donor.donationCount}"`
+            `"${donor.name}","${donor.phone}","${donor.latestDonationDate || "N/A"}","${donor.latestFollowUp?.text?.replace(/"/g, '""') || "N/A"}","${donor.address?.addressLine1 || ""}, ${donor.address?.addressLine2 || ""}, ${donor.address?.city || ""}, ${donor.address?.district || ""}, ${donor.address?.state || ""}, ${donor.address?.pinCode || ""}","${donor.donationCount}"`
         );
         const csvContent = [headers.join(","), ...rows].join("\n");
         
